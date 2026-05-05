@@ -32,7 +32,7 @@ PROC.mkdir(parents=True, exist_ok=True)
 
 
 def main() -> None:
-    print("== Stage 5: NLP (deferred — implements after corpus fetch is wired) ==")
+    print("== Stage 5: NLP (deferred, implements after corpus fetch is wired) ==")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 _p = Path("data/processed/headline_stats.json")
 _stats = json.loads(_p.read_text()) if _p.exists() else {}
-def S(key, default="—"):
+def S(key, default="-"):
     v = _stats.get(key, default)
     if isinstance(v, (int, float)):
         return f"{v:,.0f}"
@@ -27,7 +27,7 @@ def S(key, default="—"):
 # The American Dream, Audited
 
 ::: {.deck}
-Three lives, four demographics, six decades of US economic data — what the promise paid out, and to whom.
+Three lives, four demographics, six decades of US economic data. What the promise paid out, and to whom.
 :::
 
 ::: {.byline}
@@ -36,11 +36,11 @@ A DSAN scholarship submission · Georgetown University · Spring 2026<br>
 :::
 
 ::: {.dropcap}
-In 1965, a 24-year-old man with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By the standards of the era, he was unremarkable. The American Dream was something his employer, his bank, and his country had quietly agreed to deliver to him in exchange for showing up to work. He was also, almost certainly, white.
+In 1965, a 24 year old guy with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By 1965 standards he was nothing special. The American Dream was basically what his employer, his bank, and his country had agreed to hand him in exchange for showing up to work. He was also, almost certainly, white.
 
-This is an audit of that promise. It does not ask whether the Dream existed — that is too much sentiment and too little measurement. It asks what the Dream actually paid out, year by year, to the people the country actually had: men and women, white and Black and Hispanic, fresh out of school and at the end of working life. It uses six decades of public data and a single, stubborn unit — hours of full-time labor — to read the receipt the country never quite published.
+This site audits that promise. The question isn't whether the Dream existed. That's a sentiment question, not a measurement one. The question is what it actually paid out, year by year, to the people the country actually had. Men and women, white and Black and Hispanic, fresh out of school and at the end of working life. It uses six decades of public data and one unit, hours of full time labor, to find out.
 
-What it finds is that the Dream was never one promise but a layered one, and that the layers came off unevenly. Some Americans got more of it over time. Others got less. By 2020, even the people who had it best in 1970 — the demographic at the centre of the original promise — were working twice as long for the same house their parents bought.
+What the data shows is that the Dream was never one promise. It was a layered one, and the layers came off unevenly. Some people got more of it over time. Others got less. By 2020, even the white men who had it best in 1970 are working twice as long for the same house their parents bought.
 :::
 
 ::: {.kicker}
@@ -57,10 +57,8 @@ The audit, in one chart
 ```
 
 ::: {.figure-caption}
-Hours of full-time labor required to afford the median US home, averaged within each decade. Read across rows for the gap between demographics in any given era; read down columns for each demographic's trajectory through time. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
+Hours of full time labor required to afford the median US home, averaged within each decade. Read across rows for the gap between demographics in any given era. Read down columns for each demographic's trajectory through time. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
 :::
-
----
 
 ## Prologue · The Promise
 
@@ -68,27 +66,25 @@ Hours of full-time labor required to afford the median US home, averaged within 
 What was sold
 :::
 
-*[Open with NLP layer: a streamgraph of topic prevalence in 66 State of the Union addresses, 1960–2025, showing how the rhetoric of "prosperity," "middle class," "opportunity," and "American Dream" rose and fell. This is the **promise** side of the audit — what every administration told the country it was delivering. Subsequent acts measure what was actually delivered.]*
+*[The Prologue chart is the rhetoric river: a streamgraph of how the language of "prosperity," "middle class," "opportunity," and "American Dream" has waxed and waned across 66 State of the Union addresses since 1960. It's the promise side of the audit. The acts that follow measure what was actually delivered.]*
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/sotu_rhetoric_river.html"
           style="width:100%; min-height:520px; border:none;"
           loading="lazy"
-          title="Streamgraph of topic prevalence in State of the Union addresses, 1960–2025."></iframe>
+          title="Streamgraph of topic prevalence in State of the Union addresses, 1960 to 2025."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-*[Caption pending — sources: 66 SOTU addresses, UCSB American Presidency Project. Topic model: BERTopic over sentence-transformer embeddings (all-MiniLM-L6-v2), UMAP-reduced, HDBSCAN-clustered. See Methods.]*
+*[Caption pending. Sources: 66 SOTU addresses, UCSB American Presidency Project. Topic model: BERTopic over sentence-transformer embeddings (all-MiniLM-L6-v2), UMAP-reduced, HDBSCAN-clustered. See Methods.]*
 :::
-
----
 
 ## Act I · The Starter
 
 ::: {.kicker}
-Part I — entering adulthood
+Part I, entering adulthood
 :::
 
 ```{=html}
@@ -97,58 +93,56 @@ Part I — entering adulthood
 
 ### The launchpad
 
-The Starter is who you were just after school: in your early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. The 1970 Starter — a young man, by the standards of the data the country was collecting at the time — walked into a labor market where the median weekly wage of a full-time worker bought him roughly 5,900 hours of housing per home. Working a standard 2,000 hours a year, he could pay for the median American house in just under three working years. Two and a half decades later the house had not changed. His wage, in time terms, had.
+The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought him roughly 5,900 hours of housing per home. Working a standard 2,000 hours a year, he could pay for the median American house in under three years. Two and a half decades later the house was still the same house. His wage, in time terms, was not.
 
 ```{=html}
 <div class="ledger">
-  <div class="ledger-cell"><span class="stat">99</span><span class="stat-label">Hours for one year of public 4-yr tuition and fees · White man · 1970</span></div>
+  <div class="ledger-cell"><span class="stat">99</span><span class="stat-label">Hours for one year of public 4-yr tuition · White man · 1970</span></div>
   <div class="ledger-cell"><span class="stat">338</span><span class="stat-label">Hours for the same · 2020</span></div>
   <div class="ledger-cell"><span class="stat">3.4×</span><span class="stat-label">More working time</span></div>
 </div>
 ```
 
-Tuition is the simplest line on the Starter's balance sheet because it is the first one. In 1963 a year of in-state public four-year tuition and required fees cost \$243 in the dollars of the day. In 2021 it cost \$9,596. Wages rose too, of course, but not enough to keep the ratio constant.
+Tuition is the simplest line on the Starter's balance sheet because it is the first one. In 1963 a year of in-state public four year tuition and required fees cost \$243 in the dollars of the day. In 2021 it cost \$9,596. Wages went up too, but not nearly enough to keep the ratio constant.
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/tuition_time_price.html"
           style="width:100%; min-height:540px; border:none;"
           loading="lazy"
-          title="Hours of full-time labor required to afford one year of public four-year tuition and fees, by demographic, 1967–2021."></iframe>
+          title="Hours of full-time labor required to afford one year of public four-year tuition and fees, by demographic, 1967 to 2021."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-Hours of full-time labor required to afford one year of in-state public four-year tuition and required fees. Source: NCES Digest of Education Statistics, Table 330.10 (current dollars), divided by demographic-specific median weekly earnings (Census P-38 stitched to BLS LEU at 2000) ÷ 40.
+Hours of full time labor required to afford one year of in-state public four year tuition and required fees. Source: NCES Digest of Education Statistics, Table 330.10 (current dollars), divided by demographic-specific median weekly earnings (Census P-38 stitched to BLS LEU at 2000) ÷ 40.
 :::
 
 ### The starting line, by demographic
 
-The Starter does not enter the labor market on equal footing. In the 1970s, a Black woman working full-time in the United States earned, on average, about 60 percent of what a white man earned for the same hours. The gap closed slowly through the 1980s and 1990s. It never closed completely. The chart below tracks nominal hourly wages, by race and sex, across the working life of three generations of Starters.
+The Starter does not enter the labor market on equal footing. In the 1970s a Black woman working full time in the US earned, on average, about 60 percent of what a white man earned for the same hours. The gap closed, slowly, through the 1980s and 1990s. It never closed completely. The chart below tracks nominal hourly wages, by race and sex, across the working life of three generations of Starters.
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/wage_divergence.html"
           style="width:100%; min-height:560px; border:none;"
           loading="lazy"
-          title="Nominal hourly wages by race and sex, 1967–2025."></iframe>
+          title="Nominal hourly wages by race and sex, 1967 to 2025."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-Nominal median weekly earnings of full-time wage and salary workers, expressed as an hourly rate (÷ 40). Source: BLS Current Population Survey LEU series for 2000+ joined to Census Historical Income Tables P-38 for 1967+ (white/Black) and 1974+ (Hispanic). Hispanic earnings were not separately tabulated by the federal government before 1972; the gap in the chart's left edge is the data's own silence on that question.
+Nominal median weekly earnings of full time wage and salary workers, expressed as an hourly rate (÷ 40). Source: BLS Current Population Survey LEU series for 2000+ joined to Census Historical Income Tables P-38 for 1967+ (white/Black) and 1974+ (Hispanic). Hispanic earnings were not separately tabulated by the federal government before 1972. The gap on the chart's left edge is the data's own silence on that question.
 :::
 
-Read the chart not for the rising lines — every line rises in nominal terms — but for the *gaps* between them. The vertical distance between any two lines at any given year is what an extra hour of work was worth, depending on who you were.
+Read the chart not for the rising lines (every line rises in nominal terms) but for the gaps between them. The vertical distance between any two lines at any given year is what an extra hour of work was worth, depending on who you were.
 
-For the Starter, what these wage levels mean in practice is what they buy. A year of public four-year tuition and fees cost a white man 99 hours of work in 1970 — about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2020 the white man's tuition burden had climbed to 338 hours; the Black woman's, to 490. The gap between starting lines did narrow, in percentage terms. In *time* terms — in weeks of life surrendered before earning anything — every Starter is paying more, and the ones who started behind are still behind.
-
----
+For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2020 the white man's tuition burden had climbed to 338 hours. The Black woman's had reached 490. The gap between starting lines did narrow, in percentage terms. In time terms, in weeks of life surrendered before earning anything, every Starter is paying more, and the ones who started behind are still behind.
 
 ## Act II · The Builder
 
 ::: {.kicker}
-Part II — peak earning, raising family
+Part II, peak earning, raising family
 :::
 
 ```{=html}
@@ -157,14 +151,14 @@ Part II — peak earning, raising family
 
 ### The home that took two incomes
 
-*[The home affordability story, but framed through the Builder's lived reality: how many earners did it take? What share of household labor went to housing? Use the dual-earner participation rate alongside the home time-price.]*
+*[The home affordability story, but framed through the Builder's lived reality. How many earners did it take? What share of household labor went to housing? Use the dual earner participation rate alongside the home time price.]*
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/time_price_home.html"
           style="width:100%; min-height:580px; border:none;"
           loading="lazy"
-          title="Hours of full-time labor required to afford a median US home, by race and sex, 1979–present."></iframe>
+          title="Hours of full-time labor required to afford a median US home, by race and sex, 1979 to present."></iframe>
 </div>
 ```
 
@@ -173,21 +167,21 @@ Part II — peak earning, raising family
   <iframe src="interactive/labor_force_participation.html"
           style="width:100%; min-height:480px; border:none;"
           loading="lazy"
-          title="Civilian labor force participation rate, men vs. women, 1960–2025."></iframe>
+          title="Civilian labor force participation rate, men vs. women, 1960 to 2025."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-Civilian labor force participation rate, ages 16+, by sex, monthly. Source: BLS via FRED (LNS11300001 men, LNS11300002 women). The rise is the audit's quiet headline: the household labor input nearly doubled while the wage attached to it did not.
+Civilian labor force participation rate, ages 16+, by sex, monthly. Source: BLS via FRED (LNS11300001 men, LNS11300002 women). The rise is a quiet headline: the household labor input nearly doubled while the wage attached to it did not.
 :::
 
 ### The bills that didn't exist in 1960
 
-*[Childcare, employer health premiums (in name only — really borne by workers via wage suppression), 401(k) contributions replacing pensions. The Builder of 1960 didn't have these line items at all; the Builder of 2020 has them as their largest expense after housing.]*
+*[Childcare, employer health premiums (in name only, really borne by workers via wage suppression), 401(k) contributions replacing pensions. The Builder of 1960 didn't have these line items at all. The Builder of 2020 has them as their largest expense after housing.]*
 
 ### Healthcare: the cost of staying alive
 
-The single sharpest divergence in the audit's six-decade window is between medical care prices and the price of everything else. Indexed to 1960, the general consumer price level has roughly multiplied by ten. Medical care has multiplied by more than thirty. The gap between the two — the shaded area in the chart — is the slice of the household budget that healthcare has eaten that no other category has.
+The single sharpest divergence in the audit's six decade window is between medical care prices and the price of everything else. Indexed to 1960, the general consumer price level has roughly multiplied by ten. Medical care has multiplied by more than thirty. The gap between the two (the shaded area in the chart) is the slice of the household budget that healthcare has eaten that no other category has.
 
 ```{=html}
 <div class="interactive-embed">
@@ -199,15 +193,13 @@ The single sharpest divergence in the audit's six-decade window is between medic
 ```
 
 ::: {.figure-caption}
-Both indices set to 100 in January 1960. Source: BLS via FRED (CPIAUCSL all items, CPIMEDSL medical care). The shaded area marks the cumulative excess of medical-price inflation over general inflation.
+Both indices set to 100 in January 1960. Source: BLS via FRED (CPIAUCSL all items, CPIMEDSL medical care). The shaded area marks the cumulative excess of medical price inflation over general inflation.
 :::
-
----
 
 ## Act III · The Finisher
 
 ::: {.kicker}
-Part III — the runway
+Part III, the runway
 :::
 
 ```{=html}
@@ -216,20 +208,20 @@ Part III — the runway
 
 ### How long the Dream had to last
 
-*[The killer chart: life expectancy at age 65, by race × sex, 1960 → 2020. Shows two stories at once: (a) longevity gains accrued unevenly, (b) the *retirement runway* — years between retirement and death — has stretched dramatically for some, barely for others.]*
+*[The killer chart: life expectancy at age 65, by race × sex, 1960 to 2020. Two stories at once. (a) Longevity gains accrued unevenly. (b) The retirement runway, the years between retirement and death, has stretched dramatically for some, barely for others.]*
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/longevity_gap.html"
           style="width:100%; min-height:540px; border:none;"
           loading="lazy"
-          title="Life expectancy at age 65 by race and sex, 1960–2020."></iframe>
+          title="Life expectancy at age 65 by race and sex, 1960 to 2020."></iframe>
 </div>
 ```
 
 ### Savings, social security, and the home as 401(k)
 
-*[Median retirement savings by race (SCF). Social Security replacement rate. Home equity as the de facto retirement plan — and what happens when you never owned a home.]*
+*[Median retirement savings by race (SCF). Social Security replacement rate. Home equity as the de facto retirement plan, and what happens when you never owned a home.]*
 
 ```{=html}
 <div class="interactive-embed">
@@ -244,15 +236,13 @@ Part III — the runway
 Share of total US household net worth, by race, quarterly from 1989 Q3 to 2025 Q4. Source: Federal Reserve Distributional Financial Accounts. The "Other" category combines Asian, Pacific Islander, American Indian, multiracial, and other-race households as published by the Fed.
 :::
 
----
-
 ## The Counterfactual
 
 ::: {.kicker}
-Part IV — the gap that wasn't closed
+Part IV, the gap that wasn't closed
 :::
 
-*[Interactive slider: drag to set "what if the racial wealth gap had narrowed at the same rate as the gender pay gap?" Show three or four counterfactual paths against the actual one. This is the normative moment — explicitly: here is what a different policy choice would have looked like.]*
+*[Interactive slider. Drag to set "what if the racial wealth gap had narrowed at the same rate as the gender pay gap?" Show three or four counterfactual paths against the actual one. This is the normative moment. Here is what a different policy choice would have looked like.]*
 
 ```{=html}
 <div class="interactive-embed">
@@ -263,8 +253,6 @@ Part IV — the gap that wasn't closed
 </div>
 ```
 
----
-
 ## What the Audit Found
 
 ::: {.kicker}
@@ -273,11 +261,9 @@ Findings
 
 *[Three to five bullet findings, each grounded in a specific number from the analysis. Resist the urge to confirm priors. If the data shows an unexpected story (e.g. that medical care quality-adjusted has actually improved more than headline costs suggest), say so.]*
 
-1. **[Finding 1]** — *(grounded in chart X, magnitude Y)*
-2. **[Finding 2]** — *(grounded in chart X, magnitude Y)*
-3. **[Finding 3]** — *(grounded in chart X, magnitude Y)*
-
----
+1. **[Finding 1]** *(grounded in chart X, magnitude Y)*
+2. **[Finding 2]** *(grounded in chart X, magnitude Y)*
+3. **[Finding 3]** *(grounded in chart X, magnitude Y)*
 
 ## Recommendations
 
@@ -299,16 +285,12 @@ Where the evidence points
 
 *[Recommendation 3.]*
 
----
-
 ## A note on what this audit is not
 
 ::: {.kicker}
 Honest framing
 :::
 
-*[Brief epilogue acknowledging what's missing: regional variation, undocumented populations, the value of non-monetary changes (cleaner air, better cars, longer leisure). This is an audit of *measurable, monetizable* economic conditions. Many things that matter most aren't here.]*
-
----
+*[Brief epilogue acknowledging what's missing: regional variation, undocumented populations, the value of non-monetary changes (cleaner air, better cars, longer leisure). This is an audit of measurable, monetizable economic conditions. Many things that matter most aren't here.]*
 
 [Continue to [Methods →](appendix.qmd)]{.byline}

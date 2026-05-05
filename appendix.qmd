@@ -14,80 +14,78 @@ format:
 # Methods
 
 ::: {.deck}
-A full accounting of how the audit was built — the data sources, the cleaning decisions, the modeling choices, and the things this analysis cannot say.
+A full accounting of how the audit was built. Data sources, cleaning decisions, modeling choices, and the things this analysis cannot say.
 :::
-
----
 
 ## Why "time price"
 
-The central methodological problem in any 1960-to-present economic comparison is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. Using only the BLS CPI All Urban deflator yields one answer. Using the PCE deflator yields another. Using the Boskin-adjusted CPI-U-RS yields a third. The spread between deflators across 60 years is large enough that two analysts could reach opposite conclusions while doing competent work.
+The central problem in any 1960-to-present economic comparison is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. Using only the BLS CPI All Urban deflator yields one answer. Using the PCE deflator yields another. Using the Boskin-adjusted CPI-U-RS yields a third. The spread between deflators across 60 years is large enough that two analysts could reach opposite conclusions while doing competent work.
 
-This audit therefore privileges a unit that does not depend on a deflator at all: the **time price**. The time price of a good is its nominal sticker divided by the nominal hourly wage of the buyer. It cancels the dollar — what remains is "hours of your labor."
+This audit therefore privileges a unit that does not depend on a deflator at all: the **time price**. The time price of a good is its nominal sticker divided by the nominal hourly wage of the buyer. It cancels the dollar. What remains is "hours of your labor."
 
 The time price is not a perfect measure. It assumes that an hour of labor in 1965 is comparable in burden to an hour in 2023, which understates two things:
 
 1. The work week was longer in 1965, so each hour of labor came in a longer block of life-time.
-2. The compositional mix of labor has shifted toward less physically demanding work for many — but not all — demographic groups.
+2. The compositional mix of labor has shifted toward less physically demanding work for many (but not all) demographic groups.
 
 Both of these caveats argue that the time-price comparison, if anything, *understates* how much the burden of essentials has shifted. We adopt it as the headline unit and report standard CPI-deflated real-dollar figures alongside in the appendix tables.
 
 ## Data sources
 
 ### Inflation backbones
-- **CPIAUCSL** — BLS CPI All Urban Consumers, monthly, via FRED. Used as primary deflator.
-- **PCEPI** — BEA PCE Price Index, monthly, via FRED. Used as a sensitivity check; the "real" series in this audit are reproduced under both deflators in the appendix tables.
+- **CPIAUCSL**, BLS CPI All Urban Consumers, monthly, via FRED. Used as primary deflator.
+- **PCEPI**, BEA PCE Price Index, monthly, via FRED. Used as a sensitivity check; the "real" series in this audit are reproduced under both deflators in the appendix tables.
 
 ### Wages, by demographic
-- **BLS CPS Median Weekly Earnings**, full-time wage and salary workers, race × sex breakdown. FRED series `LEU0252881500` (white men), `LEU0252882500` (white women), `LEU0252883300` (black men), `LEU0252884100` (black women), `LEU0252885900` (hispanic men), `LEU0252886700` (hispanic women). Quarterly, 1979–present.
-- **Pre-1979 backfill**: Census P-60 series via the Historical Statistics of the United States, Earnings Tables, race × sex, annual, 1960–1978. Joined to BLS series at the 1979 break with a multiplicative scaling factor to align the quarterly→annual transition.
+- **BLS CPS median weekly earnings**, full-time wage and salary workers, race × sex breakdown. FRED series `LEU0252883900Q` (white men), `LEU0252884200Q` (white women), `LEU0252884800Q` (black men), `LEU0252885100Q` (black women), `LEU0252885700Q` (hispanic men), `LEU0252886000Q` (hispanic women). Quarterly, 2000+.
+- **Pre-2000 backfill**: Census Historical Income Tables P-38 (Full-Time, Year-Round Workers, Median Earnings, by Sex), separately for White (1967+), Black (1967+), and Hispanic (1974+). Annual values are converted to weekly equivalents (÷ 52) and joined to the BLS LEU quarterly series at the 2000 boundary using a 3-year multiplicative scale factor that anchors Census levels to BLS at the seam. The two surveys define "full-time" slightly differently (BLS LEU is wage and salary; Census P-38 includes all workers), so the level shift at the seam is corrected by the scale factor; the shape of the pre-2000 trend is taken from Census.
 
 ### Housing
-- **MSPUS** — median sales price of houses sold, US Census/HUD via FRED, quarterly.
-- **RHORUSQ156N** — homeownership rate, Census/CPS via FRED, quarterly.
-- **CUUR0000SEHA** — CPI rent of primary residence, BLS via FRED, monthly. We anchor to a 2020 ACS national median rent of \$1,200/month and scale by the CUUR0000SEHA index ratio for first-pass rent affordability. *Caveat: this assumes the national basket of rent has the same composition over time, which is increasingly false post-2010 with regional divergence. We discuss the regional-gap blind spot in the limitations section.*
-- **MORTGAGE30US** — 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
+- **MSPUS**, median sales price of houses sold, US Census/HUD via FRED, quarterly.
+- **RHORUSQ156N**, homeownership rate, Census/CPS via FRED, quarterly.
+- **CUUR0000SEHA**, CPI rent of primary residence, BLS via FRED, monthly. We anchor to a 2020 ACS national median rent of \$1,200/month and scale by the CUUR0000SEHA index ratio for first-pass rent affordability. *Caveat: this assumes the national basket of rent has the same composition over time, which is increasingly false post-2010 with regional divergence. We discuss the regional-gap blind spot in the limitations section.*
+- **MORTGAGE30US**, 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
 
 ### Education
-- **NCES Digest Table 330.10** — average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to present.
-- **SLOAS** — Federal Reserve Z.1 student loan balance series, quarterly, 2006 onward.
+- **NCES Digest Table 330.10**, average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to present.
+- **SLOAS**, Federal Reserve Z.1 student loan balance series, quarterly, 2006 onward.
 
 ### Healthcare
-- **CMS National Health Expenditures**, historical tables, 1960–2023. Used for per-capita NHE and out-of-pocket per capita.
-- **CPIMEDSL** — CPI Medical Care, BLS via FRED, monthly.
+- **CMS National Health Expenditures**, historical tables, 1960 to 2023. Used for per-capita NHE and out-of-pocket per capita.
+- **CPIMEDSL**, CPI Medical Care, BLS via FRED, monthly.
 
 ### Wealth
-- **Federal Reserve Distributional Financial Accounts (DFA)**, share of total net worth by race quintile and by demographic group, quarterly, 1989 to present.
-- **Survey of Consumer Finances (SCF)**, triennial, 1962–2022, for pre-DFA wealth observations.
+- **Federal Reserve Distributional Financial Accounts (DFA)**, share of total net worth by race and by wealth quintile, quarterly, 1989Q3 onward. Bulk download from federalreserve.gov.
+- **Survey of Consumer Finances (SCF)**, triennial, 1962 to 2022, for pre-DFA wealth observations.
 
 ### Retirement and longevity
-- **CDC NCHS National Vital Statistics System**, life expectancy at birth and at age 65, by race and sex, annual, 1960 to present.
+- **CDC NCHS National Vital Statistics System**, life expectancy at birth and at age 65, by race and sex, annual, 1900 to 2018, via the CDC open-data portal (Socrata). The dataset stops at 2018; the COVID-era life expectancy reversal (2020 to 2022) is referenced qualitatively in the narrative but not in the chart series.
 - **SSA Trustees Reports**, replacement rate at the median wage level, annual.
 
 ### NLP corpus
-- **State of the Union addresses**, 1960 through most recent, sourced from the UCSB American Presidency Project. Each address is treated as a year-document; paragraph-level segmentation is preserved.
+- **State of the Union addresses**, 1960 to most recent, sourced from the UCSB American Presidency Project. Each address is treated as a year-document; paragraph-level segmentation is preserved.
 
 ## NLP pipeline
 
-1. **Sentence-paragraph segmentation** — naive paragraph split followed by sentence tokenization with NLTK. Paragraphs shorter than 12 tokens are dropped (these are usually applause cues).
-2. **Sentiment classification** — DistilBERT fine-tuned on SST-2 (`distilbert-base-uncased-finetuned-sst-2-english`). For paragraphs containing economic keywords (one of: economy, jobs, wages, taxes, prosperity, dream, middle class, work, opportunity), we additionally score with **FinBERT** for finance-tuned sentiment, and report both.
-3. **Topic modeling** — paragraphs encoded with `all-MiniLM-L6-v2` sentence-transformer, reduced via UMAP (`n_neighbors=15`, `n_components=5`, `min_dist=0.0`), clustered with HDBSCAN (`min_cluster_size=30`). BERTopic produces topic labels via class-based TF-IDF.
-4. **Aggregation** — per-paragraph topic assignments aggregated to per-year topic share, producing the input to the rhetoric streamgraph.
+1. **Sentence and paragraph segmentation**: naive paragraph split followed by sentence tokenization with NLTK. Paragraphs shorter than 12 tokens are dropped (these are usually applause cues).
+2. **Sentiment classification**: DistilBERT fine-tuned on SST-2 (`distilbert-base-uncased-finetuned-sst-2-english`). For paragraphs containing economic keywords (one of: economy, jobs, wages, taxes, prosperity, dream, middle class, work, opportunity), we additionally score with **FinBERT** for finance-tuned sentiment, and report both.
+3. **Topic modeling**: paragraphs encoded with `all-MiniLM-L6-v2` sentence-transformer, reduced via UMAP (`n_neighbors=15`, `n_components=5`, `min_dist=0.0`), clustered with HDBSCAN (`min_cluster_size=30`). BERTopic produces topic labels via class-based TF-IDF.
+4. **Aggregation**: per-paragraph topic assignments aggregated to per-year topic share, producing the input to the rhetoric streamgraph.
 
 ## What this audit cannot say
 
 - **Regional variation is invisible.** The national medians used here mask enormous geographic spread. A median home in San Francisco and a median home in Akron are both "the median home" in different ways, and the time-price computation treats them identically.
 - **Quality changes are partially absorbed by hedonic adjustments in CPI, but not transparently.** Cars in 2024 are safer, more efficient, and longer-lasting than cars in 1980. Healthcare in 2024 saves lives that 1980 healthcare could not. The time price of a "car" or "year of healthcare" is not adjusted for these quality gains. Where we report the medical-CPI-vs-general-CPI divergence, the reader should hold this caveat in mind.
 - **The undocumented population is excluded from BLS CPS data**, which understates both the wage compression at the bottom of the labor market and the labor force participation rate.
-- **The pre-1979 demographic wage data has gaps and inconsistencies.** The Census P-60 series we use for backfill changed methodology in 1967 and again in 1976. We mark these breakpoints visibly on charts that show the pre-1979 era.
+- **The Census P-38 data has methodology breaks.** CPS revisions in 1980, 1992, 2003, and 2014 each introduce a discontinuity. Where Census reports both "old basis" and "new basis" figures for the year of the change, we keep the post-revision figure.
 
 ## Reproducing the analysis
 
 The full source code is available on request. To reproduce locally with the FRED API:
 
 ```bash
-# in a Python 3.11+ environment with: pandas, numpy, plotly, requests, pyarrow,
-# openpyxl, scikit-learn, sentence-transformers, bertopic, transformers, torch
+# Python 3.11+ with: pandas, numpy, plotly, requests, pyarrow, openpyxl,
+# scikit-learn, sentence-transformers, bertopic, transformers, torch
 export FRED_API_KEY=YOUR_KEY  # free at fred.stlouisfed.org/docs/api/api_key.html
 python analysis/01_acquire.py
 python analysis/02_clean.py

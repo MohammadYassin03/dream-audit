@@ -1,10 +1,10 @@
 """Stage 2: clean raw data into a tidy long-format master table.
 
 Outputs:
-    data/processed/series_long.parquet  — tidy (date, series, value) for all numeric series
-    data/processed/series_meta.csv      — series metadata (units, source, demographic)
-    data/processed/cpi.csv              — monthly CPI for deflation
-    data/processed/wages_demographic.parquet  — wages by race × sex, annualized
+    data/processed/series_long.parquet, tidy (date, series, value) for all numeric series
+    data/processed/series_meta.csv, series metadata (units, source, demographic)
+    data/processed/cpi.csv, monthly CPI for deflation
+    data/processed/wages_demographic.parquet, wages by race x sex, annualized
 """
 from __future__ import annotations
 
@@ -58,16 +58,14 @@ SERIES_META = pd.DataFrame([
 ], columns=["series", "label", "source", "frequency", "demographic", "units"])
 
 
-# ---------------------------------------------------------------------------
-# Census P-38 backfill — pre-2000 demographic wages
-# ---------------------------------------------------------------------------
+# Census P-38 backfill, pre-2000 demographic wages
 P38_FILE_BY_RACE = {
     "white":    "p38w.xlsx",
     "black":    "p38b.xlsx",
     "hispanic": "p38h.xlsx",
 }
 
-# Map race × sex pair to the BLS demographic cell name used in series_meta.
+# Map race x sex pair to the BLS demographic cell name used in series_meta.
 RACE_SEX_TO_DEMOGRAPHIC = {
     ("white", "male"):      "white_men",
     ("white", "female"):    "white_women",
@@ -109,19 +107,19 @@ def _parse_p38(race: str) -> pd.DataFrame:
 
 
 def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
-    """Stitch Census P-38 (1967+, annual ÷ 52 → implied weekly) to BLS LEU
+    """Stitch Census P-38 (1967+, annual / 52 -> implied weekly) to BLS LEU
     (2000+, observed weekly) at the 2000 break, with a multiplicative scale
     factor that anchors Census levels to BLS at the boundary.
 
     Produces (year, demographic, weekly_earnings_nominal, source) where
-    source ∈ {'census_p38_stitched', 'bls'}.
+    source is one of {'census_p38_stitched', 'bls'}.
     """
     pieces = []
     for race in P38_FILE_BY_RACE:
         pieces.append(_parse_p38(race))
     census_long = pd.concat(pieces, ignore_index=True)
 
-    # Map race × sex to demographic
+    # Map race x sex to demographic
     census_long["demographic"] = census_long.apply(
         lambda r: RACE_SEX_TO_DEMOGRAPHIC.get((r["race"], r["sex"])), axis=1
     )
@@ -141,7 +139,7 @@ def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
         if c.empty or b.empty:
             continue
 
-        # Scale factor at the BLS-Census overlap boundary (first BLS year that
+        # Scale factor at the BLS/Census overlap boundary (first BLS year that
         # also exists in Census). Average across a 3-yr window for stability.
         boundary = b["year"].min()
         win = list(range(boundary, boundary + 3))
@@ -152,7 +150,7 @@ def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
         else:
             scale = 1.0
 
-        # Pre-boundary: scaled Census; boundary onward: BLS observed.
+        # Pre-boundary: scaled Census. Boundary onward: BLS observed.
         pre = c[c["year"] < boundary].copy()
         pre["weekly_earnings_nominal"] = pre["weekly_implied"] * scale
         pre = pre[["year", "weekly_earnings_nominal"]]
@@ -170,9 +168,9 @@ def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_life_expectancy() -> pd.DataFrame:
-    """CDC NCHS life expectancy + age-adjusted death rate, 1900-2018,
-    by race × sex. Filters out 'Both Sexes' / 'All Races' aggregates so the
-    output matches our race × sex demographic convention.
+    """CDC NCHS life expectancy + age-adjusted death rate, 1900 to 2018,
+    by race x sex. Filters out 'Both Sexes' and 'All Races' aggregates so the
+    output matches the audit's race x sex demographic convention.
     """
     fp = RAW / "cdc" / "life_expectancy.csv"
     df = pd.read_csv(fp).rename(columns={
@@ -183,7 +181,6 @@ def clean_life_expectancy() -> pd.DataFrame:
         "Age-adjusted Death Rate": "death_rate",
     })
     out = df.copy()
-    # Map to our demographic convention
     sex_map = {"Male": "men", "Female": "women", "Both Sexes": "all"}
     race_map = {"White": "white", "Black": "black", "All Races": "all"}
     out["sex_norm"] = out["sex"].map(sex_map)
@@ -199,13 +196,14 @@ def clean_life_expectancy() -> pd.DataFrame:
 
 
 def clean_nces_tuition() -> pd.DataFrame:
-    """NCES Digest Table 330.10 — average tuition, fees, room and board.
+    """NCES Digest Table 330.10. Average tuition, fees, room and board.
+
     Returns long format with columns:
-        year (int)            — academic year start (1963 from "1963-64")
-        institution_type      — 'all', 'public', 'private'
-        cost_category         — 'total', 'tuition_fees'
-        institution_level     — 'all', '4yr', '2yr'
-        amount_nominal        — current-dollar US$
+        year (int)            academic year start (1963 from "1963-64")
+        institution_type      'all', 'public', 'private'
+        cost_category         'total', 'tuition_fees'
+        institution_level     'all', '4yr', '2yr'
+        amount_nominal        current-dollar US$
     """
     fp = RAW / "nces" / "tabn330_10.xlsx"
     if not fp.exists():
@@ -221,12 +219,12 @@ def clean_nces_tuition() -> pd.DataFrame:
     pieces = []
     for start, end, label in sections:
         block = df.iloc[start + 1:end + 1].copy()
-        # Year column: e.g. "1963-64 " — strip and take leading 4 digits
+        # Year column: e.g. "1963-64 ". Strip and take leading 4 digits.
         block["year"] = block[0].astype(str).str.extract(r"(\d{4})")[0]
         block = block.dropna(subset=["year"])
         block["year"] = block["year"].astype(int)
 
-        # Current-dollar columns (cols 13-21):
+        # Current-dollar columns (cols 13 to 21):
         #   13-15: total tuition+fees+room+board, All / 4yr / 2yr
         #   16-18: tuition+required-fees only, All / 4yr / 2yr
         col_map = {
@@ -249,7 +247,7 @@ def clean_nces_tuition() -> pd.DataFrame:
 
 
 def clean_dfa_race() -> pd.DataFrame:
-    """Federal Reserve DFA race shares — quarterly 1989Q3+, by race × asset class.
+    """Federal Reserve DFA race shares. Quarterly 1989Q3+, by race x asset class.
 
     Output: long format (date, year, race, metric, share).
     """
@@ -281,14 +279,15 @@ def main() -> None:
     SERIES_META.to_csv(PROC / "series_meta.csv", index=False)
     print(f"  series_meta.csv:     {len(SERIES_META)} series")
 
-    # CPI helper — used by every downstream deflation step
+    # CPI helper, used by every downstream deflation step
     cpi = long.query("series == 'CPIAUCSL'")[["date", "value"]].rename(columns={"value": "cpi"})
     cpi.to_csv(PROC / "cpi.csv", index=False)
     print(f"  cpi.csv:             {len(cpi):,} months")
 
-    # Wages by demographic, annualized — central to time-price calc.
-    # Six primary cells (race × sex). The "all" / "*_all" series are kept in
-    # series_long.parquet for cross-checks but excluded from the demographic table.
+    # Wages by demographic, annualized. Central to the time-price calc.
+    # Six primary cells (race x sex). The "all" / "*_all" series stay in
+    # series_long.parquet for cross-checks but are excluded from the
+    # demographic table.
     dem_series = SERIES_META[SERIES_META["demographic"].isin(
         ["white_men", "white_women", "black_men", "black_women", "hispanic_men", "hispanic_women"]
     )]
@@ -299,15 +298,15 @@ def main() -> None:
     annual.to_parquet(PROC / "wages_demographic.parquet", index=False)
     print(f"  wages_demographic.parquet: {len(annual):,} rows (BLS only, 2000+)")
 
-    # NCES tuition — Public/Private/All × 4yr/2yr × Total/Tuition-fees, 1963-2022
+    # NCES tuition. Public/Private/All, by 4yr/2yr, by Total or Tuition+Fees, 1963-2022.
     tuition = clean_nces_tuition()
     if not tuition.empty:
         tuition.to_parquet(PROC / "tuition.parquet", index=False)
-        print(f"  tuition.parquet: {len(tuition):,} rows ({tuition['year'].min()}–{tuition['year'].max()})")
+        print(f"  tuition.parquet: {len(tuition):,} rows ({tuition['year'].min()} to {tuition['year'].max()})")
     else:
-        print("  (skip tuition — NCES file missing)")
+        print("  (skip tuition, NCES file missing)")
 
-    # CDC life expectancy — long arc 1900-2018, race × sex.
+    # CDC life expectancy. Long arc 1900-2018, race x sex.
     if (RAW / "cdc" / "life_expectancy.csv").exists():
         le = clean_life_expectancy()
         le.to_parquet(PROC / "life_expectancy.parquet", index=False)
@@ -316,18 +315,18 @@ def main() -> None:
         print("  life_expectancy.parquet:")
         print(coverage.to_string().replace("\n", "\n    "))
     else:
-        print("  (skip life expectancy — CDC file missing)")
+        print("  (skip life expectancy, CDC file missing)")
 
-    # Fed DFA wealth shares — race × asset class, quarterly 1989Q3+.
+    # Fed DFA wealth shares. Race by asset class, quarterly 1989Q3+.
     dfa = clean_dfa_race()
     if not dfa.empty:
         dfa.to_parquet(PROC / "dfa_race_shares.parquet", index=False)
         print(f"  dfa_race_shares.parquet: {len(dfa):,} rows ({dfa['race'].nunique()} races, "
               f"{dfa['metric'].nunique()} metrics)")
     else:
-        print("  (skip DFA — bulk file missing)")
+        print("  (skip DFA, bulk file missing)")
 
-    # Stitched series — Census P-38 backfill (1967+) joined to BLS at 2000.
+    # Stitched series. Census P-38 backfill (1967+) joined to BLS at 2000.
     # This is what downstream time-price calculations should use.
     if (RAW / "census" / "p38w.xlsx").exists():
         stitched = _build_stitched_wages(annual)
@@ -336,7 +335,7 @@ def main() -> None:
         print("  wages_demographic_stitched.parquet:")
         print(coverage.to_string().replace("\n", "\n    "))
     else:
-        print("  (skip stitched — Census P-38 files not yet downloaded)")
+        print("  (skip stitched, Census P-38 files not yet downloaded)")
 
     print("Done.")
 

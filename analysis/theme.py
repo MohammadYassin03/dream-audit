@@ -9,7 +9,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 PALETTE = {
-    # "Old Glory Under Glass" — flag-coded, editorial register.
+    # "Old Glory Under Glass": flag-coded, editorial register.
     "flag_navy":      "#1B3D6B",
     "flag_navy_mid":  "#3A5F8F",
     "flag_navy_pale": "#6E91B4",
@@ -26,7 +26,7 @@ PALETTE = {
     "rule":           "#D8CFB8",
 }
 
-# Demographic colors — used consistently across every chart
+# Demographic colors, used consistently across every chart
 DEMOGRAPHIC = {
     "white_men":      PALETTE["flag_navy"],
     "white_women":    PALETTE["flag_navy_pale"],

@@ -2,7 +2,7 @@
 
 A data-driven audit of how the US economic promise played out across three life stages and four demographic groups, 1960 to today.
 
-**Submission for:** DSAN Spring 2026 scholarship · Georgetown University · Department of Data Science and Analytics
+**Submission for:** DSAN Spring 2026 scholarship, Georgetown University, Department of Data Science and Analytics
 **Live site:** https://dream.my677.georgetown.domains/
 
 > Submission is reviewed anonymously. The author is identified only by NetID (`my677`).
@@ -31,7 +31,7 @@ quarto preview
 ## Repository structure
 
 ```
-analysis/      modular Python pipeline (01_acquire → 05_nlp)
+analysis/      modular Python pipeline (01_acquire to 05_nlp)
 data/          raw, processed, corpus
 figures/       static plots
 interactive/   self-contained HTML viz embedded in the article

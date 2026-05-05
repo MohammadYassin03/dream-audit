@@ -1,11 +1,12 @@
-"""Stage 1: acquire raw data from FRED, BLS, Census, NCES, NHE, SCF, and SOTU corpus.
+"""Stage 1: acquire raw data from FRED, BLS, Census, NCES, NHE, DFA, CDC,
+and SOTU corpus.
 
-All downloads cache to data/raw/. Re-running is idempotent — existing files are
+All downloads cache to data/raw/. Re-running is idempotent. Existing files are
 skipped unless --force is passed.
 
 Usage:
     export FRED_API_KEY=...
-    python -m analysis.01_acquire [--force]
+    python analysis/01_acquire.py [--force]
 """
 from __future__ import annotations
 
@@ -24,9 +25,8 @@ CORPUS = ROOT / "data" / "corpus"
 RAW.mkdir(parents=True, exist_ok=True)
 CORPUS.mkdir(parents=True, exist_ok=True)
 
-# ---------------------------------------------------------------------------
-# FRED series — the macroeconomic backbone
-# ---------------------------------------------------------------------------
+
+# FRED series: the macroeconomic backbone
 FRED_SERIES: dict[str, str] = {
     # Inflation deflators
     "CPIAUCSL":         "CPI All Urban Consumers (monthly, 1947+)",
@@ -38,8 +38,8 @@ FRED_SERIES: dict[str, str] = {
     "MEHOINUSA672N":    "Real Median Household Income (annual)",
     "LES1252881600Q":   "Median Weekly Earnings, Full-Time Wage/Salary (quarterly)",
 
-    # Wage demographic cuts (BLS LEU series via FRED — nominal weekly earnings,
-    # full-time wage/salary, 16+, quarterly, 1979+)
+    # Wage demographic cuts. BLS LEU series via FRED. Nominal weekly earnings,
+    # full-time wage and salary workers, 16+, quarterly, 2000+.
     "LEU0252881500Q":   "Median Weekly Earnings, All 16+ (overall)",
     "LEU0252883900Q":   "Median Weekly Earnings, White Men 16+",
     "LEU0252884200Q":   "Median Weekly Earnings, White Women 16+",
@@ -63,7 +63,7 @@ FRED_SERIES: dict[str, str] = {
     # Education
     "SLOAS":            "Student Loans Owned and Securitized (quarterly, 2006+)",
 
-    # Wealth shares (DFA — overall by wealth quintile, not race; race cuts
+    # Wealth shares (DFA, overall by wealth quintile, not race; race cuts
     # are pulled directly from Fed DFA bulk download in download_dfa_race())
     "WFRBST01134":      "Share of Total Net Worth, Top 1%",
     "WFRBSB50215":      "Share of Total Net Worth, Bottom 50%",
@@ -96,7 +96,7 @@ def download_fred(series_ids: Iterable[str], force: bool = False) -> None:
         print(f"  [fred] {sid}")
         r = requests.get(fred_url(sid, api_key), timeout=30)
         if r.status_code != 200:
-            print(f"    !! status {r.status_code} for {sid} — skipping")
+            print(f"    !! status {r.status_code} for {sid}, skipping")
             continue
         obs = r.json().get("observations", [])
         df = pd.DataFrame(obs)
@@ -107,11 +107,8 @@ def download_fred(series_ids: Iterable[str], force: bool = False) -> None:
         time.sleep(0.25)
 
 
-# ---------------------------------------------------------------------------
-# NHE — National Health Expenditures (CMS)
-# ---------------------------------------------------------------------------
 def download_nhe() -> None:
-    """CMS National Health Expenditure historical tables, 1960+. Manual mirror."""
+    """CMS National Health Expenditure historical tables, 1960+."""
     # CMS hosts these as Excel; the canonical "NHE Summary" table includes
     # per-capita NHE and out-of-pocket per capita back to 1960.
     url = "https://www.cms.gov/files/zip/nhe-tables.zip"
@@ -125,12 +122,9 @@ def download_nhe() -> None:
     out.write_bytes(r.content)
 
 
-# ---------------------------------------------------------------------------
-# NCES — College tuition since 1963 (Digest Table 330.10)
-# ---------------------------------------------------------------------------
 def download_nces_tuition() -> None:
-    """NCES Digest Table 330.10 — average tuition + fees + room/board, by institution
-    type, current and constant dollars, since 1963."""
+    """NCES Digest Table 330.10. Average tuition + fees + room/board, by
+    institution type, current and constant dollars, since 1963."""
     url = "https://nces.ed.gov/programs/digest/d22/tables/xls/tabn330.10.xlsx"
     out = RAW / "nces" / "tabn330_10.xlsx"
     out.parent.mkdir(exist_ok=True)
@@ -145,11 +139,9 @@ def download_nces_tuition() -> None:
         print(f"    !! status {r.status_code}")
 
 
-# ---------------------------------------------------------------------------
-# Census P-38 — Median earnings by race, sex, year. Full-Time, Year-Round
-# All Workers. Annual back to 1955 (white), 1967 (black), 1972 (hispanic).
-# Used to backfill BLS demographic wage series pre-2000.
-# ---------------------------------------------------------------------------
+# Census P-38: median earnings by race, sex, year. Full-Time, Year-Round All
+# Workers. Annual back to 1955 (white), 1967 (black), 1972 (hispanic). Used to
+# backfill BLS demographic wage series pre-2000.
 CENSUS_P38_RACES: dict[str, str] = {
     "white":         "p38w.xlsx",
     "black":         "p38b.xlsx",
@@ -161,8 +153,8 @@ CENSUS_P38_RACES: dict[str, str] = {
 
 
 def download_census_p38() -> None:
-    """Census P-38: Full-Time Year-Round Workers — median annual earnings,
-    by sex, for each race/ethnicity. One Excel per race."""
+    """Census P-38: Full-Time Year-Round Workers, median annual earnings by sex,
+    one Excel per race/ethnicity."""
     base = "https://www2.census.gov/programs-surveys/cps/tables/time-series/historical-income-people"
     out_dir = RAW / "census"
     out_dir.mkdir(exist_ok=True)
@@ -180,9 +172,9 @@ def download_census_p38() -> None:
 
 
 def download_dfa_race() -> None:
-    """Federal Reserve Distributional Financial Accounts — full bulk download.
+    """Federal Reserve Distributional Financial Accounts, full bulk download.
     Includes wealth/income/networth shares and levels by race, age, generation,
-    education, and income decile, quarterly 1989Q3-present.
+    education, and income decile, quarterly 1989Q3 to present.
     """
     import zipfile
     out_dir = RAW / "dfa"
@@ -199,7 +191,7 @@ def download_dfa_race() -> None:
         return
     zip_path.write_bytes(r.content)
     with zipfile.ZipFile(zip_path) as z:
-        # Extract just the by-race files; the full archive has age/edu/etc.
+        # Extract just the by-race files; the full archive also has age/edu/etc.
         # which we may want later but don't need now.
         wanted = ("dfa-race-levels.csv", "dfa-race-shares.csv",
                   "dfa-data-definitions.txt")
@@ -211,7 +203,7 @@ def download_dfa_race() -> None:
 
 
 def download_cdc_life_expectancy() -> None:
-    """CDC NCHS — Death rates and life expectancy at birth, 1900-present,
+    """CDC NCHS death rates and life expectancy at birth, 1900 to present,
     by race and sex. CDC open-data Socrata endpoint."""
     url = "https://data.cdc.gov/api/views/w9j2-ggv5/rows.csv?accessType=DOWNLOAD"
     out = RAW / "cdc" / "life_expectancy.csv"
@@ -219,7 +211,7 @@ def download_cdc_life_expectancy() -> None:
     if out.exists():
         print("  [skip] CDC life expectancy")
         return
-    print("  [cdc] life expectancy by race × sex")
+    print("  [cdc] life expectancy by race x sex")
     r = requests.get(url, timeout=60)
     if r.status_code == 200:
         out.write_bytes(r.content)
@@ -227,14 +219,12 @@ def download_cdc_life_expectancy() -> None:
         print(f"    !! status {r.status_code}")
 
 
-# ---------------------------------------------------------------------------
-# State of the Union corpus — UCSB American Presidency Project mirror
-# ---------------------------------------------------------------------------
+# State of the Union corpus, UCSB American Presidency Project mirror
 SOTU_YEARS = list(range(1960, 2026))
 
 
 def download_sotu_corpus() -> None:
-    """Fetch SOTU addresses 1960–2025 from a stable public source.
+    """Fetch SOTU addresses 1960 to 2025 from a stable public source.
 
     First try the Miller Center / GovInfo combo. Fallback: scrape American
     Presidency Project (UCSB). The clean text is what matters; per-paragraph
@@ -242,33 +232,11 @@ def download_sotu_corpus() -> None:
     """
     out_dir = CORPUS / "sotu"
     out_dir.mkdir(exist_ok=True)
-    # Implementation: deferred to acquire stage; uses requests + BeautifulSoup.
-    # Stub: this function is intentionally left for the next pass once the
-    # site URL pattern is verified (UCSB's URL scheme uses node IDs, not years,
-    # so we'll need to map year -> node first).
-    print("  [sotu] (next pass — corpus fetch implemented after API discovery)")
+    # Stub: implementation deferred to next pass. UCSB's URL scheme uses node
+    # IDs, not years, so we'll need to map year -> node first.
+    print("  [sotu] (next pass: corpus fetch implemented after API discovery)")
 
 
-# ---------------------------------------------------------------------------
-# CDC NCHS — Life expectancy by race × sex, 1960+
-# ---------------------------------------------------------------------------
-def download_life_expectancy() -> None:
-    # CDC NCHS National Vital Statistics System — life tables back to 1900.
-    # Series: "United States Life Tables" annual reports.
-    out = RAW / "cdc" / "life_expectancy_race_sex.csv"
-    out.parent.mkdir(exist_ok=True)
-    if out.exists():
-        print("  [skip] life expectancy")
-        return
-    # Canonical: NCHS "Health, United States" Trend Tables. This is a manual
-    # consolidation step — for the first pass we rely on a curated CSV that
-    # 02_clean.py expects to find.
-    print("  [cdc] (life expectancy table to be sourced from Health, US Trend Tables)")
-
-
-# ---------------------------------------------------------------------------
-# CLI entrypoint
-# ---------------------------------------------------------------------------
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--force", action="store_true", help="Re-download even if cached")
@@ -278,13 +246,13 @@ def main() -> None:
     print("\n[FRED]")
     download_fred(FRED_SERIES.keys(), force=args.force)
 
-    print("\n[NHE — CMS]")
+    print("\n[NHE / CMS]")
     download_nhe()
 
     print("\n[NCES tuition]")
     download_nces_tuition()
 
-    print("\n[Census P-38 historical income by race × sex]")
+    print("\n[Census P-38 historical income by race x sex]")
     download_census_p38()
 
     print("\n[Fed DFA bulk]")

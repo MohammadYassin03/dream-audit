@@ -1,30 +1,30 @@
 /*-- scss:defaults --*/
 
 // Palette: "Old Glory Under Glass"
-// Flag-coded — federal blue, bunting red, parchment — but muted into editorial
+// Flag-coded (federal blue, bunting red, parchment) but muted into editorial
 // register so the page reads as journalism, not patriotic kitsch.
 $flag-navy:      #1B3D6B;   // Old Glory blue, desaturated
 $flag-navy-mid:  #3A5F8F;
 $flag-navy-pale: #6E91B4;
 $flag-red:       #9C2C3C;   // bunting red, brick-leaning
 $flag-red-pale:  #C46A6E;
-$cream:          #ECEEF1;   // cool parchment — pale blue-tinted paper that pairs with flag navy
+$cream:          #ECEEF1;   // cool parchment, pale blue-tinted paper that pairs with flag navy
 $cream-pale:     #F4F5F7;   // a touch warmer for cards/embeds so charts read against page
 $ink:            #14233D;   // charcoal-navy
 $ink-soft:       #36456A;
-$gold:           #B68B3E;   // the "Dream" — accent only
+$gold:           #B68B3E;   // the "Dream", accent only
 $gold-deep:      #8C6A2B;
 $gold-pale:      #D8B978;
 $sage:           #6B8770;   // optional 5th demographic color
 $rule:           #D8CFB8;
 
 // Demographic palette (used consistently across all charts)
-$dem-wm:         #1B3D6B;   // white men   — federal navy
-$dem-ww:         #6E91B4;   // white women — federal pale
-$dem-bm:         #9C2C3C;   // black men   — bunting red
-$dem-bw:         #D88575;   // black women — warm coral
-$dem-hisp:       #B68B3E;   // hispanic    — gold (also our "Dream" accent)
-$dem-asian:      #6B8770;   // asian       — sage
+$dem-wm:         #1B3D6B;   // white men:   federal navy
+$dem-ww:         #6E91B4;   // white women: federal pale
+$dem-bm:         #9C2C3C;   // black men:   bunting red
+$dem-bw:         #D88575;   // black women: warm coral
+$dem-hisp:       #B68B3E;   // hispanic:    gold (also the "Dream" accent)
+$dem-asian:      #6B8770;   // asian:       sage
 
 // Bootstrap variable overrides
 $body-bg:           $cream;
@@ -54,8 +54,8 @@ $h3-font-size: 1.5rem;
 
 /*-- scss:rules --*/
 
-// Subtle scattered-stars background — baked into the SVG so opacity is
-// fixed without depending on a CSS variable. Stars sit on a fixed-attachment
+// Subtle scattered-stars background. Opacity is baked into the SVG so it
+// doesn't depend on a CSS variable. Stars sit on a fixed-attachment
 // background so they ghost as the reader scrolls.
 body {
   font-family: $font-family-sans-serif;
@@ -201,7 +201,7 @@ h3 {
   background: $cream;
 }
 
-// Interactive embeds — sit on opaque card so the stars don't ghost behind charts
+// Interactive embeds. Card sits opaque so stars don't ghost behind charts.
 .interactive-embed {
   margin: 2.5rem 0;
 
@@ -242,7 +242,7 @@ h3 {
   color: $ink-soft;
 }
 
-// Ledger row — for persona key facts
+// Ledger row, for persona key facts
 .ledger {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -278,7 +278,7 @@ h3 {
   &.finisher  { background: $flag-red; }
 }
 
-// Footnotes — keep them subtle
+// Footnotes, keep them subtle
 .footnotes {
   font-size: 0.85rem;
   color: $ink-soft;
@@ -308,7 +308,7 @@ table {
   }
 }
 
-// Navbar — flatten the cosmo styling so it reads as editorial masthead
+// Navbar. Flatten the cosmo styling so it reads as editorial masthead.
 .navbar {
   border-bottom: 1px solid $rule;
 

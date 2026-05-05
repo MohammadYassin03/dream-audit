@@ -29,9 +29,7 @@ DEM_LABELS = {
 }
 
 
-# ---------------------------------------------------------------------------
-# 1. Time Price Lattice — the signature chart
-# ---------------------------------------------------------------------------
+# Time Price line chart (the original signature)
 def time_price_lattice(item: str = "hours_for_home") -> None:
     """Hours of labor required to afford the median US home, by demographic and year."""
     tp = pd.read_parquet(PROC / "time_price.parquet")
@@ -62,9 +60,7 @@ def time_price_lattice(item: str = "hours_for_home") -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 2. Wage divergence — nominal hourly wage by demographic
-# ---------------------------------------------------------------------------
+# Wage divergence: nominal hourly wage by demographic
 def wage_divergence() -> None:
     wages = pd.read_parquet(PROC / "wages_demographic.parquet")
     wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / 40
@@ -94,13 +90,11 @@ def wage_divergence() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 3. Time Price Lattice — the signature heatmap viz
-# ---------------------------------------------------------------------------
+# Time Price Lattice (signature heatmap viz)
 def time_price_lattice_heatmap() -> None:
-    """Heatmap: 6 demographic rows × 6 decade columns. Cell = average hours
+    """Heatmap: 6 demographic rows by 6 decade columns. Cell = average hours
     of full-time labor required to afford the median US home in that decade.
-    The story is meant to be read in two passes — across rows (the demographic
+    The story is meant to be read in two passes: across rows (the demographic
     spread within any decade) and down columns (each demographic's trajectory
     over time)."""
     tp = pd.read_parquet(PROC / "time_price.parquet")
@@ -121,7 +115,7 @@ def time_price_lattice_heatmap() -> None:
             v = decade_avg.query("demographic == @dem and decade == @d")["hours_for_home"]
             v = float(v.iloc[0]) if len(v) else float("nan")
             zrow.append(v)
-            trow.append(f"{v:,.0f}" if v == v else "—")
+            trow.append(f"{v:,.0f}" if v == v else "n/a")
         z.append(zrow)
         text.append(trow)
 
@@ -161,10 +155,8 @@ def time_price_lattice_heatmap() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 4. Longevity Gap — life expectancy at birth, 1960-2018, with the
-#    Black–White gap shaded between the lines
-# ---------------------------------------------------------------------------
+# Longevity Gap: life expectancy at birth, 1960 to 2018, with the
+# Black/White gap shaded between the lines
 def longevity_gap() -> None:
     le = pd.read_parquet(PROC / "life_expectancy.parquet")
     le = le[le["year"] >= 1960]
@@ -190,7 +182,7 @@ def longevity_gap() -> None:
                 mode="lines", line=dict(width=0),
                 fill="tonexty", fillcolor="rgba(156, 44, 60, 0.10)",
                 showlegend=False, hoverinfo="skip",
-                name="Black-White gap (women)",
+                name="Black/White gap (women)",
             ))
 
         fig.add_trace(go.Scatter(
@@ -207,7 +199,7 @@ def longevity_gap() -> None:
         ))
 
     fig.update_layout(**plotly_layout(
-        title=dict(text="Life expectancy at birth, by race and sex (1960–2018)"),
+        title=dict(text="Life expectancy at birth, by race and sex (1960 to 2018)"),
         xaxis_title=None,
         yaxis_title="Years",
         height=520,
@@ -221,9 +213,7 @@ def longevity_gap() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 5. Wealth Share — stacked area of net worth share by race, 1989–2025
-# ---------------------------------------------------------------------------
+# Wealth Share: stacked area of net worth share by race, 1989 to 2025
 def wealth_share_stack() -> None:
     dfa = pd.read_parquet(PROC / "dfa_race_shares.parquet")
     nw = dfa.query("metric == 'Net worth'").copy()
@@ -249,7 +239,7 @@ def wealth_share_stack() -> None:
             hovertemplate=f"<b>{race}</b><br>%{{x|%Y Q%q}}: %{{y:.1f}}%<extra></extra>",
         ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Share of US household net worth, by race (1989–2025)"),
+        title=dict(text="Share of US household net worth, by race (1989 to 2025)"),
         xaxis_title=None,
         yaxis=dict(title="Share of total US net worth (%)",
                    ticksuffix="%", range=[0, 100]),
@@ -264,10 +254,8 @@ def wealth_share_stack() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 6. Tuition Time Price — hours of work for one year of public 4-year
-#    tuition + required fees, by demographic, 1967–2021
-# ---------------------------------------------------------------------------
+# Tuition Time Price: hours of work for one year of public 4-year
+# tuition + required fees, by demographic, 1967 to 2021
 def tuition_time_price() -> None:
     tuition = pd.read_parquet(PROC / "tuition.parquet").query(
         "institution_type == 'public' and cost_category == 'tuition_fees' and institution_level == '4yr'"
@@ -305,10 +293,8 @@ def tuition_time_price() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 7. Medical CPI vs General CPI — both indexed to 1960=100; the "great
-#    decoupling" of healthcare from general inflation
-# ---------------------------------------------------------------------------
+# Medical CPI vs General CPI, both indexed to 1960=100. The "great
+# decoupling" of healthcare from general inflation.
 def medical_vs_general_cpi() -> None:
     long = pd.read_parquet(PROC / "series_long.parquet")
     cpi = long.query("series == 'CPIAUCSL'")[["date", "value"]].rename(columns={"value": "cpi"})
@@ -346,10 +332,8 @@ def medical_vs_general_cpi() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# 8. Labor force participation — men's vs women's, 1960–2025. The rise of
-#    the dual-earner household.
-# ---------------------------------------------------------------------------
+# Labor force participation: men's vs women's, 1960 to 2025. The rise of
+# the dual-earner household.
 def labor_force_participation() -> None:
     long = pd.read_parquet(PROC / "series_long.parquet")
     men = long.query("series == 'LNS11300001'").assign(group="Men")
