@@ -180,16 +180,46 @@ def download_census_p38() -> None:
 
 
 def download_dfa_race() -> None:
-    """Federal Reserve Distributional Financial Accounts — wealth holdings by
-    race × quartile, quarterly 1989-present. Bulk CSV.
+    """Federal Reserve Distributional Financial Accounts — full bulk download.
+    Includes wealth/income/networth shares and levels by race, age, generation,
+    education, and income decile, quarterly 1989Q3-present.
     """
-    url = "https://www.federalreserve.gov/releases/z1/dataviz/dfa/distribute/chart/data.csv"
-    out = RAW / "dfa" / "dfa_by_race.csv"
+    import zipfile
+    out_dir = RAW / "dfa"
+    out_dir.mkdir(exist_ok=True)
+    zip_path = out_dir / "dfa.zip"
+    if (out_dir / "dfa-race-levels.csv").exists():
+        print("  [skip] DFA bulk")
+        return
+    url = "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip"
+    print("  [dfa] Federal Reserve DFA bulk")
+    r = requests.get(url, timeout=90)
+    if r.status_code != 200:
+        print(f"    !! status {r.status_code}")
+        return
+    zip_path.write_bytes(r.content)
+    with zipfile.ZipFile(zip_path) as z:
+        # Extract just the by-race files; the full archive has age/edu/etc.
+        # which we may want later but don't need now.
+        wanted = ("dfa-race-levels.csv", "dfa-race-shares.csv",
+                  "dfa-data-definitions.txt")
+        for name in wanted:
+            try:
+                z.extract(name, out_dir)
+            except KeyError:
+                print(f"    (missing in zip: {name})")
+
+
+def download_cdc_life_expectancy() -> None:
+    """CDC NCHS — Death rates and life expectancy at birth, 1900-present,
+    by race and sex. CDC open-data Socrata endpoint."""
+    url = "https://data.cdc.gov/api/views/w9j2-ggv5/rows.csv?accessType=DOWNLOAD"
+    out = RAW / "cdc" / "life_expectancy.csv"
     out.parent.mkdir(exist_ok=True)
     if out.exists():
-        print("  [skip] DFA by race")
+        print("  [skip] CDC life expectancy")
         return
-    print("  [dfa] Federal Reserve DFA wealth-by-race")
+    print("  [cdc] life expectancy by race × sex")
     r = requests.get(url, timeout=60)
     if r.status_code == 200:
         out.write_bytes(r.content)
@@ -257,14 +287,14 @@ def main() -> None:
     print("\n[Census P-38 historical income by race × sex]")
     download_census_p38()
 
-    print("\n[Fed DFA by race]")
+    print("\n[Fed DFA bulk]")
     download_dfa_race()
+
+    print("\n[CDC life expectancy]")
+    download_cdc_life_expectancy()
 
     print("\n[SOTU corpus]")
     download_sotu_corpus()
-
-    print("\n[CDC life expectancy]")
-    download_life_expectancy()
 
     print("\nDone.")
 

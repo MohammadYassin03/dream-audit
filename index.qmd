@@ -39,6 +39,23 @@ A DSAN scholarship submission · Georgetown University · Spring 2026<br>
 *[Opening dropcap paragraph — the human hook. To be drafted in Day 5. The argument: the American Dream was never one promise. It was a contract — work hard, pay your dues, retire secure — sold under one banner but cashed out very differently depending on who you were and when you tried to claim it. This audit follows three life stages — the Starter, the Builder, the Finisher — across four demographic lines and six decades of public data, and asks a single question: what did the Dream actually pay?]*
 :::
 
+::: {.kicker}
+The audit, in one chart
+:::
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/time_price_lattice.html"
+          style="width:100%; min-height:480px; border:none;"
+          loading="lazy"
+          title="Heatmap of hours of full-time labor required to afford the median US home, by demographic and decade."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+Hours of full-time labor required to afford the median US home, averaged within each decade. Read across rows for the gap between demographics in any given era; read down columns for each demographic's trajectory through time. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
+:::
+
 ---
 
 ## Prologue · The Promise
@@ -160,6 +177,19 @@ Part III — the runway
 ### Savings, social security, and the home as 401(k)
 
 *[Median retirement savings by race (SCF). Social Security replacement rate. Home equity as the de facto retirement plan — and what happens when you never owned a home.]*
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/wealth_share.html"
+          style="width:100%; min-height:540px; border:none;"
+          loading="lazy"
+          title="Share of US household net worth held by White, Black, Hispanic, and Other racial groups, 1989-2025."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+Share of total US household net worth, by race, quarterly from 1989 Q3 to 2025 Q4. Source: Federal Reserve Distributional Financial Accounts. The "Other" category combines Asian, Pacific Islander, American Indian, multiracial, and other-race households as published by the Fed.
+:::
 
 ---
 

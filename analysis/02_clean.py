@@ -169,6 +169,54 @@ def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(out_pieces, ignore_index=True)
 
 
+def clean_life_expectancy() -> pd.DataFrame:
+    """CDC NCHS life expectancy + age-adjusted death rate, 1900-2018,
+    by race × sex. Filters out 'Both Sexes' / 'All Races' aggregates so the
+    output matches our race × sex demographic convention.
+    """
+    fp = RAW / "cdc" / "life_expectancy.csv"
+    df = pd.read_csv(fp).rename(columns={
+        "Year": "year",
+        "Race": "race",
+        "Sex": "sex",
+        "Average Life Expectancy (Years)": "life_expectancy",
+        "Age-adjusted Death Rate": "death_rate",
+    })
+    out = df.copy()
+    # Map to our demographic convention
+    sex_map = {"Male": "men", "Female": "women", "Both Sexes": "all"}
+    race_map = {"White": "white", "Black": "black", "All Races": "all"}
+    out["sex_norm"] = out["sex"].map(sex_map)
+    out["race_norm"] = out["race"].map(race_map)
+    out["demographic"] = out.apply(
+        lambda r: f"{r['race_norm']}_{r['sex_norm']}"
+        if r["race_norm"] != "all" and r["sex_norm"] != "all"
+        else f"{r['race_norm']}_total" if r["sex_norm"] == "all"
+        else f"all_{r['sex_norm']}",
+        axis=1
+    )
+    return out[["year", "demographic", "life_expectancy", "death_rate", "race", "sex"]]
+
+
+def clean_dfa_race() -> pd.DataFrame:
+    """Federal Reserve DFA race shares — quarterly 1989Q3+, by race × asset class.
+
+    Output: long format (date, year, race, metric, share).
+    """
+    fp = RAW / "dfa" / "dfa-race-shares.csv"
+    if not fp.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(fp)
+    df["date"] = pd.PeriodIndex(df["Date"].str.replace(":", ""), freq="Q").to_timestamp()
+    df["year"] = df["date"].dt.year
+    df = df.rename(columns={"Category": "race"})
+    metric_cols = [c for c in df.columns if c not in ("Date", "date", "year", "race")]
+    long = df.melt(id_vars=["date", "year", "race"],
+                   value_vars=metric_cols, var_name="metric", value_name="share")
+    long["share"] = pd.to_numeric(long["share"], errors="coerce")
+    return long.dropna()
+
+
 def main() -> None:
     print("== Stage 2: clean ==")
     fred_dir = RAW / "fred"
@@ -200,6 +248,26 @@ def main() -> None:
     annual = (wages.groupby(["year", "demographic"], as_index=False)["weekly_earnings_nominal"].mean())
     annual.to_parquet(PROC / "wages_demographic.parquet", index=False)
     print(f"  wages_demographic.parquet: {len(annual):,} rows (BLS only, 2000+)")
+
+    # CDC life expectancy — long arc 1900-2018, race × sex.
+    if (RAW / "cdc" / "life_expectancy.csv").exists():
+        le = clean_life_expectancy()
+        le.to_parquet(PROC / "life_expectancy.parquet", index=False)
+        race_sex = le[le["demographic"].str.match(r"^(white|black)_(men|women)$")]
+        coverage = race_sex.groupby("demographic")["year"].agg(["min", "max", "count"])
+        print("  life_expectancy.parquet:")
+        print(coverage.to_string().replace("\n", "\n    "))
+    else:
+        print("  (skip life expectancy — CDC file missing)")
+
+    # Fed DFA wealth shares — race × asset class, quarterly 1989Q3+.
+    dfa = clean_dfa_race()
+    if not dfa.empty:
+        dfa.to_parquet(PROC / "dfa_race_shares.parquet", index=False)
+        print(f"  dfa_race_shares.parquet: {len(dfa):,} rows ({dfa['race'].nunique()} races, "
+              f"{dfa['metric'].nunique()} metrics)")
+    else:
+        print("  (skip DFA — bulk file missing)")
 
     # Stitched series — Census P-38 backfill (1967+) joined to BLS at 2000.
     # This is what downstream time-price calculations should use.
