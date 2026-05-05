@@ -1,0 +1,322 @@
+/*-- scss:defaults --*/
+
+// Palette: "Old Glory Under Glass"
+// Flag-coded — federal blue, bunting red, parchment — but muted into editorial
+// register so the page reads as journalism, not patriotic kitsch.
+$flag-navy:      #1B3D6B;   // Old Glory blue, desaturated
+$flag-navy-mid:  #3A5F8F;
+$flag-navy-pale: #6E91B4;
+$flag-red:       #9C2C3C;   // bunting red, brick-leaning
+$flag-red-pale:  #C46A6E;
+$cream:          #ECEEF1;   // cool parchment — pale blue-tinted paper that pairs with flag navy
+$cream-pale:     #F4F5F7;   // a touch warmer for cards/embeds so charts read against page
+$ink:            #14233D;   // charcoal-navy
+$ink-soft:       #36456A;
+$gold:           #B68B3E;   // the "Dream" — accent only
+$gold-deep:      #8C6A2B;
+$gold-pale:      #D8B978;
+$sage:           #6B8770;   // optional 5th demographic color
+$rule:           #D8CFB8;
+
+// Demographic palette (used consistently across all charts)
+$dem-wm:         #1B3D6B;   // white men   — federal navy
+$dem-ww:         #6E91B4;   // white women — federal pale
+$dem-bm:         #9C2C3C;   // black men   — bunting red
+$dem-bw:         #D88575;   // black women — warm coral
+$dem-hisp:       #B68B3E;   // hispanic    — gold (also our "Dream" accent)
+$dem-asian:      #6B8770;   // asian       — sage
+
+// Bootstrap variable overrides
+$body-bg:           $cream;
+$body-color:        $ink;
+$link-color:        $flag-navy;
+$link-hover-color:  $flag-red;
+
+$primary:   $ink;
+$secondary: $flag-navy;
+$success:   $sage;
+$info:      $flag-navy-mid;
+$warning:   $gold;
+$danger:    $flag-red;
+
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$font-family-serif:      "Cormorant Garamond", Georgia, "Times New Roman", serif;
+$font-family-monospace:  "JetBrains Mono", Consolas, monospace;
+
+$headings-font-family: $font-family-serif;
+$headings-font-weight: 600;
+$headings-color:       $ink;
+$headings-line-height: 1.15;
+
+$h1-font-size: 3.75rem;
+$h2-font-size: 2.25rem;
+$h3-font-size: 1.5rem;
+
+/*-- scss:rules --*/
+
+// Subtle scattered-stars background — baked into the SVG so opacity is
+// fixed without depending on a CSS variable. Stars sit on a fixed-attachment
+// background so they ghost as the reader scrolls.
+body {
+  font-family: $font-family-sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  color: $ink;
+  background-color: $cream;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><g fill='%231B3D6B' fill-opacity='0.085'><polygon points='60,42 64,56 78,56 67,65 71,79 60,71 49,79 53,65 42,56 56,56'/><polygon points='220,110 223,121 234,121 225,128 228,139 220,132 212,139 215,128 206,121 217,121'/><polygon points='130,200 134,213 148,213 137,221 141,234 130,226 119,234 123,221 112,213 126,213'/><polygon points='270,260 273,270 283,270 275,276 278,286 270,280 262,286 265,276 257,270 267,270'/><polygon points='40,260 43,270 53,270 45,276 48,286 40,280 32,286 35,276 27,270 37,270'/><polygon points='180,40 183,49 192,49 185,55 188,64 180,58 172,64 175,55 168,49 177,49'/></g></svg>");
+  background-attachment: fixed;
+  background-repeat: repeat;
+}
+
+// Article layout
+.quarto-title-block { display: none; }
+
+main.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+// Headings: serif voice
+h1, h2, h3, h4, h5 {
+  font-family: $font-family-serif;
+  letter-spacing: -0.005em;
+}
+
+h2 {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid $rule;
+  padding-top: 2rem;
+}
+
+h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  color: $ink-soft;
+}
+
+// Kicker (small caps tag above sections)
+.kicker {
+  font-family: $font-family-sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $flag-red;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+// Deck (subtitle/lede beneath h1)
+.deck {
+  font-family: $font-family-serif;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: $ink-soft;
+  margin: 1rem 0 2rem 0;
+  max-width: 600px;
+}
+
+// Byline
+.byline {
+  font-family: $font-family-sans-serif;
+  font-size: 0.9rem;
+  color: $ink-soft;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $rule;
+
+  .byline-data {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.82rem;
+    color: lighten($ink-soft, 20%);
+  }
+}
+
+// Dropcap opener
+.dropcap p:first-of-type::first-letter {
+  font-family: $font-family-serif;
+  font-size: 5.5rem;
+  line-height: 0.85;
+  float: left;
+  padding: 0.4rem 0.6rem 0 0;
+  font-weight: 600;
+  color: $flag-red;
+}
+
+// Pull quotes
+.pullquote {
+  font-family: $font-family-serif;
+  font-size: 1.6rem;
+  line-height: 1.35;
+  font-style: italic;
+  color: $ink;
+  border-left: 4px solid $flag-navy;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2.5rem 0;
+}
+
+// Full-bleed sections
+.fullbleed {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 4rem 0;
+}
+
+.fullbleed-dark {
+  @extend .fullbleed;
+  background: $ink;
+  color: $cream;
+
+  h1, h2, h3, h4 { color: $cream; }
+  .kicker        { color: $gold-pale; }
+  .deck, .byline { color: lighten($cream, 5%); }
+}
+
+.fullbleed-cream {
+  @extend .fullbleed;
+  background: $cream;
+}
+
+// Interactive embeds — sit on opaque card so the stars don't ghost behind charts
+.interactive-embed {
+  margin: 2.5rem 0;
+
+  iframe {
+    background: $cream-pale;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(20, 35, 61, 0.06);
+  }
+}
+
+// Figure captions
+.figure-caption {
+  font-family: $font-family-sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: $ink-soft;
+  margin: 0.75rem 0 2rem 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid $rule;
+}
+
+// Stat callouts (big numbers in the prose)
+.stat {
+  font-family: $font-family-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1;
+  color: $flag-navy;
+  display: block;
+  margin: 1rem 0 0.25rem 0;
+}
+
+.stat-label {
+  font-family: $font-family-sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: $ink-soft;
+}
+
+// Ledger row — for persona key facts
+.ledger {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: $cream-pale;
+  border-radius: 4px;
+  border-left: 3px solid $flag-red;
+  box-shadow: 0 1px 2px rgba(20, 35, 61, 0.05);
+
+  .ledger-cell {
+    .stat       { font-size: 2.5rem; }
+    .stat-label { font-size: 0.75rem; }
+  }
+}
+
+// Persona tag
+.persona-tag {
+  display: inline-block;
+  font-family: $font-family-sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $cream;
+  background: $ink;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+
+  &.starter   { background: $flag-navy; }
+  &.builder   { background: $gold-deep; }
+  &.finisher  { background: $flag-red; }
+}
+
+// Footnotes — keep them subtle
+.footnotes {
+  font-size: 0.85rem;
+  color: $ink-soft;
+  border-top: 1px solid $rule;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+}
+
+// Tables
+table {
+  font-family: $font-family-sans-serif;
+  font-size: 0.92rem;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background: $cream-pale;
+
+  th {
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid $ink;
+    padding: 0.5rem 0.75rem;
+  }
+
+  td {
+    border-bottom: 1px solid $rule;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+// Navbar — flatten the cosmo styling so it reads as editorial masthead
+.navbar {
+  border-bottom: 1px solid $rule;
+
+  .navbar-brand {
+    font-family: $font-family-serif;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+
+  .nav-link {
+    font-family: $font-family-sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+// Responsive tweaks
+@media (max-width: 640px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.75rem; }
+  .deck { font-size: 1.2rem; }
+  .pullquote { font-size: 1.25rem; }
+  .stat { font-size: 2.75rem; }
+  main.content { padding: 1rem 1.25rem 4rem 1.25rem; }
+}

@@ -1,0 +1,46 @@
+/* Scrollytelling helper styles */
+.scrolly-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.scrolly-graphic {
+  position: sticky;
+  top: 4rem;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scrolly-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 75vh;
+  padding: 25vh 0;
+}
+
+.scrolly-step {
+  background: rgba(236, 238, 241, 0.95);
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid #1B3D6B;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(20, 35, 61, 0.05);
+}
+
+.scrolly-step.is-active {
+  border-left-color: #9C2C3C;
+}
+
+@media (max-width: 720px) {
+  .scrolly-container {
+    grid-template-columns: 1fr;
+  }
+  .scrolly-graphic {
+    position: relative;
+    height: 60vh;
+    top: 0;
+  }
+}

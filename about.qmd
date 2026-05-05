@@ -1,0 +1,42 @@
+---
+title: "About"
+format:
+  html:
+    page-layout: article
+    toc: false
+---
+
+```{=html}
+<div class="kicker">About this project</div>
+```
+
+# About
+
+*The American Dream, Audited* is a submission for the [DSAN Spring 2026 scholarship](https://dsan.georgetown.domains/scholarship/), Georgetown University, Department of Data Science and Analytics. In keeping with the scholarship's anonymous-review process, the author is identified only by NetID.
+
+## Why this project
+
+The premise of the scholarship project is to examine US economic conditions from 1960 to the present. Most analyses of this period anchor on a single dimension — wages, or housing, or healthcare — and follow it through time. This audit takes a different cut: it follows **lives**, not line items, across the economic terrain. The goal is to make the question concrete: not "what happened to GDP?" but "what happened to the 25-year-old, the 40-year-old, and the 65-year-old, and how unevenly?"
+
+## Structure of the audit
+
+Three composite life stages — the **Starter** (entering adulthood), the **Builder** (peak earning, raising a family), and the **Finisher** (retirement) — followed across six decades and across four demographic cells (white men, white women, Black men, Black women), with Hispanic/Latino men and women added from 1972 onward when the category was first separately tracked.
+
+Each persona is measured in **time price** — the hours of full-time labor, at that demographic's wage, required to afford a given essential. The unit cancels the dollar, sidestepping the cumulative ambiguity of inflation deflators across 60+ years, and gives a directly comparable measure of economic burden over time and across groups.
+
+A textual layer drawn from 66 State of the Union addresses (1960–2025) traces what the *promise* of the American Dream sounded like in each era — measured by sentiment classification and topic modeling — to set against what the data shows it actually delivered.
+
+## Acknowledgments
+
+- The Federal Reserve Bank of St. Louis for FRED, which is one of the most generous public-data resources of its kind.
+- The Bureau of Labor Statistics, US Census Bureau, NCES, CMS, CDC NCHS, and SSA for decades of free, well-documented public statistics.
+- The UCSB American Presidency Project for the State of the Union corpus.
+- The DSAN-5200 and DSAN-6600 faculty and TAs for the analytical and visualization training that this project draws on.
+
+## Methodology
+
+See the [Methods page](appendix.qmd) for the full accounting — data sources, time-price derivation, NLP pipeline, and the limitations of this analysis.
+
+## License
+
+The analysis code is released under MIT. The narrative text and original visualizations are CC BY 4.0. Underlying public data carries its source's license — FRED, BLS, Census, CDC, NCES, and CMS data are all in the US public domain.

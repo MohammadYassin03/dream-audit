@@ -1,0 +1,25 @@
+series,label,source,frequency,demographic,units
+CPIAUCSL,CPI (all urban),FRED/BLS,M,all,index 1982-84=100
+PCEPI,PCE Price Index,FRED/BEA,M,all,index 2017=100
+CPIMEDSL,CPI Medical Care,FRED/BLS,M,all,index 1982-84=100
+CUUR0000SEHA,CPI Rent of Primary Residence,FRED/BLS,M,all,index 1982-84=100
+MEHOINUSA672N,Real Median HH Income,FRED/Census,A,all,2022 USD
+LES1252881600Q,Real Median Weekly Earnings,FRED/BLS,Q,all_real,1982-84 USD
+LEU0252881500Q,"Nominal Weekly Earnings, all",FRED/BLS,Q,all,USD
+LEU0252883900Q,Nominal Weekly Earnings,FRED/BLS,Q,white_men,USD
+LEU0252884200Q,Nominal Weekly Earnings,FRED/BLS,Q,white_women,USD
+LEU0252884500Q,Nominal Weekly Earnings,FRED/BLS,Q,black_all,USD
+LEU0252884800Q,Nominal Weekly Earnings,FRED/BLS,Q,black_men,USD
+LEU0252885100Q,Nominal Weekly Earnings,FRED/BLS,Q,black_women,USD
+LEU0252885400Q,Nominal Weekly Earnings,FRED/BLS,Q,hispanic_all,USD
+LEU0252885700Q,Nominal Weekly Earnings,FRED/BLS,Q,hispanic_men,USD
+LEU0252886000Q,Nominal Weekly Earnings,FRED/BLS,Q,hispanic_women,USD
+MSPUS,Median Home Sales Price,FRED/Census,Q,all,USD
+RHORUSQ156N,Homeownership Rate,FRED/Census,Q,all,%
+MORTGAGE30US,30-Yr Fixed Mortgage,FRED/Freddie,W,all,%
+AWHNONAG,"Avg Weekly Hours, Private",FRED/BLS,M,all,hours
+LNS11300002,"Labor Force Participation, Women",FRED/BLS,M,women,%
+LNS11300001,"Labor Force Participation, Men",FRED/BLS,M,men,%
+SLOAS,Student Loans Outstanding,FRED/Fed,Q,all,billions USD
+WFRBST01134,"Net Worth Share, Top 1%",FRED/Fed DFA,Q,top_1pct,%
+WFRBSB50215,"Net Worth Share, Bottom 50%",FRED/Fed DFA,Q,bottom_50pct,%

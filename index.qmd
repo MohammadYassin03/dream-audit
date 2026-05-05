@@ -1,0 +1,231 @@
+---
+title: "The American Dream, Audited"
+format:
+  html:
+    page-layout: article
+    toc: false
+---
+
+```{python}
+#| echo: false
+#| output: asis
+import json
+from pathlib import Path
+_p = Path("data/processed/headline_stats.json")
+_stats = json.loads(_p.read_text()) if _p.exists() else {}
+def S(key, default="—"):
+    v = _stats.get(key, default)
+    if isinstance(v, (int, float)):
+        return f"{v:,.0f}"
+    return v
+```
+
+```{=html}
+<div class="kicker">A Data-Driven Audit · DSAN Scholarship Project · Spring 2026</div>
+```
+
+# The American Dream, Audited
+
+::: {.deck}
+Three lives, four demographics, six decades of US economic data — what the promise paid out, and to whom.
+:::
+
+::: {.byline}
+A DSAN scholarship submission · Georgetown University · Spring 2026<br>
+[Data: FRED · BLS · US Census · NCES · CMS NHE · CDC NCHS · Federal Reserve DFA · UCSB American Presidency Project]{.byline-data}
+:::
+
+::: {.dropcap}
+*[Opening dropcap paragraph — the human hook. To be drafted in Day 5. The argument: the American Dream was never one promise. It was a contract — work hard, pay your dues, retire secure — sold under one banner but cashed out very differently depending on who you were and when you tried to claim it. This audit follows three life stages — the Starter, the Builder, the Finisher — across four demographic lines and six decades of public data, and asks a single question: what did the Dream actually pay?]*
+:::
+
+---
+
+## Prologue · The Promise
+
+::: {.kicker}
+What was sold
+:::
+
+*[Open with NLP layer: a streamgraph of topic prevalence in 66 State of the Union addresses, 1960–2025, showing how the rhetoric of "prosperity," "middle class," "opportunity," and "American Dream" rose and fell. This is the **promise** side of the audit — what every administration told the country it was delivering. Subsequent acts measure what was actually delivered.]*
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/sotu_rhetoric_river.html"
+          style="width:100%; min-height:520px; border:none;"
+          loading="lazy"
+          title="Streamgraph of topic prevalence in State of the Union addresses, 1960–2025."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+*[Caption pending — sources: 66 SOTU addresses, UCSB American Presidency Project. Topic model: BERTopic over sentence-transformer embeddings (all-MiniLM-L6-v2), UMAP-reduced, HDBSCAN-clustered. See Methods.]*
+:::
+
+---
+
+## Act I · The Starter
+
+::: {.kicker}
+Part I — entering adulthood
+:::
+
+```{=html}
+<span class="persona-tag starter">The Starter · age ~22-25</span>
+```
+
+### The launchpad
+
+*[Hook: a 22yo entering the workforce in 1960 vs. 1980 vs. 2000 vs. 2020. What did the first job pay? What did year-one rent cost? What was tuition? How long did it take to clear the debt? Use Time Price unit throughout.]*
+
+```{=html}
+<div class="ledger">
+  <div class="ledger-cell"><span class="stat">[X]</span><span class="stat-label">Hours of work for one year of in-state public tuition · 1970</span></div>
+  <div class="ledger-cell"><span class="stat">[Y]</span><span class="stat-label">Hours of work for one year of in-state public tuition · 2020</span></div>
+  <div class="ledger-cell"><span class="stat">[Z]×</span><span class="stat-label">Multiple</span></div>
+</div>
+```
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/wage_divergence.html"
+          style="width:100%; min-height:560px; border:none;"
+          loading="lazy"
+          title="Nominal hourly wages by race and sex, 1979–2024."></iframe>
+</div>
+```
+
+### The starting line, by demographic
+
+*[Body — the wage gap at age 22, who shrunk it and who didn't. Show that the gender gap closed faster than the racial gap. Note: data limitation — pre-1979 BLS doesn't have race × sex cuts, so we use Census P-60 backfill for 1960-1978 with a methodology caveat.]*
+
+---
+
+## Act II · The Builder
+
+::: {.kicker}
+Part II — peak earning, raising family
+:::
+
+```{=html}
+<span class="persona-tag builder">The Builder · age ~35-45</span>
+```
+
+### The home that took two incomes
+
+*[The home affordability story, but framed through the Builder's lived reality: how many earners did it take? What share of household labor went to housing? Use the dual-earner participation rate alongside the home time-price.]*
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/time_price_home.html"
+          style="width:100%; min-height:580px; border:none;"
+          loading="lazy"
+          title="Hours of full-time labor required to afford a median US home, by race and sex, 1979–present."></iframe>
+</div>
+```
+
+### The bills that didn't exist in 1960
+
+*[Childcare, employer health premiums (in name only — really borne by workers via wage suppression), 401(k) contributions replacing pensions. The Builder of 1960 didn't have these line items at all; the Builder of 2020 has them as their largest expense after housing.]*
+
+### Healthcare: the cost of staying alive
+
+*[Pivot to medical costs. NHE per capita 1960 vs 2023 (real terms). Out-of-pocket as share of disposable income. The chart of medical CPI vs general CPI is striking.]*
+
+---
+
+## Act III · The Finisher
+
+::: {.kicker}
+Part III — the runway
+:::
+
+```{=html}
+<span class="persona-tag finisher">The Finisher · age 65+</span>
+```
+
+### How long the Dream had to last
+
+*[The killer chart: life expectancy at age 65, by race × sex, 1960 → 2020. Shows two stories at once: (a) longevity gains accrued unevenly, (b) the *retirement runway* — years between retirement and death — has stretched dramatically for some, barely for others.]*
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/longevity_gap.html"
+          style="width:100%; min-height:540px; border:none;"
+          loading="lazy"
+          title="Life expectancy at age 65 by race and sex, 1960–2020."></iframe>
+</div>
+```
+
+### Savings, social security, and the home as 401(k)
+
+*[Median retirement savings by race (SCF). Social Security replacement rate. Home equity as the de facto retirement plan — and what happens when you never owned a home.]*
+
+---
+
+## The Counterfactual
+
+::: {.kicker}
+Part IV — the gap that wasn't closed
+:::
+
+*[Interactive slider: drag to set "what if the racial wealth gap had narrowed at the same rate as the gender pay gap?" Show three or four counterfactual paths against the actual one. This is the normative moment — explicitly: here is what a different policy choice would have looked like.]*
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/counterfactual.html"
+          style="width:100%; min-height:600px; border:none;"
+          loading="lazy"
+          title="Interactive counterfactual: re-running the wealth gap under alternate convergence rates."></iframe>
+</div>
+```
+
+---
+
+## What the Audit Found
+
+::: {.kicker}
+Findings
+:::
+
+*[Three to five bullet findings, each grounded in a specific number from the analysis. Resist the urge to confirm priors. If the data shows an unexpected story (e.g. that medical care quality-adjusted has actually improved more than headline costs suggest), say so.]*
+
+1. **[Finding 1]** — *(grounded in chart X, magnitude Y)*
+2. **[Finding 2]** — *(grounded in chart X, magnitude Y)*
+3. **[Finding 3]** — *(grounded in chart X, magnitude Y)*
+
+---
+
+## Recommendations
+
+::: {.kicker}
+Where the evidence points
+:::
+
+*[Three concrete, evidence-grounded recommendations. Each follows the form: "Stakeholder X should do Y because our analysis found Z." Targeted at policymakers, employers, and individuals respectively.]*
+
+### For policymakers
+
+*[Recommendation 1.]*
+
+### For employers
+
+*[Recommendation 2.]*
+
+### For individuals
+
+*[Recommendation 3.]*
+
+---
+
+## A note on what this audit is not
+
+::: {.kicker}
+Honest framing
+:::
+
+*[Brief epilogue acknowledging what's missing: regional variation, undocumented populations, the value of non-monetary changes (cleaner air, better cars, longer leisure). This is an audit of *measurable, monetizable* economic conditions. Many things that matter most aren't here.]*
+
+---
+
+[Continue to [Methods →](appendix.qmd)]{.byline}

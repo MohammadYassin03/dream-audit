@@ -1,0 +1,34 @@
+name: dream-audit
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - seaborn
+  - plotly
+  - requests
+  - beautifulsoup4
+  - lxml
+  - openpyxl
+  - jupyter
+  - ipykernel
+  - pyyaml
+  - tqdm
+  - pip:
+      - fredapi
+      - census
+      - pandas-datareader
+      - bertopic
+      - sentence-transformers
+      - transformers
+      - torch
+      - scikit-learn
+      - umap-learn
+      - hdbscan
+      - nltk
+      - tabulate

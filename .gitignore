@@ -1,0 +1,17 @@
+_site/
+.quarto/
+_freeze/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.env
+data/raw/
+data/cache/
+*.log
+.venv/
+venv/
+node_modules/
+/.quarto/
+*.quarto_ipynb
+.claude/

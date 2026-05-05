@@ -1,0 +1,66 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - interactive/**
+    - figures/**
+    - assets/**
+    - data/processed/**
+
+website:
+  title: "The American Dream, Audited"
+  description: "Three lives, four demographics, six decades of US economic data."
+  navbar:
+    background: "#ECEEF1"
+    foreground: "#14233D"
+    left:
+      - text: "The Story"
+        href: index.qmd
+      - text: "Methods"
+        href: appendix.qmd
+      - text: "About"
+        href: about.qmd
+  page-footer:
+    background: "#14233D"
+    foreground: "#ECEEF1"
+    left: "DSAN Scholarship Project · Georgetown University · Spring 2026"
+    right: ""
+
+format:
+  html:
+    theme:
+      - cosmo
+      - theme.scss
+    css: styles.css
+    toc: false
+    page-layout: article
+    fig-responsive: true
+    smooth-scroll: true
+    anchor-sections: false
+    link-external-newwindow: true
+    mainfont: "Cormorant Garamond, Georgia, serif"
+    fontsize: "1.05rem"
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+        <script defer src="https://cdn.jsdelivr.net/npm/scrollama@3.2.0/build/scrollama.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+        <!-- Open Graph / Twitter share-card metadata -->
+        <meta property="og:type" content="article">
+        <meta property="og:site_name" content="The American Dream, Audited">
+        <meta property="og:title" content="The American Dream, Audited">
+        <meta property="og:description" content="Three lives, four demographics, six decades of US economic data. A DSAN scholarship submission, Georgetown University, Spring 2026.">
+        <meta property="og:url" content="https://dream.my677.georgetown.domains/">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="The American Dream, Audited">
+        <meta name="twitter:description" content="Three lives, four demographics, six decades of US economic data.">
+        <meta name="description" content="A data-driven audit of how the American economic promise played out across three life stages and four demographic groups, 1960 to today.">
+        <meta name="theme-color" content="#1B3D6B">
+
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+  message: false
