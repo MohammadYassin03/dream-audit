@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROC = ROOT / "data" / "processed"
 
 HOURS_PER_WEEK_FT = 40  # full-time convention for converting weekly to hourly
+MAX_YEAR = 2025         # clip partial-year (Q1 2026) data for clean trailing edge
 
 
 def load_long() -> pd.DataFrame:
@@ -23,20 +24,31 @@ def load_long() -> pd.DataFrame:
 
 
 def load_wages() -> pd.DataFrame:
-    return pd.read_parquet(PROC / "wages_demographic.parquet")
+    """Prefer the Census-BLS stitched series (1967+) when available; fall back
+    to BLS-only (2000+) if stitching hasn't been run yet."""
+    stitched = PROC / "wages_demographic_stitched.parquet"
+    if stitched.exists():
+        df = pd.read_parquet(stitched)
+        return df[["year", "demographic", "weekly_earnings_nominal", "source"]]
+    return pd.read_parquet(PROC / "wages_demographic.parquet").assign(source="bls")
 
 
 def hourly_wages_by_demographic() -> pd.DataFrame:
-    """Annual nominal hourly wage by demographic, derived from BLS weekly earnings."""
+    """Annual nominal hourly wage by demographic, derived from stitched
+    Census P-38 (pre-2000) + BLS LEU (2000+) weekly earnings."""
     wages = load_wages()
     wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / HOURS_PER_WEEK_FT
-    return wages[["year", "demographic", "hourly_nominal"]]
+    return wages[["year", "demographic", "hourly_nominal", "source"]]
 
 
 def annual_series(long: pd.DataFrame, series_id: str) -> pd.DataFrame:
     s = long.query(f"series == '{series_id}'").copy()
     s["year"] = s["date"].dt.year
     return s.groupby("year", as_index=False)["value"].mean().rename(columns={"value": series_id})
+
+
+def _clip_to_year(df: pd.DataFrame, year_col: str = "year", max_year: int = MAX_YEAR) -> pd.DataFrame:
+    return df[df[year_col] <= max_year]
 
 
 def time_price_table(long: pd.DataFrame) -> pd.DataFrame:
@@ -55,6 +67,7 @@ def time_price_table(long: pd.DataFrame) -> pd.DataFrame:
     cpi = annual_series(long, "CPIAUCSL")
 
     base = wages.merge(home, on="year", how="left").merge(rent_idx, on="year", how="left").merge(cpi, on="year", how="left")
+    base = _clip_to_year(base)
     base["hours_for_home"] = base["MSPUS"] / base["hourly_nominal"]
 
     # Rent: convert CPI-rent index to a notional dollar burden by anchoring
@@ -91,16 +104,21 @@ def persona_finisher(long: pd.DataFrame, time_price: pd.DataFrame) -> pd.DataFra
 def headline_stats(time_price: pd.DataFrame) -> dict:
     """Numbers for the article kickers — write to data/processed/headline_stats.csv."""
     out = {}
-    # Hours to afford median home, white men, 1960 vs 2020
-    wm = time_price.query("demographic == 'white_men'")
-    if not wm.empty:
-        v_60 = wm.query("year == 1979")["hours_for_home"].mean()  # earliest dem cut
-        v_20 = wm.query("year == 2020")["hours_for_home"].mean()
-        out["wm_hours_home_1979"] = round(v_60, 0)
-        out["wm_hours_home_2020"] = round(v_20, 0)
-    # Black women 2020
-    bw_2020 = time_price.query("demographic == 'black_women' and year == 2020")["hours_for_home"].mean()
-    out["bw_hours_home_2020"] = round(bw_2020, 0) if not np.isnan(bw_2020) else None
+    for dem in ("white_men", "white_women", "black_men", "black_women",
+                "hispanic_men", "hispanic_women"):
+        d = time_price.query("demographic == @dem")
+        if d.empty:
+            continue
+        for yr in (1970, 1980, 2000, 2020):
+            v = d.query("year == @yr")["hours_for_home"].mean()
+            if not np.isnan(v):
+                out[f"{dem}_hours_home_{yr}"] = round(v, 0)
+    # Headline gap: Black women 2020 vs White men 2020
+    bw = out.get("black_women_hours_home_2020")
+    wm = out.get("white_men_hours_home_2020")
+    if bw and wm:
+        out["bw_wm_gap_hours_2020"] = round(bw - wm, 0)
+        out["bw_wm_ratio_2020"] = round(bw / wm, 2)
     return out
 
 

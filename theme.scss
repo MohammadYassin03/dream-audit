@@ -72,11 +72,25 @@ body {
 .quarto-title-block { display: none; }
 
 main.content {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 6rem 1.5rem;
+  padding: 3rem 2.5rem 6rem 2.5rem;
   position: relative;
   z-index: 1;
+  // Solid cream card so the scattered stars only appear in the page margins,
+  // never behind prose. Subtle hairline rule on the sides so the column
+  // reads as an intentional editorial canvas rather than a stripe.
+  background: $cream-pale;
+  border-left:  1px solid $rule;
+  border-right: 1px solid $rule;
+}
+
+@media (max-width: 800px) {
+  main.content {
+    border-left: none;
+    border-right: none;
+    padding: 2rem 1.25rem 4rem 1.25rem;
+  }
 }
 
 // Headings: serif voice

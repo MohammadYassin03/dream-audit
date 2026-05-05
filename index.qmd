@@ -71,7 +71,7 @@ Part I — entering adulthood
 :::
 
 ```{=html}
-<span class="persona-tag starter">The Starter · age ~22-25</span>
+<span class="persona-tag starter">The Starter · age 22-27</span>
 ```
 
 ### The launchpad

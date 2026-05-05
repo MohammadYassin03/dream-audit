@@ -145,6 +145,40 @@ def download_nces_tuition() -> None:
         print(f"    !! status {r.status_code}")
 
 
+# ---------------------------------------------------------------------------
+# Census P-38 — Median earnings by race, sex, year. Full-Time, Year-Round
+# All Workers. Annual back to 1955 (white), 1967 (black), 1972 (hispanic).
+# Used to backfill BLS demographic wage series pre-2000.
+# ---------------------------------------------------------------------------
+CENSUS_P38_RACES: dict[str, str] = {
+    "white":         "p38w.xlsx",
+    "black":         "p38b.xlsx",
+    "hispanic":      "p38h.xlsx",
+    "asian":         "p38a.xlsx",
+    "white_nonhisp": "p38wnh.xlsx",
+    "all_races":     "p38ar.xlsx",
+}
+
+
+def download_census_p38() -> None:
+    """Census P-38: Full-Time Year-Round Workers — median annual earnings,
+    by sex, for each race/ethnicity. One Excel per race."""
+    base = "https://www2.census.gov/programs-surveys/cps/tables/time-series/historical-income-people"
+    out_dir = RAW / "census"
+    out_dir.mkdir(exist_ok=True)
+    for race, fname in CENSUS_P38_RACES.items():
+        out = out_dir / fname
+        if out.exists():
+            print(f"  [skip] census P-38 {race}")
+            continue
+        print(f"  [census] P-38 {race}")
+        r = requests.get(f"{base}/{fname}", timeout=60)
+        if r.status_code == 200:
+            out.write_bytes(r.content)
+        else:
+            print(f"    !! status {r.status_code}")
+
+
 def download_dfa_race() -> None:
     """Federal Reserve Distributional Financial Accounts — wealth holdings by
     race × quartile, quarterly 1989-present. Bulk CSV.
@@ -219,6 +253,9 @@ def main() -> None:
 
     print("\n[NCES tuition]")
     download_nces_tuition()
+
+    print("\n[Census P-38 historical income by race × sex]")
+    download_census_p38()
 
     print("\n[Fed DFA by race]")
     download_dfa_race()

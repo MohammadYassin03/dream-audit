@@ -58,6 +58,117 @@ SERIES_META = pd.DataFrame([
 ], columns=["series", "label", "source", "frequency", "demographic", "units"])
 
 
+# ---------------------------------------------------------------------------
+# Census P-38 backfill — pre-2000 demographic wages
+# ---------------------------------------------------------------------------
+P38_FILE_BY_RACE = {
+    "white":    "p38w.xlsx",
+    "black":    "p38b.xlsx",
+    "hispanic": "p38h.xlsx",
+}
+
+# Map race × sex pair to the BLS demographic cell name used in series_meta.
+RACE_SEX_TO_DEMOGRAPHIC = {
+    ("white", "male"):      "white_men",
+    ("white", "female"):    "white_women",
+    ("black", "male"):      "black_men",
+    ("black", "female"):    "black_women",
+    ("hispanic", "male"):   "hispanic_men",
+    ("hispanic", "female"): "hispanic_women",
+}
+
+
+def _parse_p38(race: str) -> pd.DataFrame:
+    """Parse one Census P-38 Excel file into long format.
+
+    Columns produced: year, sex, annual_earnings_nominal.
+    Footnote markers like "(12)" are stripped from the year column. Where a
+    methodology revision causes a duplicate year (Census reports both the
+    old and new basis for that year), keep the first occurrence (the
+    post-revision figure).
+    """
+    fp = RAW / "census" / P38_FILE_BY_RACE[race]
+    raw = pd.read_excel(fp, header=None)
+    rows = raw[raw[0].astype(str).str.match(r"^\s*[12][0-9]{3}", na=False)].copy()
+    rows[0] = rows[0].astype(str).str.extract(r"(\d{4})")[0].astype(int)
+    rows = rows.drop_duplicates(subset=[0], keep="first")
+
+    male = pd.DataFrame({
+        "year": rows[0],
+        "sex": "male",
+        "annual_earnings_nominal": pd.to_numeric(rows[2], errors="coerce"),
+    })
+    female = pd.DataFrame({
+        "year": rows[0],
+        "sex": "female",
+        "annual_earnings_nominal": pd.to_numeric(rows[5], errors="coerce"),
+    })
+    out = pd.concat([male, female], ignore_index=True).dropna()
+    out["race"] = race
+    return out
+
+
+def _build_stitched_wages(annual_bls: pd.DataFrame) -> pd.DataFrame:
+    """Stitch Census P-38 (1967+, annual ÷ 52 → implied weekly) to BLS LEU
+    (2000+, observed weekly) at the 2000 break, with a multiplicative scale
+    factor that anchors Census levels to BLS at the boundary.
+
+    Produces (year, demographic, weekly_earnings_nominal, source) where
+    source ∈ {'census_p38_stitched', 'bls'}.
+    """
+    pieces = []
+    for race in P38_FILE_BY_RACE:
+        pieces.append(_parse_p38(race))
+    census_long = pd.concat(pieces, ignore_index=True)
+
+    # Map race × sex to demographic
+    census_long["demographic"] = census_long.apply(
+        lambda r: RACE_SEX_TO_DEMOGRAPHIC.get((r["race"], r["sex"])), axis=1
+    )
+    census_long = census_long.dropna(subset=["demographic"])
+    census_long["weekly_implied"] = census_long["annual_earnings_nominal"] / 52.0
+
+    # BLS annual averages from raw quarterly observations
+    bls_annual = (
+        annual_bls.groupby(["year", "demographic"], as_index=False)["weekly_earnings_nominal"]
+        .mean()
+    )
+
+    out_pieces = []
+    for dem in RACE_SEX_TO_DEMOGRAPHIC.values():
+        c = census_long.query("demographic == @dem")[["year", "weekly_implied"]].sort_values("year")
+        b = bls_annual.query("demographic == @dem")[["year", "weekly_earnings_nominal"]].sort_values("year")
+        if c.empty or b.empty:
+            continue
+
+        # Scale factor at the BLS-Census overlap boundary (first BLS year that
+        # also exists in Census). Average across a 3-yr window for stability.
+        boundary = b["year"].min()
+        win = list(range(boundary, boundary + 3))
+        c_win = c[c["year"].isin(win)]["weekly_implied"].mean()
+        b_win = b[b["year"].isin(win)]["weekly_earnings_nominal"].mean()
+        if c_win > 0:
+            scale = b_win / c_win
+        else:
+            scale = 1.0
+
+        # Pre-boundary: scaled Census; boundary onward: BLS observed.
+        pre = c[c["year"] < boundary].copy()
+        pre["weekly_earnings_nominal"] = pre["weekly_implied"] * scale
+        pre = pre[["year", "weekly_earnings_nominal"]]
+        pre["source"] = "census_p38_stitched"
+
+        post = b.copy()
+        post["source"] = "bls"
+
+        merged = pd.concat([pre, post], ignore_index=True)
+        merged["demographic"] = dem
+        merged["scale_factor_to_bls"] = scale
+        out_pieces.append(merged)
+
+    return pd.concat(out_pieces, ignore_index=True)
+
+
 def main() -> None:
     print("== Stage 2: clean ==")
     fred_dir = RAW / "fred"
@@ -88,7 +199,18 @@ def main() -> None:
     wages["year"] = wages["date"].dt.year
     annual = (wages.groupby(["year", "demographic"], as_index=False)["weekly_earnings_nominal"].mean())
     annual.to_parquet(PROC / "wages_demographic.parquet", index=False)
-    print(f"  wages_demographic.parquet: {len(annual):,} rows ({annual['demographic'].nunique()} groups)")
+    print(f"  wages_demographic.parquet: {len(annual):,} rows (BLS only, 2000+)")
+
+    # Stitched series — Census P-38 backfill (1967+) joined to BLS at 2000.
+    # This is what downstream time-price calculations should use.
+    if (RAW / "census" / "p38w.xlsx").exists():
+        stitched = _build_stitched_wages(annual)
+        stitched.to_parquet(PROC / "wages_demographic_stitched.parquet", index=False)
+        coverage = stitched.groupby("demographic")["year"].agg(["min", "max", "count"])
+        print("  wages_demographic_stitched.parquet:")
+        print(coverage.to_string().replace("\n", "\n    "))
+    else:
+        print("  (skip stitched — Census P-38 files not yet downloaded)")
 
     print("Done.")
 
