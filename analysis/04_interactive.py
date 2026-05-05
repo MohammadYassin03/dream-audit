@@ -264,6 +264,121 @@ def wealth_share_stack() -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# 6. Tuition Time Price — hours of work for one year of public 4-year
+#    tuition + required fees, by demographic, 1967–2021
+# ---------------------------------------------------------------------------
+def tuition_time_price() -> None:
+    tuition = pd.read_parquet(PROC / "tuition.parquet").query(
+        "institution_type == 'public' and cost_category == 'tuition_fees' and institution_level == '4yr'"
+    )[["year", "amount_nominal"]]
+    wages = pd.read_parquet(PROC / "wages_demographic_stitched.parquet")
+    wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / 40
+
+    merged = wages.merge(tuition, on="year")
+    merged["hours_for_tuition"] = merged["amount_nominal"] / merged["hourly_nominal"]
+    merged = merged[merged["year"] <= 2021]  # tuition data ends 2021
+
+    fig = go.Figure()
+    for dem, label in DEM_LABELS.items():
+        d = merged.query("demographic == @dem").sort_values("year")
+        if d.empty:
+            continue
+        fig.add_trace(go.Scatter(
+            x=d["year"], y=d["hours_for_tuition"],
+            mode="lines", name=label,
+            line=dict(color=DEMOGRAPHIC.get(dem, PALETTE["ink"]), width=2.4),
+            hovertemplate=f"<b>{label}</b><br>%{{x}}: %{{y:,.0f}} hours<extra></extra>",
+        ))
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Hours of work to afford one year of public four-year tuition and fees"),
+        xaxis_title=None,
+        yaxis_title="Hours of full-time labor",
+        height=520,
+        legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
+    ))
+    fig.write_html(
+        OUT / "tuition_time_price.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
+# ---------------------------------------------------------------------------
+# 7. Medical CPI vs General CPI — both indexed to 1960=100; the "great
+#    decoupling" of healthcare from general inflation
+# ---------------------------------------------------------------------------
+def medical_vs_general_cpi() -> None:
+    long = pd.read_parquet(PROC / "series_long.parquet")
+    cpi = long.query("series == 'CPIAUCSL'")[["date", "value"]].rename(columns={"value": "cpi"})
+    med = long.query("series == 'CPIMEDSL'")[["date", "value"]].rename(columns={"value": "med"})
+    merged = cpi.merge(med, on="date").sort_values("date")
+    # Index both to Jan 1960 = 100
+    base = merged[merged["date"].dt.year == 1960].iloc[0]
+    merged["cpi_idx"] = merged["cpi"] / base["cpi"] * 100
+    merged["med_idx"] = merged["med"] / base["med"] * 100
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=merged["date"], y=merged["cpi_idx"], mode="lines", name="All consumer prices (CPI)",
+        line=dict(color=PALETTE["flag_navy"], width=2.4),
+        hovertemplate="<b>CPI</b><br>%{x|%Y}: %{y:,.0f} (1960=100)<extra></extra>",
+    ))
+    fig.add_trace(go.Scatter(
+        x=merged["date"], y=merged["med_idx"], mode="lines", name="Medical care prices",
+        line=dict(color=PALETTE["flag_red"], width=2.4),
+        fill="tonexty", fillcolor="rgba(156, 44, 60, 0.10)",
+        hovertemplate="<b>Medical CPI</b><br>%{x|%Y}: %{y:,.0f} (1960=100)<extra></extra>",
+    ))
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Medical care prices vs. all consumer prices, 1960=100"),
+        xaxis_title=None,
+        yaxis_title="Index, 1960 = 100",
+        height=480,
+        legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
+    ))
+    fig.write_html(
+        OUT / "medical_vs_cpi.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
+# ---------------------------------------------------------------------------
+# 8. Labor force participation — men's vs women's, 1960–2025. The rise of
+#    the dual-earner household.
+# ---------------------------------------------------------------------------
+def labor_force_participation() -> None:
+    long = pd.read_parquet(PROC / "series_long.parquet")
+    men = long.query("series == 'LNS11300001'").assign(group="Men")
+    women = long.query("series == 'LNS11300002'").assign(group="Women")
+    df = pd.concat([men, women])
+
+    fig = go.Figure()
+    for grp, color in [("Men", PALETTE["flag_navy"]), ("Women", PALETTE["flag_red"])]:
+        d = df.query("group == @grp").sort_values("date")
+        fig.add_trace(go.Scatter(
+            x=d["date"], y=d["value"], mode="lines", name=grp,
+            line=dict(color=color, width=2.4),
+            hovertemplate=f"<b>{grp}</b><br>%{{x|%Y-%m}}: %{{y:.1f}}%<extra></extra>",
+        ))
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Civilian labor force participation rate, men vs. women"),
+        xaxis_title=None,
+        yaxis=dict(title="Percent of population 16+ in labor force", ticksuffix="%"),
+        height=480,
+        legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
+    ))
+    fig.write_html(
+        OUT / "labor_force_participation.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
 def main() -> None:
     print("== Stage 4: interactive ==")
     time_price_lattice()
@@ -276,6 +391,12 @@ def main() -> None:
     print("  longevity_gap.html")
     wealth_share_stack()
     print("  wealth_share.html")
+    tuition_time_price()
+    print("  tuition_time_price.html")
+    medical_vs_general_cpi()
+    print("  medical_vs_cpi.html")
+    labor_force_participation()
+    print("  labor_force_participation.html")
 
 
 if __name__ == "__main__":

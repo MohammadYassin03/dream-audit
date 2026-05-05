@@ -198,6 +198,56 @@ def clean_life_expectancy() -> pd.DataFrame:
     return out[["year", "demographic", "life_expectancy", "death_rate", "race", "sex"]]
 
 
+def clean_nces_tuition() -> pd.DataFrame:
+    """NCES Digest Table 330.10 — average tuition, fees, room and board.
+    Returns long format with columns:
+        year (int)            — academic year start (1963 from "1963-64")
+        institution_type      — 'all', 'public', 'private'
+        cost_category         — 'total', 'tuition_fees'
+        institution_level     — 'all', '4yr', '2yr'
+        amount_nominal        — current-dollar US$
+    """
+    fp = RAW / "nces" / "tabn330_10.xlsx"
+    if not fp.exists():
+        return pd.DataFrame()
+    df = pd.read_excel(fp, header=None)
+
+    # Section header rows discovered by inspection
+    sections = [
+        (5,  60, "all"),       # "All institutions"
+        (61, 116, "public"),   # "Public institutions"
+        (117, 172, "private"), # "Private (nonprofit + for-profit)"
+    ]
+    pieces = []
+    for start, end, label in sections:
+        block = df.iloc[start + 1:end + 1].copy()
+        # Year column: e.g. "1963-64 " — strip and take leading 4 digits
+        block["year"] = block[0].astype(str).str.extract(r"(\d{4})")[0]
+        block = block.dropna(subset=["year"])
+        block["year"] = block["year"].astype(int)
+
+        # Current-dollar columns (cols 13-21):
+        #   13-15: total tuition+fees+room+board, All / 4yr / 2yr
+        #   16-18: tuition+required-fees only, All / 4yr / 2yr
+        col_map = {
+            ("total", "all"):           13,
+            ("total", "4yr"):           14,
+            ("total", "2yr"):           15,
+            ("tuition_fees", "all"):    16,
+            ("tuition_fees", "4yr"):    17,
+            ("tuition_fees", "2yr"):    18,
+        }
+        for (cat, lvl), col in col_map.items():
+            piece = block[["year", col]].rename(columns={col: "amount_nominal"})
+            piece["amount_nominal"] = pd.to_numeric(piece["amount_nominal"], errors="coerce")
+            piece = piece.dropna(subset=["amount_nominal"])
+            piece["institution_type"] = label
+            piece["cost_category"] = cat
+            piece["institution_level"] = lvl
+            pieces.append(piece)
+    return pd.concat(pieces, ignore_index=True)
+
+
 def clean_dfa_race() -> pd.DataFrame:
     """Federal Reserve DFA race shares — quarterly 1989Q3+, by race × asset class.
 
@@ -248,6 +298,14 @@ def main() -> None:
     annual = (wages.groupby(["year", "demographic"], as_index=False)["weekly_earnings_nominal"].mean())
     annual.to_parquet(PROC / "wages_demographic.parquet", index=False)
     print(f"  wages_demographic.parquet: {len(annual):,} rows (BLS only, 2000+)")
+
+    # NCES tuition — Public/Private/All × 4yr/2yr × Total/Tuition-fees, 1963-2022
+    tuition = clean_nces_tuition()
+    if not tuition.empty:
+        tuition.to_parquet(PROC / "tuition.parquet", index=False)
+        print(f"  tuition.parquet: {len(tuition):,} rows ({tuition['year'].min()}–{tuition['year'].max()})")
+    else:
+        print("  (skip tuition — NCES file missing)")
 
     # CDC life expectancy — long arc 1900-2018, race × sex.
     if (RAW / "cdc" / "life_expectancy.csv").exists():
