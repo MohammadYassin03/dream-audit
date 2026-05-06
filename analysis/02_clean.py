@@ -246,6 +246,32 @@ def clean_nces_tuition() -> pd.DataFrame:
     return pd.concat(pieces, ignore_index=True)
 
 
+def clean_miller_center_sotu() -> int:
+    """Convert Miller Center HTML files (data/corpus/sotu/YYYY_recent.txt) into
+    clean text in the same format as the stdlib-js files. Done in-place;
+    overwrites each YYYY_recent.txt with extracted transcript text.
+    Returns the number of files cleaned.
+    """
+    from bs4 import BeautifulSoup
+    sotu_dir = ROOT / "data" / "corpus" / "sotu"
+    cleaned = 0
+    for fp in sotu_dir.glob("*_recent.txt"):
+        text = fp.read_text(encoding="utf-8", errors="ignore")
+        if not text.lstrip().startswith("<"):
+            continue  # already plain text
+        soup = BeautifulSoup(text, "html.parser")
+        el = soup.select_one("div.transcript-inner") or soup.select_one("div.transcript")
+        if el is None:
+            continue
+        clean = el.get_text("\n", strip=True)
+        # Strip the leading "Transcript" header that Miller Center includes
+        if clean.startswith("Transcript"):
+            clean = clean[len("Transcript"):].lstrip()
+        fp.write_text(clean, encoding="utf-8")
+        cleaned += 1
+    return cleaned
+
+
 def clean_dfa_race() -> pd.DataFrame:
     """Federal Reserve DFA race shares. Quarterly 1989Q3+, by race x asset class.
 
@@ -316,6 +342,11 @@ def main() -> None:
         print(coverage.to_string().replace("\n", "\n    "))
     else:
         print("  (skip life expectancy, CDC file missing)")
+
+    # SOTU Miller Center HTML to text (in-place on data/corpus/sotu/*_recent.txt)
+    cleaned = clean_miller_center_sotu()
+    if cleaned:
+        print(f"  cleaned {cleaned} Miller Center SOTU files to plain text")
 
     # Fed DFA wealth shares. Race by asset class, quarterly 1989Q3+.
     dfa = clean_dfa_race()

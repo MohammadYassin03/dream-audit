@@ -332,6 +332,147 @@ def medical_vs_general_cpi() -> None:
     )
 
 
+# Counterfactual: what would Black household net worth share look like under
+# three alternative trajectories? Actual line + three counterfactuals from the
+# 1989Q3 baseline. The chart asks the reader to weigh which counterfactual
+# represents a fair benchmark and to read the actual line against it.
+def counterfactual_wealth() -> None:
+    dfa = pd.read_parquet(PROC / "dfa_race_shares.parquet")
+    nw = dfa.query("metric == 'Net worth'").copy().sort_values("date")
+
+    black = nw.query("race == 'Black'").reset_index(drop=True)
+    other = nw.query("race == 'Other'").reset_index(drop=True)
+
+    # Baselines (1989 Q3, the first quarter of DFA data)
+    base_black = black["share"].iloc[0]
+    base_other = other["share"].iloc[0]
+
+    # Counterfactual 1: parity. Black population is ~13% of US population
+    # (Census 2020). If wealth share matched population share, the line
+    # would sit at 13.0%.
+    cf_parity = pd.DataFrame({"date": black["date"], "share": 13.0})
+
+    # Counterfactual 2: same growth as the "Other" category (predominantly
+    # Asian American households). Apply the year-over-year ratio of Other's
+    # share to a baseline equal to Black's 1989Q3 share.
+    cf_other = pd.DataFrame({
+        "date": black["date"],
+        "share": base_black * (other["share"].values / base_other),
+    })
+
+    # Counterfactual 3: hold the gap constant at 1989 levels. White share
+    # actually fell over time (90.3 -> 83.5). If Black share had moved in
+    # lockstep with that decline, it would have stayed at 4.0% (no widening
+    # of the gap).
+    white = nw.query("race == 'White'").reset_index(drop=True)
+    cf_constant = pd.DataFrame({
+        "date": black["date"],
+        "share": base_black + 0 * white["share"].values,  # flat at base
+    })
+
+    fig = go.Figure()
+
+    # Counterfactual lines (light, dashed, sit behind)
+    fig.add_trace(go.Scatter(
+        x=cf_parity["date"], y=cf_parity["share"],
+        mode="lines", name="If wealth share matched population share (~13%)",
+        line=dict(color=PALETTE["sage"], width=1.6, dash="dot"),
+        hovertemplate="<b>Population-parity counterfactual</b><br>%{x|%Y}: 13.0%%<extra></extra>",
+    ))
+    fig.add_trace(go.Scatter(
+        x=cf_other["date"], y=cf_other["share"],
+        mode="lines", name="If Black share grew like Asian American share",
+        line=dict(color=PALETTE["gold"], width=1.6, dash="dash"),
+        hovertemplate="<b>Asian-rate counterfactual</b><br>%{x|%Y}: %{y:.1f}%%<extra></extra>",
+    ))
+    fig.add_trace(go.Scatter(
+        x=cf_constant["date"], y=cf_constant["share"],
+        mode="lines", name="If 1989 gap had simply held (4.0% flat)",
+        line=dict(color=PALETTE["flag_navy_pale"], width=1.6, dash="dashdot"),
+        hovertemplate="<b>Hold-1989-gap counterfactual</b><br>%{x|%Y}: 4.0%%<extra></extra>",
+    ))
+    # Actual line (heavy, sits on top)
+    fig.add_trace(go.Scatter(
+        x=black["date"], y=black["share"],
+        mode="lines", name="Actual",
+        line=dict(color=PALETTE["flag_red"], width=3.0),
+        hovertemplate="<b>Actual</b><br>%{x|%Y}: %{y:.1f}%%<extra></extra>",
+    ))
+
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Black household share of US net worth: actual vs three counterfactuals"),
+        xaxis_title=None,
+        yaxis=dict(title="Share of total US household net worth (%)",
+                   ticksuffix="%", range=[0, 14]),
+        height=560,
+        legend=dict(orientation="h", y=-0.18, x=0.5, xanchor="center",
+                    font=dict(size=10)),
+    ))
+    fig.write_html(
+        OUT / "counterfactual.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
+# SOTU rhetoric river: stacked area of topic prevalence over time, drawn
+# from the BERTopic output of stage 5. Each stream is one topic's share
+# of paragraphs in that year's address.
+def sotu_rhetoric_river() -> None:
+    fp = PROC / "sotu_topic_river.parquet"
+    if not fp.exists():
+        print("  (skip rhetoric river, run 05_nlp first)")
+        return
+    river = pd.read_parquet(fp)
+
+    # Build a clean topic label: strip BERTopic's "0_word_word_word" prefix.
+    river["clean_label"] = river["label"].str.replace(r"^-?\d+_", "", regex=True).str.replace("_", ", ")
+
+    topic_order = (
+        river.groupby("topic_id")["share"].sum().sort_values(ascending=False).index.tolist()
+    )
+    palette = [
+        PALETTE["flag_navy"], PALETTE["flag_red"], PALETTE["gold"],
+        PALETTE["sage"], PALETTE["flag_navy_pale"], "#D88575", PALETTE["gold_pale"],
+    ]
+
+    fig = go.Figure()
+    for i, tid in enumerate(topic_order):
+        d = river.query("topic_id == @tid").sort_values("year")
+        if d.empty:
+            continue
+        label = d["clean_label"].iloc[0]
+        words = d["top_words"].iloc[0]
+        fig.add_trace(go.Scatter(
+            x=d["year"], y=d["share"] * 100,
+            name=label,
+            mode="lines",
+            line=dict(width=0.5, color=palette[i % len(palette)]),
+            stackgroup="one",
+            fillcolor=palette[i % len(palette)],
+            customdata=[[words]] * len(d),
+            hovertemplate=("<b>%{fullData.name}</b><br>"
+                           "Top words: %{customdata[0]}<br>"
+                           "%{x}: %{y:.1f}% of paragraphs<extra></extra>"),
+        ))
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Rhetoric of the State of the Union, by topic share, 1960 to 2024"),
+        xaxis_title=None,
+        yaxis=dict(title="Share of paragraphs in that year's address (%)",
+                   ticksuffix="%"),
+        height=560,
+        legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center",
+                    font=dict(size=10)),
+    ))
+    fig.write_html(
+        OUT / "sotu_rhetoric_river.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
 # Labor force participation: men's vs women's, 1960 to 2025. The rise of
 # the dual-earner household.
 def labor_force_participation() -> None:
@@ -381,6 +522,10 @@ def main() -> None:
     print("  medical_vs_cpi.html")
     labor_force_participation()
     print("  labor_force_participation.html")
+    counterfactual_wealth()
+    print("  counterfactual.html")
+    sotu_rhetoric_river()
+    print("  sotu_rhetoric_river.html (if NLP stage has been run)")
 
 
 if __name__ == "__main__":

@@ -276,16 +276,24 @@ For retirement specifically, the implication is direct. If wealth is the safety 
 Part IV, the gap that wasn't closed
 :::
 
-*[Interactive slider. Drag to set "what if the racial wealth gap had narrowed at the same rate as the gender pay gap?" Show three or four counterfactual paths against the actual one. This is the normative moment. Here is what a different policy choice would have looked like.]*
+The audit's findings to this point are descriptive. They say what happened. The counterfactual is where the audit becomes normative. Here is the same data set against three different stories about what could have happened.
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/counterfactual.html"
           style="width:100%; min-height:600px; border:none;"
           loading="lazy"
-          title="Interactive counterfactual: re-running the wealth gap under alternate convergence rates."></iframe>
+          title="Black household share of US net worth: actual vs three counterfactuals."></iframe>
 </div>
 ```
+
+::: {.figure-caption}
+The actual line (red) is the Federal Reserve DFA series for Black households' share of US household net worth, 1989Q3 to 2025Q4. The three counterfactual lines are constructed from the same DFA dataset. See [Methods](appendix.qmd) for the formulas.
+:::
+
+Each line is a different version of "fair." The 13 percent line is the population-parity benchmark. Black Americans are about 13 percent of the US population, so a wealth share that matched population share would sit at 13 percent. The gold dashed line is what the Black household share would look like if it had grown at the same rate as the "Other" category (mostly Asian American households) grew between 1989 and 2025. The pale-blue dash-dotted line is the most conservative counterfactual: just hold the 1989 racial wealth gap exactly where it was. No closure, just no widening.
+
+The actual line, in red, sits below all three counterfactuals. It does not approach population parity. It does not match the Asian American growth rate. It does not even hold the 1989 gap. It widens it. The choice of which counterfactual to use as a benchmark is normative. The position of the actual line below all three of them is not.
 
 ## What the Audit Found
 

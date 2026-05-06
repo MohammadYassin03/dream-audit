@@ -224,17 +224,81 @@ SOTU_YEARS = list(range(1960, 2026))
 
 
 def download_sotu_corpus() -> None:
-    """Fetch SOTU addresses 1960 to 2025 from a stable public source.
+    """Fetch SOTU addresses 1960 to 2025.
 
-    First try the Miller Center / GovInfo combo. Fallback: scrape American
-    Presidency Project (UCSB). The clean text is what matters; per-paragraph
-    structure is preserved.
+    Primary source: stdlib-js/datasets-sotu (covers 1790 to 2021). For each
+    year in 1960 to 2021 the repo has files like 1965_lyndon_b_johnson_d.txt.
+    The repo's directory listing is fetched via the GitHub Contents API,
+    then each file's raw URL is downloaded.
+
+    Post-2021 addresses (2022-2025) are scraped from the Miller Center, which
+    has stable per-speech URLs.
     """
     out_dir = CORPUS / "sotu"
     out_dir.mkdir(exist_ok=True)
-    # Stub: implementation deferred to next pass. UCSB's URL scheme uses node
-    # IDs, not years, so we'll need to map year -> node first.
-    print("  [sotu] (next pass: corpus fetch implemented after API discovery)")
+
+    # Primary: stdlib-js/datasets-sotu
+    api = "https://api.github.com/repos/stdlib-js/datasets-sotu/contents/data"
+    try:
+        r = requests.get(api, timeout=30)
+        listing = r.json() if r.status_code == 200 else []
+    except Exception as e:
+        print(f"    !! github listing failed: {e}")
+        listing = []
+
+    txt_files = [x for x in listing if isinstance(x, dict) and x.get("name", "").endswith(".txt")]
+    fetched = 0
+    for entry in txt_files:
+        name = entry["name"]
+        # Filter to 1960-2025 by parsing the year prefix
+        try:
+            year = int(name[:4])
+        except ValueError:
+            continue
+        if year < 1960 or year > 2025:
+            continue
+        out = out_dir / name
+        if out.exists():
+            continue
+        raw_url = entry.get("download_url")
+        if not raw_url:
+            continue
+        try:
+            rr = requests.get(raw_url, timeout=30)
+            if rr.status_code == 200:
+                out.write_bytes(rr.content)
+                fetched += 1
+                time.sleep(0.05)
+        except Exception:
+            pass
+    print(f"  [sotu] stdlib-js corpus: {fetched} files fetched, "
+          f"{len(list(out_dir.glob('*.txt')))} total in 1960-2025 range")
+
+    # Recent SOTUs (2022-2025) from Miller Center. URL slugs are date-based:
+    # /the-presidency/presidential-speeches/<month>-<day>-<year>-state-union
+    miller_recent = [
+        ("2022", "march-1-2022-state-union-address"),
+        ("2023", "february-7-2023-state-union-address"),
+        ("2024", "march-7-2024-state-union-address"),
+        ("2025", "march-4-2025-joint-address-congress"),  # Trump 2025 was a joint address, not SOTU
+    ]
+    for year, slug in miller_recent:
+        out = out_dir / f"{year}_recent.txt"
+        if out.exists():
+            continue
+        url = f"https://millercenter.org/the-presidency/presidential-speeches/{slug}"
+        try:
+            r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+        except Exception:
+            continue
+        if r.status_code == 200:
+            # Crude extraction: between <div class="transcript-inner"> tags or
+            # similar. We'll defer the real parsing to 02_clean and just save
+            # the raw HTML for now.
+            out.write_text(r.text, encoding="utf-8")
+            print(f"  [sotu] {year} recent: saved")
+        else:
+            print(f"  [sotu] {year} recent: status {r.status_code}")
 
 
 def main() -> None:
