@@ -145,10 +145,19 @@ def time_price_lattice_heatmap() -> None:
 
     # Single text color for every cell. The colorscale above stays light
     # enough across its full range that dark navy reads cleanly everywhere.
+    # NaN cells (Hispanic in the 60s, before separate tracking) get a
+    # muted "n/a" label so the empty space is read as missing-by-design.
     for ri, dem in enumerate(dem_order):
         for ci, dec in enumerate(decade_order):
             v = z[ri][ci]
             if v != v:  # NaN
+                fig.add_annotation(
+                    x=decade_labels[dec], y=DEM_LABELS[dem],
+                    text="n/a",
+                    showarrow=False,
+                    font=dict(family="Inter, sans-serif", size=11,
+                              color=PALETTE["ink_soft"], style="italic"),
+                )
                 continue
             fig.add_annotation(
                 x=decade_labels[dec], y=DEM_LABELS[dem],
