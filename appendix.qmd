@@ -65,6 +65,16 @@ Both of these caveats argue that the time-price comparison, if anything, *unders
 ### NLP corpus
 - **State of the Union addresses**, 1960 to most recent, sourced from the UCSB American Presidency Project. Each address is treated as a year-document; paragraph-level segmentation is preserved.
 
+## Counterfactual construction
+
+The counterfactual chart in the article shows three alternative paths for the Black household share of US net worth, against the actual DFA series 1989 to 2025.
+
+1. **Population-parity counterfactual.** A flat line at 13 percent across all years. Census 2020 puts the Black share of the US population at roughly 13 percent. If wealth share matched population share, this is where the line would sit.
+2. **Asian-American growth-rate counterfactual.** The Federal Reserve's "Other" category (which is dominated by Asian American households) went from 3.6 percent of US net worth in 1989Q3 to 10.8 percent in 2025Q4, a 3.0× multiple. If the Black share had grown by the same multiplier from its 1989Q3 baseline of 4.0 percent, the line would end at roughly 12.0 percent. The chart shows the full trajectory by quarter, applying `share_other(t) / share_other(t0)` as a scaling factor to the Black baseline.
+3. **Hold-1989-gap counterfactual.** A flat line at 4.0 percent. The most conservative version: no closure of the gap, just no widening. A status-quo benchmark.
+
+None of these counterfactuals is presented as a normative target. The point is that the actual line sits below all three, including the most conservative. The choice of which counterfactual to weight more heavily is a separate question.
+
 ## NLP pipeline
 
 1. **Sentence and paragraph segmentation**: naive paragraph split followed by sentence tokenization with NLTK. Paragraphs shorter than 12 tokens are dropped (these are usually applause cues).

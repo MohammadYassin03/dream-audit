@@ -66,20 +66,22 @@ Hours of full time labor required to afford the median US home, averaged within 
 What was sold
 :::
 
-*[The Prologue chart is the rhetoric river: a streamgraph of how the language of "prosperity," "middle class," "opportunity," and "American Dream" has waxed and waned across 66 State of the Union addresses since 1960. It's the promise side of the audit. The acts that follow measure what was actually delivered.]*
+The audit measures what the country actually delivered. Before that, it's worth asking what the country said it was delivering. Sixty five years of State of the Union addresses, 1960 to 2024, is the most consistent on-the-record account we have of how each administration described the economic life of its time. The corpus is 66 speeches and several thousand paragraphs. The chart below clusters those paragraphs by topic and shows how each topic's share of presidential attention has shifted across the decades.
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/sotu_rhetoric_river.html"
-          style="width:100%; min-height:520px; border:none;"
+          style="width:100%; min-height:560px; border:none;"
           loading="lazy"
-          title="Streamgraph of topic prevalence in State of the Union addresses, 1960 to 2025."></iframe>
+          title="Topic prevalence in State of the Union addresses, 1960 to 2024."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-*[Caption pending. Sources: 66 SOTU addresses, UCSB American Presidency Project. Topic model: BERTopic over sentence-transformer embeddings (all-MiniLM-L6-v2), UMAP-reduced, HDBSCAN-clustered. See Methods.]*
+Topic share of paragraphs in State of the Union addresses, 1960 to 2024, where topic clusters were learned with BERTopic over sentence-transformer embeddings of every paragraph in the corpus. Each stream is one of the seven largest topic clusters; hover for the top words BERTopic identified for that cluster. Source: 66 SOTU addresses (stdlib-js/datasets-sotu for 1960 to 2021, Miller Center for 2022 to 2024). See [Methods](appendix.qmd) for the modeling pipeline.
 :::
+
+Read this as the promise side of the audit. What the language of presidential rhetoric tracks against, and the acts that follow measure, is what was actually delivered.
 
 ## Act I · The Starter
 
@@ -341,4 +343,4 @@ The audit is not a verdict on whether modern American life is "better" than 1965
 
 If there is one takeaway it is the unevenness. The numbers in this audit are what they are. The interpretation is that the United States entered the past sixty years with one promise and finished them with several different promises, depending on who you were when you started. The data does not say whether that is a failure of policy or a feature of the country. It says only that it is, and that it should be measured.
 
-[Continue to [Methods →](appendix.qmd)]{.byline}
+[Continue to [Methods](appendix.qmd).]{.byline}
