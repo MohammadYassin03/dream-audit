@@ -120,21 +120,19 @@ def time_price_lattice_heatmap() -> None:
         text.append(trow)
 
     zmin, zmax = 4000, 22000
-    # Threshold for switching text color from dark (on light cells) to
-    # light (on dark cells). 0.62 of the [zmin, zmax] range puts the
-    # crossover at about 15,000 hours, which sits cleanly inside the
-    # flag_red_pale band of the colorscale.
-    text_threshold = zmin + 0.62 * (zmax - zmin)
 
     fig = go.Figure(go.Heatmap(
         z=z,
         x=[decade_labels[d] for d in decade_order],
         y=[DEM_LABELS[d] for d in dem_order],
+        # Top of the scale is capped at flag_red_pale (a dusty red) instead
+        # of the deeper flag_red, so the entire range stays light enough for
+        # a single dark-navy text color to read against any cell.
         colorscale=[
             [0.0, PALETTE["cream_pale"]],
             [0.4, PALETTE["gold_pale"]],
-            [0.7, PALETTE["flag_red_pale"]],
-            [1.0, PALETTE["flag_red"]],
+            [0.7, "#D89090"],
+            [1.0, PALETTE["flag_red_pale"]],
         ],
         colorbar=dict(
             title=dict(text="Hours", font=dict(size=11, color=PALETTE["ink_soft"])),
@@ -145,19 +143,18 @@ def time_price_lattice_heatmap() -> None:
         zmin=zmin, zmax=zmax,
     ))
 
-    # Manual cell text annotations so we can pick a clean per-cell color
-    # rather than letting Plotly auto-contrast at the visual midpoint.
+    # Single text color for every cell. The colorscale above stays light
+    # enough across its full range that dark navy reads cleanly everywhere.
     for ri, dem in enumerate(dem_order):
         for ci, dec in enumerate(decade_order):
             v = z[ri][ci]
             if v != v:  # NaN
                 continue
-            color = PALETTE["cream"] if v >= text_threshold else PALETTE["ink"]
             fig.add_annotation(
                 x=decade_labels[dec], y=DEM_LABELS[dem],
                 text=text[ri][ci],
                 showarrow=False,
-                font=dict(family="Inter, sans-serif", size=12, color=color),
+                font=dict(family="Inter, sans-serif", size=12, color=PALETTE["ink"]),
             )
 
     fig.update_layout(**plotly_layout(
