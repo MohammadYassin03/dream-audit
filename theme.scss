@@ -63,7 +63,7 @@ body {
   line-height: 1.65;
   color: $ink;
   background-color: $cream;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><g fill='%231B3D6B' fill-opacity='0.085'><polygon points='60,42 64,56 78,56 67,65 71,79 60,71 49,79 53,65 42,56 56,56'/><polygon points='220,110 223,121 234,121 225,128 228,139 220,132 212,139 215,128 206,121 217,121'/><polygon points='130,200 134,213 148,213 137,221 141,234 130,226 119,234 123,221 112,213 126,213'/><polygon points='270,260 273,270 283,270 275,276 278,286 270,280 262,286 265,276 257,270 267,270'/><polygon points='40,260 43,270 53,270 45,276 48,286 40,280 32,286 35,276 27,270 37,270'/><polygon points='180,40 183,49 192,49 185,55 188,64 180,58 172,64 175,55 168,49 177,49'/></g></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'><g fill='%231B3D6B' fill-opacity='0.085'><polygon points='60,42 64,56 78,56 67,65 71,79 60,71 49,79 53,65 42,56 56,56'/><polygon points='220,110 223,121 234,121 225,128 228,139 220,132 212,139 215,128 206,121 217,121'/><polygon points='130,200 134,213 148,213 137,221 141,234 130,226 119,234 123,221 112,213 126,213'/><polygon points='270,260 273,270 283,270 275,276 278,286 270,280 262,286 265,276 257,270 267,270'/><polygon points='40,260 43,270 53,270 45,276 48,286 40,280 32,286 35,276 27,270 37,270'/><polygon points='180,40 183,49 192,49 185,55 188,64 180,58 172,64 175,55 168,49 177,49'/><polygon points='245,200 248,209 257,209 250,215 253,224 245,218 237,224 240,215 233,209 242,209'/></g></svg>");
   background-attachment: fixed;
   background-repeat: repeat;
 }
@@ -97,6 +97,13 @@ main.content {
 h1, h2, h3, h4, h5 {
   font-family: $font-family-serif;
   letter-spacing: -0.005em;
+}
+
+// Title only: thin bunting-red rule beneath
+h1 {
+  border-bottom: 1px solid $flag-red;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 h2 {
@@ -276,6 +283,23 @@ h3 {
   &.starter   { background: $flag-navy; }
   &.builder   { background: $gold-deep; }
   &.finisher  { background: $flag-red; }
+}
+
+// Act break: a single small star centered between major sections
+.act-break {
+  text-align: center;
+  font-size: 1.4rem;
+  color: $gold;
+  margin: 4.5rem 0 1rem 0;
+  line-height: 1;
+
+  // The h2 that follows shouldn't draw its top border, since the star
+  // already plays that role. Cancel the h2 top rule when preceded by .act-break.
+  & + h2 {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 1rem;
+  }
 }
 
 // Footnotes, keep them subtle

@@ -147,6 +147,10 @@ Read the chart not for the rising lines (every line rises in nominal terms) but 
 
 For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2020 the white man's tuition burden had climbed to 338 hours. The Black woman's had reached 490. The gap between starting lines did narrow, in percentage terms. In time terms, in weeks of life surrendered before earning anything, every Starter is paying more, and the ones who started behind are still behind.
 
+```{=html}
+<div class="act-break">★</div>
+```
+
 ## Act II · The Builder
 
 ::: {.kicker}
@@ -219,6 +223,10 @@ Both indices set to 100 in January 1960. Source: BLS via FRED (CPIAUCSL all item
 :::
 
 The 2025 Builder spends a much larger share of their household budget on insurance, prescriptions, deductibles, and premium contributions than the 1960 Builder did. Some of that buys real medical care that did not exist in 1960 (it would be wrong to ignore this). Some of it is administrative overhead that does not buy any care at all. The audit cannot quality-adjust the medical CPI here, so it does not try. What it can show is the slope. The slope of the medical line is steeper, and stays steeper, than the slope of any other major price category in the basket.
+
+```{=html}
+<div class="act-break">★</div>
+```
 
 ## Act III · The Finisher
 
