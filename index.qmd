@@ -60,6 +60,12 @@ The audit, in one chart
 Hours of full time labor required to afford the median US home, averaged within each decade. Read across rows for the gap between demographics in any given era. Read down columns for each demographic's trajectory through time. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
 :::
 
+### A note on the unit
+
+The audit measures everything in hours of work, not dollars. The reason is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. The official deflators (CPI, PCE, Boskin-adjusted CPI-U-RS) disagree across 60 years by enough that two analysts could reach opposite conclusions while doing competent work. Hours of labor sidestep the deflator entirely. A home that took 5,900 hours of work in 1970 and one that takes 11,800 hours in 2020 are directly comparable. The unit cancels the dollar. What remains is how much of your life a thing costs.
+
+The full derivation, including the caveats this unit does not handle, is in the [Methods page](appendix.qmd).
+
 ## Prologue · The Promise
 
 ::: {.kicker}
