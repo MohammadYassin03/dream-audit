@@ -416,55 +416,117 @@ def counterfactual_wealth() -> None:
     )
 
 
-# SOTU rhetoric river: stacked area of topic prevalence over time, drawn
-# from the BERTopic output of stage 5. Each stream is one topic's share
-# of paragraphs in that year's address.
+# SOTU rhetoric chart: small multiples, one panel per topic. Each panel
+# shows the smoothed share of paragraphs in each year's address that
+# BERTopic assigned to that topic. 5-year centered rolling average
+# dampens the spikiness of single-paragraph swings (each SOTU is short).
 def sotu_rhetoric_river() -> None:
+    from plotly.subplots import make_subplots
+
     fp = PROC / "sotu_topic_river.parquet"
     if not fp.exists():
         print("  (skip rhetoric river, run 05_nlp first)")
         return
     river = pd.read_parquet(fp)
-
-    # Build a clean topic label: strip BERTopic's "0_word_word_word" prefix.
     river["clean_label"] = river["label"].str.replace(r"^-?\d+_", "", regex=True).str.replace("_", ", ")
 
+    # Plain-English short labels for each top-words signature
+    label_overrides = {
+        "tax, deficit, budget, spending":           "Budget &amp; taxes",
+        "school, teachers, schools, high school":   "Education",
+        "women, court, constitutional, equal":      "Women's rights",
+        "crime, police, criminals, criminal":       "Crime &amp; policing",
+        "agriculture, rural, grain, loan":          "Agriculture",
+        "transportation, projects, construction":   "Infrastructure",
+        "health, insurance, health care, care":     "Healthcare",
+    }
+
+    def short_for(words: str) -> str:
+        for prefix, short in label_overrides.items():
+            if words.startswith(prefix):
+                return short
+        return words[:24]
+
+    # Smooth: 5-year centered rolling average per topic
+    smoothed = []
+    for tid, group in river.groupby("topic_id"):
+        g = group.sort_values("year").copy()
+        g["share_smoothed"] = g["share"].rolling(window=5, center=True, min_periods=1).mean()
+        smoothed.append(g)
+    river = pd.concat(smoothed, ignore_index=True)
+
+    # Order topics by mean share (largest first)
     topic_order = (
-        river.groupby("topic_id")["share"].sum().sort_values(ascending=False).index.tolist()
+        river.groupby("topic_id")["share"].mean().sort_values(ascending=False).index.tolist()
     )
+    n = len(topic_order)
+    cols = 4
+    rows = (n + cols - 1) // cols
+
     palette = [
         PALETTE["flag_navy"], PALETTE["flag_red"], PALETTE["gold"],
         PALETTE["sage"], PALETTE["flag_navy_pale"], "#D88575", PALETTE["gold_pale"],
     ]
 
-    fig = go.Figure()
+    short_labels = []
+    for tid in topic_order:
+        words = river.query("topic_id == @tid")["top_words"].iloc[0]
+        short_labels.append(short_for(words))
+
+    fig = make_subplots(
+        rows=rows, cols=cols,
+        subplot_titles=short_labels,
+        horizontal_spacing=0.07,
+        vertical_spacing=0.16,
+        shared_xaxes=True,
+    )
+
     for i, tid in enumerate(topic_order):
+        r = i // cols + 1
+        c = i % cols + 1
         d = river.query("topic_id == @tid").sort_values("year")
-        if d.empty:
-            continue
-        label = d["clean_label"].iloc[0]
         words = d["top_words"].iloc[0]
+        color = palette[i % len(palette)]
+        # Faded raw points behind the smoothed line, for honesty about the data
         fig.add_trace(go.Scatter(
             x=d["year"], y=d["share"] * 100,
-            name=label,
+            mode="markers",
+            marker=dict(size=3, color=color, opacity=0.25),
+            showlegend=False, hoverinfo="skip",
+        ), row=r, col=c)
+        fig.add_trace(go.Scatter(
+            x=d["year"], y=d["share_smoothed"] * 100,
             mode="lines",
-            line=dict(width=0.5, color=palette[i % len(palette)]),
-            stackgroup="one",
-            fillcolor=palette[i % len(palette)],
+            line=dict(width=2.4, color=color),
+            showlegend=False,
             customdata=[[words]] * len(d),
-            hovertemplate=("<b>%{fullData.name}</b><br>"
+            hovertemplate=(f"<b>{short_labels[i]}</b><br>"
                            "Top words: %{customdata[0]}<br>"
                            "%{x}: %{y:.1f}% of paragraphs<extra></extra>"),
-        ))
-    fig.update_layout(**plotly_layout(
-        title=dict(text="Rhetoric of the State of the Union, by topic share, 1960 to 2024"),
-        xaxis_title=None,
-        yaxis=dict(title="Share of paragraphs in that year's address (%)",
-                   ticksuffix="%"),
+        ), row=r, col=c)
+
+    layout = plotly_layout(
+        title=dict(text="What presidents talked about, 1960 to 2024 (5-year rolling avg)"),
         height=560,
-        legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center",
-                    font=dict(size=10)),
-    ))
+        showlegend=False,
+        margin=dict(l=50, r=30, t=80, b=50),
+    )
+    fig.update_layout(**layout)
+    fig.update_xaxes(
+        gridcolor=PALETTE["rule"], linecolor=PALETTE["ink_soft"],
+        tickfont=dict(size=10, color=PALETTE["ink_soft"]),
+        dtick=20,
+    )
+    fig.update_yaxes(
+        gridcolor=PALETTE["rule"], linecolor=PALETTE["ink_soft"],
+        tickfont=dict(size=10, color=PALETTE["ink_soft"]),
+        ticksuffix="%",
+        rangemode="tozero",
+    )
+    # Smaller subplot title font
+    for ann in fig.layout.annotations:
+        ann.font = dict(size=12, color=PALETTE["ink"], family="Cormorant Garamond, serif")
+
     fig.write_html(
         OUT / "sotu_rhetoric_river.html",
         include_plotlyjs="cdn",
