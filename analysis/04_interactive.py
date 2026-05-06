@@ -119,11 +119,17 @@ def time_price_lattice_heatmap() -> None:
         z.append(zrow)
         text.append(trow)
 
+    zmin, zmax = 4000, 22000
+    # Threshold for switching text color from dark (on light cells) to
+    # light (on dark cells). 0.62 of the [zmin, zmax] range puts the
+    # crossover at about 15,000 hours, which sits cleanly inside the
+    # flag_red_pale band of the colorscale.
+    text_threshold = zmin + 0.62 * (zmax - zmin)
+
     fig = go.Figure(go.Heatmap(
         z=z,
         x=[decade_labels[d] for d in decade_order],
         y=[DEM_LABELS[d] for d in dem_order],
-        text=text, texttemplate="%{text}",
         colorscale=[
             [0.0, PALETTE["cream_pale"]],
             [0.4, PALETTE["gold_pale"]],
@@ -136,8 +142,24 @@ def time_price_lattice_heatmap() -> None:
             outlinewidth=0, thickness=12, len=0.6,
         ),
         hovertemplate="<b>%{y}</b><br>%{x}: %{z:,.0f} hours<extra></extra>",
-        zmin=4000, zmax=22000,
+        zmin=zmin, zmax=zmax,
     ))
+
+    # Manual cell text annotations so we can pick a clean per-cell color
+    # rather than letting Plotly auto-contrast at the visual midpoint.
+    for ri, dem in enumerate(dem_order):
+        for ci, dec in enumerate(decade_order):
+            v = z[ri][ci]
+            if v != v:  # NaN
+                continue
+            color = PALETTE["cream"] if v >= text_threshold else PALETTE["ink"]
+            fig.add_annotation(
+                x=decade_labels[dec], y=DEM_LABELS[dem],
+                text=text[ri][ci],
+                showarrow=False,
+                font=dict(family="Inter, sans-serif", size=12, color=color),
+            )
+
     fig.update_layout(**plotly_layout(
         title=dict(text="The time price of a home, by decade and demographic"),
         height=440,
