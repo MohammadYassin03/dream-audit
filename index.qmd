@@ -57,7 +57,7 @@ The audit, in one chart
 ```
 
 ::: {.figure-caption}
-Hours of full time labor required to afford the median US home, averaged within each decade. Read across rows for the gap between demographics in any given era. Read down columns for each demographic's trajectory through time. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
+Hours of full time labor required to afford the median US home, averaged within each decade. Read across a row (left to right) for that demographic's trajectory through time. Read down a column (top to bottom) for the gap between demographics in that decade. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
 :::
 
 ### A note on the unit
