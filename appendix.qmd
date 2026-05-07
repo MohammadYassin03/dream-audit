@@ -47,7 +47,7 @@ Both of these caveats argue that the time-price comparison, if anything, *unders
 - **MORTGAGE30US**, 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
 
 ### Education
-- **NCES Digest Table 330.10**, average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to present.
+- **NCES Digest Table 330.10**, average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to 2022 (the latest NCES has published, from the 2023 Digest of Education Statistics).
 - **SLOAS**, Federal Reserve Z.1 student loan balance series, quarterly, 2006 onward.
 
 ### Healthcare

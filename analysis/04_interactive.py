@@ -293,7 +293,7 @@ def tuition_time_price() -> None:
 
     merged = wages.merge(tuition, on="year")
     merged["hours_for_tuition"] = merged["amount_nominal"] / merged["hourly_nominal"]
-    merged = merged[merged["year"] <= 2021]  # tuition data ends 2021
+    merged = merged[merged["year"] <= 2022]  # tuition data ends 2022 (NCES d23)
 
     fig = go.Figure()
     for dem, label in DEM_LABELS.items():

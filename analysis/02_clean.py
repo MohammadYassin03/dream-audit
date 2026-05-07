@@ -210,11 +210,12 @@ def clean_nces_tuition() -> pd.DataFrame:
         return pd.DataFrame()
     df = pd.read_excel(fp, header=None)
 
-    # Section header rows discovered by inspection
+    # NCES d23 (2023 Digest) section header rows. Sections shifted slightly
+    # from d22 because more years were appended.
     sections = [
-        (5,  60, "all"),       # "All institutions"
-        (61, 116, "public"),   # "Public institutions"
-        (117, 172, "private"), # "Private (nonprofit + for-profit)"
+        (5,  61,  "all"),      # "All institutions"
+        (62, 118, "public"),   # "Public institutions"
+        (119, 175, "private"), # "Private (nonprofit + for-profit)"
     ]
     pieces = []
     for start, end, label in sections:
@@ -224,16 +225,17 @@ def clean_nces_tuition() -> pd.DataFrame:
         block = block.dropna(subset=["year"])
         block["year"] = block["year"].astype(int)
 
-        # Current-dollar columns (cols 13 to 21):
-        #   13-15: total tuition+fees+room+board, All / 4yr / 2yr
-        #   16-18: tuition+required-fees only, All / 4yr / 2yr
+        # In d23 the layout is current dollars (cols 1-12), then constant
+        # 2022-23 dollars (cols 13-24). We want current.
+        #   1-3: total tuition+fees+room+board, All / 4yr / 2yr
+        #   4-6: tuition+required-fees only, All / 4yr / 2yr
         col_map = {
-            ("total", "all"):           13,
-            ("total", "4yr"):           14,
-            ("total", "2yr"):           15,
-            ("tuition_fees", "all"):    16,
-            ("tuition_fees", "4yr"):    17,
-            ("tuition_fees", "2yr"):    18,
+            ("total", "all"):           1,
+            ("total", "4yr"):           2,
+            ("total", "2yr"):           3,
+            ("tuition_fees", "all"):    4,
+            ("tuition_fees", "4yr"):    5,
+            ("tuition_fees", "2yr"):    6,
         }
         for (cat, lvl), col in col_map.items():
             piece = block[["year", col]].rename(columns={col: "amount_nominal"})

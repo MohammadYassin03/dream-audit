@@ -124,8 +124,9 @@ def download_nhe() -> None:
 
 def download_nces_tuition() -> None:
     """NCES Digest Table 330.10. Average tuition + fees + room/board, by
-    institution type, current and constant dollars, since 1963."""
-    url = "https://nces.ed.gov/programs/digest/d22/tables/xls/tabn330.10.xlsx"
+    institution type, current and constant dollars, since 1963. d23 is the
+    2023 Digest, extends through academic year 2022-23 (latest NCES data)."""
+    url = "https://nces.ed.gov/programs/digest/d23/tables/xls/tabn330.10.xlsx"
     out = RAW / "nces" / "tabn330_10.xlsx"
     out.parent.mkdir(exist_ok=True)
     if out.exists():

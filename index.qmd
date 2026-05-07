@@ -101,7 +101,7 @@ Part I, entering adulthood
 
 ### The launchpad
 
-The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought him roughly 5,900 hours of housing per home. Working a standard 2,000 hours a year, he could pay for the median American house in under three years. Two and a half decades later the house was still the same house. His wage, in time terms, was not.
+The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought a median American home in roughly 5,900 hours of labor. Working a standard 2,000 hours a year, he could pay for the house in under three years. Two and a half decades later the house was still the same house. His wage, in time terms, was not.
 
 ```{=html}
 <div class="ledger">
@@ -111,14 +111,14 @@ The Starter is who you were just after school. Early-to-mid twenties, working th
 </div>
 ```
 
-Tuition is the simplest line on the Starter's balance sheet because it is the first one. In 1963 a year of in-state public four year tuition and required fees cost \$243 in the dollars of the day. In 2021 it cost \$9,596. Wages went up too, but not nearly enough to keep the ratio constant.
+Tuition is the simplest line on the Starter's balance sheet because it is the first one. In 1963 a year of in-state public four year tuition and required fees cost \$243 in the dollars of the day. In 2022 it cost \$9,750, the latest year NCES has published. Wages went up too, but not nearly enough to keep the ratio constant.
 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/tuition_time_price.html"
           style="width:100%; min-height:540px; border:none;"
           loading="lazy"
-          title="Hours of full-time labor required to afford one year of public four-year tuition and fees, by demographic, 1967 to 2021."></iframe>
+          title="Hours of full-time labor required to afford one year of public four-year tuition and fees, by demographic, 1967 to 2022."></iframe>
 </div>
 ```
 
