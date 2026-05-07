@@ -53,9 +53,15 @@ format:
         <meta property="og:title" content="The American Dream, Audited">
         <meta property="og:description" content="Three lives, four demographics, six decades of US economic data. A DSAN scholarship submission, Georgetown University, Spring 2026.">
         <meta property="og:url" content="https://dream.my677.georgetown.domains/">
+        <meta property="og:image" content="https://dream.my677.georgetown.domains/assets/og-card.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="Title card for The American Dream, Audited: a DSAN scholarship project measuring six decades of US economic data.">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="The American Dream, Audited">
         <meta name="twitter:description" content="Three lives, four demographics, six decades of US economic data.">
+        <meta name="twitter:image" content="https://dream.my677.georgetown.domains/assets/og-card.png">
+        <meta name="twitter:image:alt" content="Title card for The American Dream, Audited.">
         <meta name="description" content="A data-driven audit of how the American economic promise played out across three life stages and four demographic groups, 1960 to today.">
         <meta name="theme-color" content="#1B3D6B">
 
