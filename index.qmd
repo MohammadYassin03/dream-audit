@@ -580,6 +580,174 @@ Each line is a different version of "fair." The 13 percent line is the populatio
 
 The actual line, in red, sits below all three counterfactuals. It does not approach population parity. It does not match the Asian American growth rate. It does not even hold the 1989 gap. It widens it. The choice of which counterfactual to use as a benchmark is normative. The position of the actual line below all three of them is not.
 
+```{=html}
+<section class="explorer fullbleed-cream" aria-labelledby="explorer-heading">
+  <div class="explorer-inner">
+    <div class="kicker">Explore the data</div>
+    <h2 id="explorer-heading">The time-price explorer</h2>
+    <p class="explorer-deck">Pick an item, a set of demographic groups, and a view. The chart updates as you go. The same underlying data the audit was built on, exposed for your own questions.</p>
+
+    <div class="explorer-grid">
+      <aside class="explorer-controls" aria-label="Chart controls">
+
+        <fieldset class="explorer-fieldset">
+          <legend>What are you buying?</legend>
+          <div id="explorer-items" role="radiogroup"></div>
+        </fieldset>
+
+        <fieldset class="explorer-fieldset">
+          <legend>Whose hours of work?</legend>
+          <div id="explorer-demographics"></div>
+        </fieldset>
+
+        <fieldset class="explorer-fieldset">
+          <legend>How do you want to see it?</legend>
+          <div id="explorer-view" role="radiogroup">
+            <label><input type="radio" name="view" value="hours" checked> Hours of work</label>
+            <label><input type="radio" name="view" value="ratio"> Ratio to white men</label>
+            <label><input type="radio" name="view" value="gap"> Gap from white men (hours)</label>
+          </div>
+        </fieldset>
+
+      </aside>
+
+      <div class="explorer-chart">
+        <div id="explorer-fig"></div>
+        <div id="explorer-summary" class="explorer-summary"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  fetch('interactive/explorer_data.json').then(r => r.json()).then(D => {
+    const itemsEl = document.getElementById('explorer-items');
+    const demEl   = document.getElementById('explorer-demographics');
+    const viewRadios = document.querySelectorAll('input[name=view]');
+
+    // Build item radios
+    D.items.forEach((it, i) => {
+      const id = 'explorer-item-' + it.key;
+      const wrap = document.createElement('label');
+      wrap.innerHTML = `<input type="radio" name="item" value="${it.key}" id="${id}" ${i===0?'checked':''}> ${it.label}`;
+      itemsEl.appendChild(wrap);
+    });
+
+    // Build demographic checkboxes
+    const defaultDems = new Set(['white_men', 'black_women', 'hispanic_women']);
+    D.demographics.forEach(d => {
+      const id = 'explorer-dem-' + d.key;
+      const wrap = document.createElement('label');
+      wrap.innerHTML = `<input type="checkbox" value="${d.key}" id="${id}" ${defaultDems.has(d.key)?'checked':''}>` +
+        `<span class="explorer-swatch" style="background:${d.color}"></span> ${d.label}`;
+      demEl.appendChild(wrap);
+    });
+
+    function selectedItem() {
+      return document.querySelector('input[name=item]:checked').value;
+    }
+    function selectedDems() {
+      return Array.from(document.querySelectorAll('#explorer-demographics input:checked')).map(x => x.value);
+    }
+    function selectedView() {
+      return document.querySelector('input[name=view]:checked').value;
+    }
+
+    function recordsFor(item, dem) {
+      return D.records.filter(r => r.item === item && r.demographic === dem)
+                      .sort((a, b) => a.year - b.year);
+    }
+
+    function update() {
+      const item = selectedItem();
+      const dems = selectedDems();
+      const view = selectedView();
+      const itemMeta = D.items.find(x => x.key === item);
+      const wmRows = recordsFor(item, 'white_men');
+      const wmByYear = Object.fromEntries(wmRows.map(r => [r.year, r.hours]));
+
+      const traces = [];
+      let yLabel = `Hours of work for ${itemMeta.unit_long}`;
+      let hoverFmt = '%{y:,.0f} hours';
+      if (view === 'ratio') { yLabel = 'Hours, as a ratio of white men'; hoverFmt = '%{y:.2f}× white men'; }
+      if (view === 'gap')   { yLabel = 'Hours of work minus white men'; hoverFmt = '%{y:,.0f} hour gap'; }
+
+      dems.forEach(dem => {
+        const demMeta = D.demographics.find(x => x.key === dem);
+        const rows = recordsFor(item, dem);
+        const xs = [], ys = [];
+        rows.forEach(r => {
+          if (view === 'hours') { xs.push(r.year); ys.push(r.hours); }
+          else if (view === 'ratio') {
+            const wm = wmByYear[r.year];
+            if (wm) { xs.push(r.year); ys.push(r.hours / wm); }
+          } else if (view === 'gap') {
+            const wm = wmByYear[r.year];
+            if (wm) { xs.push(r.year); ys.push(r.hours - wm); }
+          }
+        });
+        traces.push({
+          x: xs, y: ys, mode: 'lines',
+          name: demMeta.label,
+          line: {color: demMeta.color, width: 2.6, dash: dem === 'white_men' && view !== 'hours' ? 'dot' : 'solid'},
+          hovertemplate: `<b>${demMeta.label}</b><br>%{x}: ${hoverFmt}<extra></extra>`,
+        });
+      });
+
+      const ref = (view === 'ratio') ? {type:'line', xref:'paper', x0:0, x1:1, y0:1, y1:1,
+                                        line:{color:'#36456A', width:1, dash:'dot'}}
+                  : (view === 'gap') ? {type:'line', xref:'paper', x0:0, x1:1, y0:0, y1:0,
+                                        line:{color:'#36456A', width:1, dash:'dot'}}
+                  : null;
+
+      const layout = {
+        title: {text: `${itemMeta.label}, in ${view === 'ratio' ? 'ratio to white men' : view === 'gap' ? 'gap from white men' : 'hours of full-time labor'}`,
+                font: {family:'Cormorant Garamond, serif', size: 22, color:'#14233D'}},
+        font: {family:'Inter, sans-serif', size: 12, color:'#14233D'},
+        paper_bgcolor: '#F4F5F7', plot_bgcolor: '#F4F5F7',
+        xaxis: {gridcolor:'#D8CFB8', linecolor:'#36456A', tickfont:{color:'#36456A'}, fixedrange: false},
+        yaxis: {title:{text: yLabel, font:{size: 12, color:'#36456A'}},
+                gridcolor:'#D8CFB8', linecolor:'#36456A', tickfont:{color:'#36456A'},
+                rangemode: view === 'gap' ? 'normal' : 'tozero'},
+        margin: {l: 70, r: 30, t: 60, b: 60},
+        legend: {orientation: 'h', y: -0.18, x: 0.5, xanchor: 'center'},
+        shapes: ref ? [ref] : [],
+      };
+
+      Plotly.react('explorer-fig', traces, layout, {responsive: true, displayModeBar: false});
+
+      // Summary line: latest year, top-burden vs lowest-burden
+      const latestYear = D.year_max;
+      const summaryRows = dems.map(d => {
+        const rows = recordsFor(item, d);
+        const last = rows.filter(r => r.year <= latestYear).pop();
+        return last ? {dem: d, label: D.demographics.find(x=>x.key===d).label, hours: last.hours, year: last.year} : null;
+      }).filter(Boolean);
+      summaryRows.sort((a,b) => b.hours - a.hours);
+      const sumEl = document.getElementById('explorer-summary');
+      if (summaryRows.length === 0) { sumEl.textContent = ''; return; }
+      const fmt = n => n.toLocaleString('en-US', {maximumFractionDigits: 0});
+      const top = summaryRows[0], bot = summaryRows[summaryRows.length - 1];
+      let line = `In ${top.year}, a ${top.label} works ${fmt(top.hours)} hours for ${itemMeta.unit_long}.`;
+      if (summaryRows.length >= 2) {
+        line += ` A ${bot.label} works ${fmt(bot.hours)}.`;
+        const gap = top.hours - bot.hours;
+        line += ` That is a ${fmt(gap)}-hour gap, about ${(gap/2000).toFixed(1)} working years.`;
+      }
+      sumEl.textContent = line;
+    }
+
+    document.querySelectorAll('input[name=item]').forEach(el => el.addEventListener('change', update));
+    document.querySelectorAll('#explorer-demographics input').forEach(el => el.addEventListener('change', update));
+    viewRadios.forEach(el => el.addEventListener('change', update));
+
+    update();
+  });
+})();
+</script>
+```
+
 ## What the Audit Found
 
 ::: {.kicker}

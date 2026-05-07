@@ -1,3 +1,140 @@
+/* Time-price explorer dashboard */
+.explorer-inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem 2rem;
+}
+
+.explorer-inner .kicker {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9C2C3C;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.explorer-inner h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #14233D;
+  margin: 0 0 0.5rem 0;
+  border-top: none;
+  padding-top: 0;
+}
+
+.explorer-deck {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #36456A;
+  max-width: 720px;
+  margin: 0 0 2rem 0;
+}
+
+.explorer-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: 2rem;
+}
+
+.explorer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: #14233D;
+}
+
+.explorer-fieldset {
+  border: 1px solid #D8CFB8;
+  border-radius: 3px;
+  background: #FBF7EE;
+  padding: 0.85rem 1rem 1rem 1rem;
+  margin: 0;
+}
+
+.explorer-fieldset legend {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #36456A;
+  padding: 0 0.4rem;
+}
+
+.explorer-fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.explorer-fieldset label:hover { color: #1B3D6B; }
+
+.explorer-fieldset input[type="radio"],
+.explorer-fieldset input[type="checkbox"] {
+  accent-color: #1B3D6B;
+  cursor: pointer;
+}
+
+.explorer-fieldset input[type="radio"]:focus-visible,
+.explorer-fieldset input[type="checkbox"]:focus-visible {
+  outline: 2px solid #9C2C3C;
+  outline-offset: 2px;
+}
+
+.explorer-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.explorer-chart {
+  background: #F4F5F7;
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-chart > #explorer-fig {
+  width: 100%;
+  height: 540px;
+}
+
+.explorer-summary {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #36456A;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #D8CFB8;
+  line-height: 1.55;
+}
+
+@media (max-width: 980px) {
+  .explorer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .explorer-chart > #explorer-fig {
+    height: 460px;
+  }
+  .explorer-inner {
+    padding: 2rem 1.25rem 3rem 1.25rem;
+  }
+}
+
 /* "What does it cost you?" calculator widget */
 .time-calc {
   margin: 4rem 0 2.5rem 0;

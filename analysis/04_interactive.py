@@ -137,6 +137,87 @@ def wage_divergence() -> None:
     )
 
 
+# Time Price Explorer DATA. Same source as the calculator but expanded
+# into a long-format table the dashboard can filter and reshape.
+def explorer_data() -> None:
+    import json
+    wages = pd.read_parquet(PROC / "wages_demographic_stitched.parquet")
+    wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / 40
+
+    long = pd.read_parquet(PROC / "series_long.parquet")
+    home_q = long.query("series == 'MSPUS'").copy()
+    home_q["year"] = home_q["date"].dt.year
+    home_y = home_q.groupby("year", as_index=False)["value"].mean().rename(columns={"value": "home"})
+
+    tuition = pd.read_parquet(PROC / "tuition.parquet").query(
+        "institution_type == 'public' and cost_category == 'tuition_fees' and institution_level == '4yr'"
+    )[["year", "amount_nominal"]].rename(columns={"amount_nominal": "tuition"})
+
+    cpi_med = long.query("series == 'CPIMEDSL'").copy()
+    cpi_med["year"] = cpi_med["date"].dt.year
+    cpi_med_y = cpi_med.groupby("year", as_index=False)["value"].mean()
+    base_med = cpi_med_y.loc[cpi_med_y["year"] == 2020, "value"].mean()
+    # Anchor 2020 family premium at $21,342 (KFF 2020 EHB Survey)
+    cpi_med_y["healthcare"] = 21342.0 * (cpi_med_y["value"] / base_med)
+
+    # Combine costs by year
+    cost_by_year = {}
+    for y in range(1970, 2026):
+        h = home_y.loc[home_y["year"] == y, "home"]
+        t = tuition.loc[tuition["year"] == y, "tuition"]
+        m = cpi_med_y.loc[cpi_med_y["year"] == y, "healthcare"]
+        cost_by_year[y] = {
+            "home":       float(h.iloc[0]) if len(h) else None,
+            "tuition":    float(t.iloc[0]) if len(t) else None,
+            "healthcare": float(m.iloc[0]) if len(m) else None,
+        }
+
+    # Long-format records: one row per (item, demographic, year)
+    items = [
+        {"key": "home",       "label": "Median US home",
+         "unit_short": "home", "unit_long": "the median US home"},
+        {"key": "tuition",    "label": "One year of public 4-yr tuition",
+         "unit_short": "year of school", "unit_long": "one year of public four-year tuition + fees"},
+        {"key": "healthcare", "label": "Family health insurance premium",
+         "unit_short": "year of family premium",
+         "unit_long": "one year of employer-sponsored family health insurance premium"},
+    ]
+    demographics = [
+        {"key": "white_men",      "label": "White men",      "color": DEMOGRAPHIC["white_men"]},
+        {"key": "white_women",    "label": "White women",    "color": DEMOGRAPHIC["white_women"]},
+        {"key": "black_men",      "label": "Black men",      "color": DEMOGRAPHIC["black_men"]},
+        {"key": "black_women",    "label": "Black women",    "color": DEMOGRAPHIC["black_women"]},
+        {"key": "hispanic_men",   "label": "Hispanic men",   "color": DEMOGRAPHIC["hispanic_men"]},
+        {"key": "hispanic_women", "label": "Hispanic women", "color": DEMOGRAPHIC["hispanic_women"]},
+    ]
+
+    records = []
+    for item in items:
+        for dem in demographics:
+            d = wages.query("demographic == @dem['key']").sort_values("year")
+            for r in d.itertuples():
+                if not (1970 <= r.year <= 2025):
+                    continue
+                cost = cost_by_year.get(int(r.year), {}).get(item["key"])
+                if cost is None or r.hourly_nominal is None:
+                    continue
+                records.append({
+                    "item": item["key"],
+                    "demographic": dem["key"],
+                    "year": int(r.year),
+                    "hours": cost / r.hourly_nominal,
+                })
+
+    payload = {
+        "items": items,
+        "demographics": demographics,
+        "year_min": 1970,
+        "year_max": 2025,
+        "records": records,
+    }
+    (OUT / "explorer_data.json").write_text(json.dumps(payload))
+
+
 # Calculator DATA: writes a single JSON with all the inputs the
 # "What does it cost you" widget needs. For each (demographic, year)
 # pair we ship the hourly wage; for each year we ship the cost of the
@@ -918,6 +999,8 @@ def main() -> None:
     print("  lattice_data.json (for inline scrollytelling)")
     calculator_data()
     print("  calculator_data.json (for the calculator widget)")
+    explorer_data()
+    print("  explorer_data.json (for the time-price explorer)")
     longevity_gap()
     print("  longevity_gap.html")
     wealth_share_stack()
