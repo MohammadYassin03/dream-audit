@@ -101,13 +101,13 @@ Part I, entering adulthood
 
 ### The launchpad
 
-The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought a median American home in roughly 5,900 hours of labor. Working a standard 2,000 hours a year, he could pay for the house in under three years. Two and a half decades later the house was still the same house. His wage, in time terms, was not.
+The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought a median American home in roughly 5,900 hours of labor. Working a standard 2,000 hours a year, he could pay for the house in under three years. Half a century later, in 2025, that same house took 12,275 hours of labor to buy. The house had not changed. His wage, in time terms, had.
 
 ```{=html}
 <div class="ledger">
-  <div class="ledger-cell"><span class="stat">99</span><span class="stat-label">Hours for one year of public 4-yr tuition · White man · 1970</span></div>
-  <div class="ledger-cell"><span class="stat">338</span><span class="stat-label">Hours for the same · 2020</span></div>
-  <div class="ledger-cell"><span class="stat">3.4×</span><span class="stat-label">More working time</span></div>
+  <div class="ledger-cell"><span class="stat">99</span><span class="stat-label">Hours of work a white man needed for one year of public 4-yr tuition in 1970</span></div>
+  <div class="ledger-cell"><span class="stat">332</span><span class="stat-label">Hours he needed for the same tuition in 2022</span></div>
+  <div class="ledger-cell"><span class="stat">3.4×</span><span class="stat-label">More hours of work</span></div>
 </div>
 ```
 
