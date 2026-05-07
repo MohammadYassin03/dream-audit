@@ -226,7 +226,7 @@ The full derivation, including the caveats this unit does not handle, is in the 
       <span>buying</span>
       <select id="calc-item" aria-label="Item"></select>
       <span>in</span>
-      <input type="range" id="calc-year" min="1967" max="2025" step="1" value="2020" aria-label="Year">
+      <input type="range" id="calc-year" min="1970" max="2025" step="1" value="2020" aria-label="Year">
       <span id="calc-year-display" class="calc-year-display">2020</span>
       <span>.</span>
     </div>

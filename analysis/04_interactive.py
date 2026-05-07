@@ -105,20 +105,14 @@ def calculator_data() -> None:
     home_q["year"] = home_q["date"].dt.year
     home_y = home_q.groupby("year", as_index=False)["value"].mean().rename(columns={"value": "home"})
 
-    cpi_rent_q = long.query("series == 'CUUR0000SEHA'").copy()
-    cpi_rent_q["year"] = cpi_rent_q["date"].dt.year
-    cpi_rent_y = cpi_rent_q.groupby("year", as_index=False)["value"].mean()
-    anchor = cpi_rent_y.loc[cpi_rent_y["year"] == 2020, "value"].mean()
-    cpi_rent_y["rent_monthly"] = 1200.0 * (cpi_rent_y["value"] / anchor)
-    cpi_rent_y["rent_yearly"] = cpi_rent_y["rent_monthly"] * 12
-
     tuition = pd.read_parquet(PROC / "tuition.parquet").query(
         "institution_type == 'public' and cost_category == 'tuition_fees' and institution_level == '4yr'"
     )[["year", "amount_nominal"]].rename(columns={"amount_nominal": "tuition"})
 
-    # Combine into per-year basket
-    years = sorted(set(home_y["year"]) | set(cpi_rent_y["year"]) | set(tuition["year"]))
-    years = [y for y in years if 1967 <= y <= 2025]
+    # Year range starts at 1970 (avoids a noisy 1967 first-data-year for both
+    # home prices and Census P-38 wages) and ends at 2025.
+    years = sorted(set(home_y["year"]) | set(tuition["year"]))
+    years = [y for y in years if 1970 <= y <= 2025]
 
     def get(df, col, year):
         v = df.loc[df["year"] == year, col]
@@ -128,17 +122,16 @@ def calculator_data() -> None:
     for y in years:
         cost_by_year[y] = {
             "home":    get(home_y, "home", y),
-            "rent":    get(cpi_rent_y, "rent_yearly", y),
             "tuition": get(tuition, "tuition", y),
         }
 
-    # Hourly wage by (demographic, year)
+    # Hourly wage by (demographic, year), 1970+
     wage_by_dem_year = {}
     for dem in wages["demographic"].unique():
         d = wages.query("demographic == @dem")
         wage_by_dem_year[dem] = {
             int(r.year): float(r.hourly_nominal)
-            for r in d.itertuples() if 1967 <= r.year <= 2025
+            for r in d.itertuples() if 1970 <= r.year <= 2025
         }
 
     payload = {
@@ -153,7 +146,6 @@ def calculator_data() -> None:
         "items": [
             {"key": "home",    "label": "the median US home",            "unit": "home"},
             {"key": "tuition", "label": "one year of public 4-yr tuition","unit": "year of school"},
-            {"key": "rent",    "label": "one year of median rent",       "unit": "year of rent"},
         ],
         "years": years,
         "wage": wage_by_dem_year,
