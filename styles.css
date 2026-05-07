@@ -58,10 +58,15 @@
   transition: border-color 0.15s ease;
 }
 
-.time-calc-controls select:hover,
-.time-calc-controls select:focus {
+.time-calc-controls select:hover {
   border-color: #1B3D6B;
-  outline: none;
+}
+
+.time-calc-controls select:focus-visible,
+.time-calc-controls input[type="range"]:focus-visible {
+  outline: 2px solid #9C2C3C;
+  outline-offset: 2px;
+  border-color: #1B3D6B;
 }
 
 .time-calc-controls input[type="range"] {
@@ -71,7 +76,6 @@
   height: 6px;
   background: #D8CFB8;
   border-radius: 3px;
-  outline: none;
   cursor: pointer;
 }
 
