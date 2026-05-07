@@ -33,37 +33,41 @@ Both of these caveats argue that the time-price comparison, if anything, *unders
 ## Data sources
 
 ### Inflation backbones
-- **CPIAUCSL**, BLS CPI All Urban Consumers, monthly, via FRED. Used as primary deflator.
-- **PCEPI**, BEA PCE Price Index, monthly, via FRED. Used as a sensitivity check; the "real" series in this audit are reproduced under both deflators in the appendix tables.
+- [**CPIAUCSL**](https://fred.stlouisfed.org/series/CPIAUCSL), BLS CPI All Urban Consumers, monthly, via [FRED](https://fred.stlouisfed.org/). Used as primary deflator.
+- [**PCEPI**](https://fred.stlouisfed.org/series/PCEPI), BEA PCE Price Index, monthly, via FRED. Used as a sensitivity check; the "real" series in this audit are reproduced under both deflators in the appendix tables.
 
 ### Wages, by demographic
-- **BLS CPS median weekly earnings**, full-time wage and salary workers, race × sex breakdown. FRED series `LEU0252883900Q` (white men), `LEU0252884200Q` (white women), `LEU0252884800Q` (black men), `LEU0252885100Q` (black women), `LEU0252885700Q` (hispanic men), `LEU0252886000Q` (hispanic women). Quarterly, 2000+.
-- **Pre-2000 backfill**: Census Historical Income Tables P-38 (Full-Time, Year-Round Workers, Median Earnings, by Sex), separately for White (1967+), Black (1967+), and Hispanic (1974+). Annual values are converted to weekly equivalents (÷ 52) and joined to the BLS LEU quarterly series at the 2000 boundary using a 3-year multiplicative scale factor that anchors Census levels to BLS at the seam. The two surveys define "full-time" slightly differently (BLS LEU is wage and salary; Census P-38 includes all workers), so the level shift at the seam is corrected by the scale factor; the shape of the pre-2000 trend is taken from Census.
+- **BLS CPS median weekly earnings**, full-time wage and salary workers, race × sex breakdown. FRED series [`LEU0252883900Q`](https://fred.stlouisfed.org/series/LEU0252883900Q) (white men), [`LEU0252884200Q`](https://fred.stlouisfed.org/series/LEU0252884200Q) (white women), [`LEU0252884800Q`](https://fred.stlouisfed.org/series/LEU0252884800Q) (black men), [`LEU0252885100Q`](https://fred.stlouisfed.org/series/LEU0252885100Q) (black women), [`LEU0252885700Q`](https://fred.stlouisfed.org/series/LEU0252885700Q) (hispanic men), [`LEU0252886000Q`](https://fred.stlouisfed.org/series/LEU0252886000Q) (hispanic women). Quarterly, 2000+.
+- **Pre-2000 backfill**: [Census Historical Income Tables](https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-people.html), Table P-38 (Full-Time, Year-Round Workers, Median Earnings, by Sex), separately for White (1967+), Black (1967+), and Hispanic (1974+). Annual values are converted to weekly equivalents (÷ 52) and joined to the BLS LEU quarterly series at the 2000 boundary using a 3-year multiplicative scale factor that anchors Census levels to BLS at the seam. The two surveys define "full-time" slightly differently (BLS LEU is wage and salary; Census P-38 includes all workers), so the level shift at the seam is corrected by the scale factor; the shape of the pre-2000 trend is taken from Census.
 
 ### Housing
-- **MSPUS**, median sales price of houses sold, US Census/HUD via FRED, quarterly.
-- **RHORUSQ156N**, homeownership rate, Census/CPS via FRED, quarterly.
-- **CUUR0000SEHA**, CPI rent of primary residence, BLS via FRED, monthly. We anchor to a 2020 ACS national median rent of \$1,200/month and scale by the CUUR0000SEHA index ratio for first-pass rent affordability. *Caveat: this assumes the national basket of rent has the same composition over time, which is increasingly false post-2010 with regional divergence. We discuss the regional-gap blind spot in the limitations section.*
-- **MORTGAGE30US**, 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
+- [**MSPUS**](https://fred.stlouisfed.org/series/MSPUS), median sales price of houses sold, US Census/HUD via FRED, quarterly.
+- [**RHORUSQ156N**](https://fred.stlouisfed.org/series/RHORUSQ156N), homeownership rate, Census/CPS via FRED, quarterly.
+- [**CUUR0000SEHA**](https://fred.stlouisfed.org/series/CUUR0000SEHA), CPI rent of primary residence, BLS via FRED, monthly. We anchor to a 2020 ACS national median rent of \$1,200/month and scale by the CUUR0000SEHA index ratio for first-pass rent affordability. *Caveat: this assumes the national basket of rent has the same composition over time, which is increasingly false post-2010 with regional divergence. We discuss the regional-gap blind spot in the limitations section.*
+- [**MORTGAGE30US**](https://fred.stlouisfed.org/series/MORTGAGE30US), 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
 
 ### Education
-- **NCES Digest Table 330.10**, average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to 2022 (the latest NCES has published, from the 2023 Digest of Education Statistics).
-- **SLOAS**, Federal Reserve Z.1 student loan balance series, quarterly, 2006 onward.
+- [**NCES Digest Table 330.10**](https://nces.ed.gov/programs/digest/d23/tables/dt23_330.10.asp), average tuition, fees, room and board for full-time students at four-year public, four-year private, and two-year public institutions, in current and constant dollars, 1963 to 2022 (the latest NCES has published, from the 2023 Digest of Education Statistics).
+- [**SLOAS**](https://fred.stlouisfed.org/series/SLOAS), Federal Reserve Z.1 student loan balance series, quarterly, 2006 onward.
 
 ### Healthcare
-- **CMS National Health Expenditures**, historical tables, 1960 to 2023. Used for per-capita NHE and out-of-pocket per capita.
-- **CPIMEDSL**, CPI Medical Care, BLS via FRED, monthly.
+- [**CMS National Health Expenditures**](https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical), historical tables, 1960 to 2023. Used for per-capita NHE and out-of-pocket per capita.
+- [**CPIMEDSL**](https://fred.stlouisfed.org/series/CPIMEDSL), CPI Medical Care, BLS via FRED, monthly.
+
+### Hours and labor force
+- [**AWHNONAG**](https://fred.stlouisfed.org/series/AWHNONAG), average weekly hours, total private, BLS via FRED, monthly.
+- [**LNS11300001**](https://fred.stlouisfed.org/series/LNS11300001) (men) and [**LNS11300002**](https://fred.stlouisfed.org/series/LNS11300002) (women), civilian labor force participation rate, BLS via FRED, monthly.
 
 ### Wealth
-- **Federal Reserve Distributional Financial Accounts (DFA)**, share of total net worth by race and by wealth quintile, quarterly, 1989Q3 onward. Bulk download from federalreserve.gov.
-- **Survey of Consumer Finances (SCF)**, triennial, 1962 to 2022, for pre-DFA wealth observations.
+- **Federal Reserve [Distributional Financial Accounts (DFA)](https://www.federalreserve.gov/releases/z1/dataviz/dfa/distribute/chart/)**, share of total net worth by race and by wealth quintile, quarterly, 1989Q3 onward. Bulk download from federalreserve.gov.
+- **Federal Reserve [Survey of Consumer Finances (SCF)](https://www.federalreserve.gov/econres/scfindex.htm)**, triennial, 1962 to 2022, for pre-DFA wealth observations.
 
 ### Retirement and longevity
-- **CDC NCHS National Vital Statistics System**, life expectancy at birth and at age 65, by race and sex, annual, 1900 to 2018, via the CDC open-data portal (Socrata). The dataset stops at 2018; the COVID-era life expectancy reversal (2020 to 2022) is referenced qualitatively in the narrative but not in the chart series.
-- **SSA Trustees Reports**, replacement rate at the median wage level, annual.
+- [**CDC NCHS, Death rates and life expectancy at birth**](https://data.cdc.gov/NCHS/NCHS-Death-rates-and-life-expectancy-at-birth/w9j2-ggv5), 1900 to 2018, by race and sex, via the CDC open-data portal (Socrata). The dataset stops at 2018; the COVID-era life expectancy reversal (2020 to 2022) is referenced qualitatively in the narrative but not in the chart series.
+- [**SSA Trustees Reports**](https://www.ssa.gov/OACT/TR/), replacement rate at the median wage level, annual.
 
 ### NLP corpus
-- **State of the Union addresses**, 1960 to most recent, sourced from the UCSB American Presidency Project. Each address is treated as a year-document; paragraph-level segmentation is preserved.
+- **State of the Union addresses**, 1960 to most recent. The 1960 to 2021 addresses are sourced from [stdlib-js/datasets-sotu](https://github.com/stdlib-js/datasets-sotu) (a clean text corpus of every SOTU since 1790). The 2022, 2023, and 2024 addresses are scraped from the [Miller Center's presidential speeches archive](https://millercenter.org/the-presidency/presidential-speeches). The original archive of presidential speeches and messages, including all SOTUs, is hosted by the [UCSB American Presidency Project](https://www.presidency.ucsb.edu/). Each address is treated as a year-document; paragraph-level segmentation is preserved.
 
 ## Counterfactual construction
 
@@ -96,7 +100,7 @@ The full source code is available on request. To reproduce locally with the FRED
 ```bash
 # Python 3.11+ with: pandas, numpy, plotly, requests, pyarrow, openpyxl,
 # scikit-learn, sentence-transformers, bertopic, transformers, torch
-export FRED_API_KEY=YOUR_KEY  # free at fred.stlouisfed.org/docs/api/api_key.html
+export FRED_API_KEY=YOUR_KEY  # free at https://fred.stlouisfed.org/docs/api/api_key.html
 python analysis/01_acquire.py
 python analysis/02_clean.py
 python analysis/03_analyze.py
