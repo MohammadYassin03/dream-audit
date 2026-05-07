@@ -48,16 +48,165 @@ The audit, in one chart
 :::
 
 ```{=html}
-<div class="interactive-embed">
-  <iframe src="interactive/time_price_lattice.html"
-          style="width:100%; min-height:480px; border:none;"
-          loading="lazy"
-          title="Heatmap of hours of full-time labor required to afford the median US home, by demographic and decade."></iframe>
+<div class="lattice-scrolly fullbleed-cream">
+  <div class="lattice-scrolly-inner">
+    <div class="lattice-graphic">
+      <div id="lattice-fig"></div>
+    </div>
+    <div class="lattice-steps">
+      <div class="lattice-step" data-step="overview">
+        <p>The lattice below is the audit in one image. Six demographics, seven decades. Each cell is the average hours of full-time work it took to afford the median US home in that decade. Hover any cell for the exact number. Scroll to walk through it.</p>
+      </div>
+      <div class="lattice-step" data-step="wm-1970">
+        <p>Start with the 1970s white man, the demographic at the centre of the original Dream's promise. About 5,900 hours, just under three working years to buy the median American home.</p>
+      </div>
+      <div class="lattice-step" data-step="wm-2020">
+        <p>The same demographic in the 2020s needs over 12,000 hours. Twice the time for the same kind of house. The Dream's flagship beneficiary works twice as long now as he did then.</p>
+      </div>
+      <div class="lattice-step" data-step="bw-1970">
+        <p>Now look at Black women in the same 1970s decade. The cell sits at over 12,000 hours, double the white man's burden. Where the 1970s white man started, the 1970s Black woman ended.</p>
+      </div>
+      <div class="lattice-step" data-step="col-2020">
+        <p>Read down a column for the gap between demographics in any single decade. In the 2020s, Hispanic women sit at over 20,000 hours, white men at 12,000. The whole column has shifted upward, but the gap inside it has not closed.</p>
+      </div>
+      <div class="lattice-step" data-step="row-bw">
+        <p>Read across a row for one demographic's trajectory. Black women's burden moved from 12,000 hours in the 1970s to over 17,000 in the 2020s. Even with the wage gap narrowing in percentage terms, every Black woman's home in the 2020s is bought with more hours of labor than her grandmother's was.</p>
+      </div>
+      <div class="lattice-step" data-step="diagonal">
+        <p>The whole pattern, in one shape. Every cell in the lattice has gotten worse over time, the worst-off cells have stayed at the top, and the best-off cells have caught up to where the worst-off cells started. The lattice is the audit's signature.</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script>
+(function() {
+  const FIG_ID = 'lattice-fig';
+  fetch('interactive/lattice_data.json').then(r => r.json()).then(D => {
+    const P = D.palette;
+
+    // Heatmap colorscale, light-to-dusty-red, matched to the static lattice
+    const colorscale = [
+      [0.0, P.cream_pale],
+      [0.4, P.gold_pale],
+      [0.7, '#D89090'],
+      [1.0, P.flag_red_pale],
+    ];
+
+    // Annotations for each cell value
+    const annotations = [];
+    for (let ri = 0; ri < D.y.length; ri++) {
+      for (let ci = 0; ci < D.x.length; ci++) {
+        const v = D.z[ri][ci];
+        annotations.push({
+          x: D.x[ci], y: D.y[ri],
+          text: D.text[ri][ci],
+          showarrow: false,
+          font: {family: 'Inter, sans-serif', size: 12,
+                 color: v === null ? P.ink_soft : P.ink,
+                 style: v === null ? 'italic' : 'normal'},
+        });
+      }
+    }
+
+    const data = [{
+      type: 'heatmap',
+      x: D.x, y: D.y, z: D.z,
+      colorscale: colorscale,
+      zmin: D.zmin, zmax: D.zmax,
+      hovertemplate: '<b>%{y}</b><br>%{x}: %{z:,.0f} hours<extra></extra>',
+      colorbar: {
+        title: {text: 'Hours', font: {size: 11, color: P.ink_soft}},
+        tickfont: {color: P.ink_soft, size: 10},
+        outlinewidth: 0, thickness: 12, len: 0.7,
+      },
+    }];
+
+    const layout = {
+      annotations: annotations,
+      shapes: [],
+      paper_bgcolor: P.cream_pale,
+      plot_bgcolor: P.cream_pale,
+      font: {family: 'Inter, sans-serif', size: 12, color: P.ink},
+      title: {text: 'The time price of a home, by decade and demographic',
+              font: {family: 'Cormorant Garamond, serif', size: 22, color: P.ink}},
+      xaxis: {side: 'top', tickfont: {size: 12, color: P.ink_soft},
+              gridcolor: 'rgba(0,0,0,0)', fixedrange: true},
+      yaxis: {tickfont: {size: 11, color: P.ink_soft}, autorange: 'reversed',
+              gridcolor: 'rgba(0,0,0,0)', fixedrange: true},
+      margin: {l: 130, r: 40, t: 60, b: 30},
+    };
+
+    Plotly.newPlot(FIG_ID, data, layout,
+      {responsive: true, displayModeBar: false}).then(() => setupScrolly(D));
+  });
+
+  function setupScrolly(D) {
+    // Map step keys to highlight rectangles. Each entry returns an array
+    // of Plotly shape objects. xIdx and yIdx are 0-based positions in the
+    // x and y arrays. Cells are drawn at their integer index plus or minus 0.5.
+    const xIdx = (label) => D.x.indexOf(label);
+    const yIdx = (label) => D.y.indexOf(label);
+    const cell = (xLabel, yLabel) => ({
+      type: 'rect', xref: 'x', yref: 'y',
+      x0: xIdx(xLabel) - 0.5, x1: xIdx(xLabel) + 0.5,
+      y0: yIdx(yLabel) - 0.5, y1: yIdx(yLabel) + 0.5,
+      line: {color: '#1F2933', width: 3},
+      fillcolor: 'rgba(0,0,0,0)',
+    });
+    const column = (xLabel) => ({
+      type: 'rect', xref: 'x', yref: 'y',
+      x0: xIdx(xLabel) - 0.5, x1: xIdx(xLabel) + 0.5,
+      y0: -0.5, y1: D.y.length - 0.5,
+      line: {color: '#1F2933', width: 2.5},
+      fillcolor: 'rgba(0,0,0,0)',
+    });
+    const row = (yLabel) => ({
+      type: 'rect', xref: 'x', yref: 'y',
+      x0: -0.5, x1: D.x.length - 0.5,
+      y0: yIdx(yLabel) - 0.5, y1: yIdx(yLabel) + 0.5,
+      line: {color: '#1F2933', width: 2.5},
+      fillcolor: 'rgba(0,0,0,0)',
+    });
+
+    const STEPS = {
+      overview: [],
+      'wm-1970':  [cell('1970s', 'White men')],
+      'wm-2020':  [cell('1970s', 'White men'), cell('2020s', 'White men')],
+      'bw-1970':  [cell('1970s', 'White men'), cell('1970s', 'Black women')],
+      'col-2020': [column('2020s')],
+      'row-bw':   [row('Black women')],
+      diagonal:   [cell('1970s', 'White men'), cell('2020s', 'White men'),
+                   cell('1970s', 'Black women'), cell('2020s', 'Black women'),
+                   cell('2020s', 'Hispanic women')],
+    };
+
+    // Defer until scrollama is loaded (it's deferred in the head)
+    const ready = () => {
+      if (typeof scrollama === 'undefined') return setTimeout(ready, 50);
+      const scroller = scrollama();
+      const steps = document.querySelectorAll('.lattice-step');
+      scroller.setup({step: steps, offset: 0.55, debug: false})
+        .onStepEnter(({element}) => {
+          element.classList.add('is-active');
+          const key = element.dataset.step;
+          const shapes = STEPS[key] || [];
+          Plotly.relayout(FIG_ID, {shapes: shapes});
+        })
+        .onStepExit(({element, direction}) => {
+          if (direction === 'down') element.classList.remove('is-active');
+        });
+      window.addEventListener('resize', () => scroller.resize());
+    };
+    ready();
+  }
+})();
+</script>
 ```
 
 ::: {.figure-caption}
-Hours of full time labor required to afford the median US home, averaged within each decade. Read across a row (left to right) for that demographic's trajectory through time. Read down a column (top to bottom) for the gap between demographics in that decade. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
+Hours of full time labor required to afford the median US home, averaged within each decade. Source: BLS CPS median weekly earnings (2000+) joined to Census P-38 historical income tables (1967+) at the 2000 boundary, divided into median home sales price (FRED MSPUS). See [Methods](appendix.qmd) for the stitching procedure.
 :::
 
 ### A note on the unit

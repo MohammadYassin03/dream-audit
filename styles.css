@@ -1,46 +1,84 @@
 /* Scrollytelling helper styles */
-.scrolly-container {
-  position: relative;
+.scrolly-container, .scrolly-step,
+.lattice-scrolly, .lattice-step {
+  --accent-rest: #1B3D6B;
+  --accent-active: #9C2C3C;
+}
+
+.scrolly-step,
+.lattice-step {
+  background: rgba(244, 245, 247, 0.97);
+  padding: 1.1rem 1.4rem;
+  border-left: 3px solid var(--accent-rest);
+  border-radius: 2px;
+  box-shadow: 0 1px 6px rgba(20, 35, 61, 0.06);
+  transition: border-left-color 0.25s ease, box-shadow 0.25s ease;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #1F2933;
+}
+
+.scrolly-step p,
+.lattice-step p { margin: 0; }
+
+.scrolly-step.is-active,
+.lattice-step.is-active {
+  border-left-color: var(--accent-active);
+  box-shadow: 0 2px 12px rgba(156, 44, 60, 0.18);
+}
+
+/* Lattice scrollytelling specific layout */
+.lattice-scrolly-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem 1.5rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.4fr);
+  gap: 2.5rem;
+  position: relative;
 }
 
-.scrolly-graphic {
+.lattice-graphic {
   position: sticky;
-  top: 4rem;
+  top: 6rem;
   height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  align-self: start;
 }
 
-.scrolly-steps {
+.lattice-graphic > #lattice-fig {
+  width: 100%;
+  height: 100%;
+}
+
+.lattice-steps {
   display: flex;
   flex-direction: column;
-  gap: 75vh;
-  padding: 25vh 0;
+  gap: 70vh;
+  padding: 22vh 0 30vh 0;
 }
 
-.scrolly-step {
-  background: rgba(236, 238, 241, 0.95);
-  padding: 1.25rem 1.5rem;
-  border-left: 3px solid #1B3D6B;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(20, 35, 61, 0.05);
+.lattice-step {
+  max-width: 480px;
 }
 
-.scrolly-step.is-active {
-  border-left-color: #9C2C3C;
-}
-
-@media (max-width: 720px) {
-  .scrolly-container {
+@media (max-width: 880px) {
+  .lattice-scrolly-inner {
     grid-template-columns: 1fr;
+    padding: 1.25rem 1rem;
+    gap: 0;
   }
-  .scrolly-graphic {
-    position: relative;
-    height: 60vh;
-    top: 0;
+  .lattice-graphic {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0.5rem;
+    height: 65vh;
+  }
+  .lattice-steps {
+    gap: 60vh;
+    padding: 18vh 0 25vh 0;
+  }
+  .lattice-step {
+    max-width: none;
   }
 }

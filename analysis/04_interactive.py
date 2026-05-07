@@ -90,6 +90,58 @@ def wage_divergence() -> None:
     )
 
 
+# Time Price Lattice DATA for inline scrollytelling render. Exports the
+# computed z-matrix and labels as JSON so the article page can render the
+# same lattice inline (not in an iframe) and scrollama can highlight
+# specific cells in response to scroll events.
+def time_price_lattice_scrolly_data() -> None:
+    import json
+    tp = pd.read_parquet(PROC / "time_price.parquet")
+    tp["decade"] = (tp["year"] // 10) * 10
+    decade_avg = tp.groupby(["demographic", "decade"], as_index=False)["hours_for_home"].mean()
+
+    dem_order = ["hispanic_women", "black_women", "hispanic_men",
+                 "black_men", "white_women", "white_men"]
+    decade_order = sorted(decade_avg["decade"].unique().tolist())
+    decade_labels = [f"{d}s" for d in decade_order]
+    dem_labels = [DEM_LABELS[d] for d in dem_order]
+
+    z = []
+    text = []
+    for dem in dem_order:
+        zrow, trow = [], []
+        for d in decade_order:
+            v = decade_avg.query("demographic == @dem and decade == @d")["hours_for_home"]
+            v = float(v.iloc[0]) if len(v) else None
+            zrow.append(v)
+            trow.append(f"{v:,.0f}" if v is not None else "n/a")
+        z.append(zrow)
+        text.append(trow)
+
+    payload = {
+        "x": decade_labels,
+        "y": dem_labels,
+        "z": z,
+        "text": text,
+        "zmin": 4000,
+        "zmax": 22000,
+        "dem_order": dem_order,
+        "decade_order": decade_order,
+        "palette": {
+            "ink": PALETTE["ink"],
+            "ink_soft": PALETTE["ink_soft"],
+            "cream": PALETTE["cream"],
+            "cream_pale": PALETTE["cream_pale"],
+            "gold": PALETTE["gold"],
+            "gold_pale": PALETTE["gold_pale"],
+            "flag_red": PALETTE["flag_red"],
+            "flag_red_pale": PALETTE["flag_red_pale"],
+            "rule": PALETTE["rule"],
+        },
+    }
+    (OUT / "lattice_data.json").write_text(json.dumps(payload, indent=2))
+
+
 # Time Price Lattice (signature heatmap viz)
 def time_price_lattice_heatmap() -> None:
     """Heatmap: 6 demographic rows by 6 decade columns. Cell = average hours
@@ -751,6 +803,8 @@ def main() -> None:
     print("  wage_divergence.html")
     time_price_lattice_heatmap()
     print("  time_price_lattice.html")
+    time_price_lattice_scrolly_data()
+    print("  lattice_data.json (for inline scrollytelling)")
     longevity_gap()
     print("  longevity_gap.html")
     wealth_share_stack()
