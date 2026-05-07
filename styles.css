@@ -1,3 +1,168 @@
+/* "What does it cost you?" calculator widget */
+.time-calc {
+  margin: 4rem 0 2.5rem 0;
+}
+
+.time-calc-card {
+  background: #FBF7EE;
+  border-left: 3px solid #1B3D6B;
+  padding: 1.75rem 2rem 2rem 2rem;
+  border-radius: 3px;
+  box-shadow: 0 2px 12px rgba(20, 35, 61, 0.07);
+}
+
+.time-calc-card .kicker {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9C2C3C;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.time-calc-card h3 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #14233D;
+  font-style: normal;
+  margin: 0 0 1.25rem 0;
+}
+
+.time-calc-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.6rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #1F2933;
+  margin-bottom: 1.5rem;
+}
+
+.time-calc-controls select,
+.time-calc-controls input[type="range"] {
+  font-family: "Inter", sans-serif;
+  font-size: 1.0rem;
+  color: #14233D;
+}
+
+.time-calc-controls select {
+  background: #FFFFFF;
+  border: 1px solid #D8CFB8;
+  border-radius: 2px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.time-calc-controls select:hover,
+.time-calc-controls select:focus {
+  border-color: #1B3D6B;
+  outline: none;
+}
+
+.time-calc-controls input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 180px;
+  height: 6px;
+  background: #D8CFB8;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.time-calc-controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #9C2C3C;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(20,35,61,0.2);
+}
+
+.time-calc-controls input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #9C2C3C;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.calc-year-display {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1B3D6B;
+  min-width: 3.2ch;
+  display: inline-block;
+}
+
+.time-calc-result {
+  border-top: 1px solid #D8CFB8;
+  padding-top: 1.25rem;
+}
+
+.time-calc-primary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.time-calc-hours {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #9C2C3C;
+}
+
+.time-calc-units {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: #36456A;
+  text-transform: uppercase;
+}
+
+.time-calc-secondary {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #36456A;
+  margin-bottom: 0.6rem;
+}
+
+.time-calc-compare {
+  font-family: "Inter", sans-serif;
+  font-size: 0.92rem;
+  color: #36456A;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .time-calc-card {
+    padding: 1.5rem 1.25rem;
+  }
+  .time-calc-controls {
+    font-size: 1.0rem;
+  }
+  .time-calc-controls input[type="range"] {
+    width: 140px;
+  }
+  .time-calc-hours {
+    font-size: 3.2rem;
+  }
+}
+
 /* Scrollytelling helper styles */
 .scrolly-container, .scrolly-step,
 .lattice-scrolly, .lattice-step {

@@ -215,6 +215,113 @@ The audit measures everything in hours of work, not dollars. The reason is infla
 
 The full derivation, including the caveats this unit does not handle, is in the [Methods page](appendix.qmd).
 
+```{=html}
+<section class="time-calc" aria-labelledby="time-calc-heading">
+  <div class="time-calc-card">
+    <div class="kicker">Try it on yourself</div>
+    <h3 id="time-calc-heading">What does it cost you?</h3>
+    <div class="time-calc-controls">
+      <span>I am a</span>
+      <select id="calc-dem" aria-label="Demographic"></select>
+      <span>buying</span>
+      <select id="calc-item" aria-label="Item"></select>
+      <span>in</span>
+      <input type="range" id="calc-year" min="1967" max="2025" step="1" value="2020" aria-label="Year">
+      <span id="calc-year-display" class="calc-year-display">2020</span>
+      <span>.</span>
+    </div>
+    <div class="time-calc-result">
+      <div class="time-calc-primary">
+        <span id="calc-hours" class="time-calc-hours">—</span>
+        <span class="time-calc-units">hours of full-time work</span>
+      </div>
+      <div id="calc-secondary" class="time-calc-secondary"></div>
+      <div id="calc-compare" class="time-calc-compare"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  fetch('interactive/calculator_data.json').then(r => r.json()).then(D => {
+    const demSel = document.getElementById('calc-dem');
+    const itemSel = document.getElementById('calc-item');
+    const yearInp = document.getElementById('calc-year');
+    const yearDisp = document.getElementById('calc-year-display');
+    const hoursEl = document.getElementById('calc-hours');
+    const secEl = document.getElementById('calc-secondary');
+    const cmpEl = document.getElementById('calc-compare');
+
+    D.demographics.forEach(d => {
+      const o = document.createElement('option');
+      o.value = d.key; o.textContent = d.label; demSel.appendChild(o);
+    });
+    D.items.forEach(it => {
+      const o = document.createElement('option');
+      o.value = it.key; o.textContent = it.label; itemSel.appendChild(o);
+    });
+
+    const fmt = n => n.toLocaleString('en-US', {maximumFractionDigits: 0});
+    const itemMeta = key => D.items.find(x => x.key === key);
+
+    function priceAt(dem, item, year) {
+      const w = (D.wage[dem] || {})[year];
+      const c = (D.cost[year] || {})[item];
+      if (w == null || c == null) return null;
+      return c / w;
+    }
+
+    function describe(hours) {
+      const yrs = hours / 2000;
+      const wks = hours / 40;
+      if (hours >= 4000) return `That is about ${yrs.toFixed(1)} years of full-time work.`;
+      if (hours >= 200) return `That is about ${wks.toFixed(0)} working weeks.`;
+      return `That is about ${wks.toFixed(1)} working weeks.`;
+    }
+
+    function earliest(dem) {
+      const ks = Object.keys(D.wage[dem] || {}).map(Number).sort((a,b)=>a-b);
+      return ks.length ? ks[0] : null;
+    }
+
+    function update() {
+      const dem = demSel.value, item = itemSel.value, year = +yearInp.value;
+      yearDisp.textContent = year;
+      const demLabel = D.demographics.find(d => d.key === dem).label;
+      const itemLabel = itemMeta(item).label;
+
+      const hrs = priceAt(dem, item, year);
+      if (hrs == null) {
+        hoursEl.textContent = 'n/a';
+        secEl.textContent = `Earnings data for a ${demLabel} are not available for ${year}.`;
+        cmpEl.textContent = '';
+        return;
+      }
+      hoursEl.textContent = fmt(hrs);
+      secEl.textContent = describe(hrs);
+
+      const baseYear = earliest(dem);
+      if (baseYear !== null && baseYear < year) {
+        const baseHrs = priceAt(dem, item, baseYear);
+        if (baseHrs != null) {
+          const ratio = hrs / baseHrs;
+          const dir = ratio > 1 ? 'more' : 'less';
+          cmpEl.textContent =
+            `In ${baseYear}, the same ${demLabel} would have worked ${fmt(baseHrs)} hours for ${itemLabel}. ` +
+            `That makes today's burden ${ratio.toFixed(2)}× ${dir}.`;
+        } else cmpEl.textContent = '';
+      } else cmpEl.textContent = '';
+    }
+
+    [demSel, itemSel].forEach(el => el.addEventListener('change', update));
+    yearInp.addEventListener('input', update);
+    demSel.value = 'white_men'; itemSel.value = 'home'; yearInp.value = 2020;
+    update();
+  });
+})();
+</script>
+```
+
 ## Prologue · The Promise
 
 ::: {.kicker}

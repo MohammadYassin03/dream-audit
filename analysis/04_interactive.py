@@ -90,6 +90,78 @@ def wage_divergence() -> None:
     )
 
 
+# Calculator DATA: writes a single JSON with all the inputs the
+# "What does it cost you" widget needs. For each (demographic, year)
+# pair we ship the hourly wage; for each year we ship the cost of the
+# three basket items (median home, public 4-yr tuition+fees, est. rent).
+# The widget JS does the divisions client-side.
+def calculator_data() -> None:
+    import json
+    wages = pd.read_parquet(PROC / "wages_demographic_stitched.parquet")
+    wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / 40
+
+    long = pd.read_parquet(PROC / "series_long.parquet")
+    home_q = long.query("series == 'MSPUS'").copy()
+    home_q["year"] = home_q["date"].dt.year
+    home_y = home_q.groupby("year", as_index=False)["value"].mean().rename(columns={"value": "home"})
+
+    cpi_rent_q = long.query("series == 'CUUR0000SEHA'").copy()
+    cpi_rent_q["year"] = cpi_rent_q["date"].dt.year
+    cpi_rent_y = cpi_rent_q.groupby("year", as_index=False)["value"].mean()
+    anchor = cpi_rent_y.loc[cpi_rent_y["year"] == 2020, "value"].mean()
+    cpi_rent_y["rent_monthly"] = 1200.0 * (cpi_rent_y["value"] / anchor)
+    cpi_rent_y["rent_yearly"] = cpi_rent_y["rent_monthly"] * 12
+
+    tuition = pd.read_parquet(PROC / "tuition.parquet").query(
+        "institution_type == 'public' and cost_category == 'tuition_fees' and institution_level == '4yr'"
+    )[["year", "amount_nominal"]].rename(columns={"amount_nominal": "tuition"})
+
+    # Combine into per-year basket
+    years = sorted(set(home_y["year"]) | set(cpi_rent_y["year"]) | set(tuition["year"]))
+    years = [y for y in years if 1967 <= y <= 2025]
+
+    def get(df, col, year):
+        v = df.loc[df["year"] == year, col]
+        return float(v.iloc[0]) if len(v) else None
+
+    cost_by_year = {}
+    for y in years:
+        cost_by_year[y] = {
+            "home":    get(home_y, "home", y),
+            "rent":    get(cpi_rent_y, "rent_yearly", y),
+            "tuition": get(tuition, "tuition", y),
+        }
+
+    # Hourly wage by (demographic, year)
+    wage_by_dem_year = {}
+    for dem in wages["demographic"].unique():
+        d = wages.query("demographic == @dem")
+        wage_by_dem_year[dem] = {
+            int(r.year): float(r.hourly_nominal)
+            for r in d.itertuples() if 1967 <= r.year <= 2025
+        }
+
+    payload = {
+        "demographics": [
+            {"key": "white_men",      "label": "white man"},
+            {"key": "white_women",    "label": "white woman"},
+            {"key": "black_men",      "label": "Black man"},
+            {"key": "black_women",    "label": "Black woman"},
+            {"key": "hispanic_men",   "label": "Hispanic man"},
+            {"key": "hispanic_women", "label": "Hispanic woman"},
+        ],
+        "items": [
+            {"key": "home",    "label": "the median US home",            "unit": "home"},
+            {"key": "tuition", "label": "one year of public 4-yr tuition","unit": "year of school"},
+            {"key": "rent",    "label": "one year of median rent",       "unit": "year of rent"},
+        ],
+        "years": years,
+        "wage": wage_by_dem_year,
+        "cost": cost_by_year,
+    }
+    (OUT / "calculator_data.json").write_text(json.dumps(payload))
+
+
 # Time Price Lattice DATA for inline scrollytelling render. Exports the
 # computed z-matrix and labels as JSON so the article page can render the
 # same lattice inline (not in an iframe) and scrollama can highlight
@@ -805,6 +877,8 @@ def main() -> None:
     print("  time_price_lattice.html")
     time_price_lattice_scrolly_data()
     print("  lattice_data.json (for inline scrollytelling)")
+    calculator_data()
+    print("  calculator_data.json (for the calculator widget)")
     longevity_gap()
     print("  longevity_gap.html")
     wealth_share_stack()
