@@ -28,21 +28,22 @@
   box-shadow: 0 2px 12px rgba(156, 44, 60, 0.18);
 }
 
-/* Lattice scrollytelling specific layout */
+/* Lattice scrollytelling specific layout. Chart gets the wide center
+   column; the step cards live in a narrower right rail. */
 .lattice-scrolly-inner {
-  max-width: 1280px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem 1.5rem;
+  padding: 2rem 2rem 4rem 2rem;
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.4fr);
-  gap: 2.5rem;
+  grid-template-columns: minmax(620px, 2.2fr) minmax(280px, 1fr);
+  gap: 3rem;
   position: relative;
 }
 
 .lattice-graphic {
   position: sticky;
-  top: 6rem;
-  height: 80vh;
+  top: 5rem;
+  height: 82vh;
   align-self: start;
 }
 
@@ -55,13 +56,24 @@
   display: flex;
   flex-direction: column;
   gap: 70vh;
-  padding: 22vh 0 30vh 0;
+  padding: 24vh 0 32vh 0;
 }
 
 .lattice-step {
-  max-width: 480px;
+  max-width: 360px;
 }
 
+/* Tablet: keep two columns but tighten everything */
+@media (max-width: 1100px) {
+  .lattice-scrolly-inner {
+    grid-template-columns: minmax(500px, 2fr) minmax(240px, 1fr);
+    gap: 2rem;
+    padding: 1.5rem 1.25rem 3rem 1.25rem;
+  }
+  .lattice-step { max-width: 320px; }
+}
+
+/* Mobile: stack vertically */
 @media (max-width: 880px) {
   .lattice-scrolly-inner {
     grid-template-columns: 1fr;
@@ -72,7 +84,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0.5rem;
-    height: 65vh;
+    height: 60vh;
   }
   .lattice-steps {
     gap: 60vh;
