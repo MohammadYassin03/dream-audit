@@ -6,30 +6,7 @@ format:
     toc: false
 ---
 
-```{=html}
-<style>
-  /* The site theme constrains main.content to a 760px article column,
-     and Quarto's column-page caps at ~1170px. Dashboard needs the full
-     viewport. Override both, scoped to this page only. */
-  main.content,
-  main.content.column-page,
-  #quarto-content,
-  div.quarto-container.page-layout-full {
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    grid-column: 1 / -1 !important;
-  }
-  /* Hide auto-generated Quarto title block; we render our own .dash-header */
-  .quarto-title-block { display: none !important; }
-  /* Stop the body's "starred parchment" background from showing through
-     in the gaps between dashboard sections; give the dashboard its own
-     solid cream-pale field. */
-  body { background-color: #ECEEF1; background-image: none !important; }
-</style>
-```
+
 
 
 ```{=html}

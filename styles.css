@@ -1,4 +1,26 @@
-/* ============== Full dashboard page (explore.qmd) ============== */
+/* ============== Full dashboard page (explore.qmd) ==============
+   Scoped via :has() so they only activate when a .dash-header is on
+   the page. Removes the article-column constraints from the site
+   theme so the dashboard fills the full viewport. */
+body:has(.dash-header) main.content,
+body:has(.dash-header) main.content.column-page,
+body:has(.dash-header) #quarto-content,
+body:has(.dash-header) #quarto-document-content {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  grid-column: 1 / -1 !important;
+}
+
+body:has(.dash-header) .quarto-title-block { display: none !important; }
+
+body:has(.dash-header) {
+  background-image: none !important;
+  background-color: #ECEEF1 !important;
+}
+
 .dash-header {
   max-width: 1480px;
   margin: 0 auto;
@@ -40,15 +62,23 @@
 .dash-controls {
   max-width: 1480px;
   margin: 0 auto;
-  padding: 1rem 2rem 1.5rem 2rem;
+  padding: 1.25rem 2rem 1.5rem 2rem;
   display: grid;
-  grid-template-columns: 1.4fr 2.2fr 1fr 1.4fr;
-  gap: 1.5rem;
+  grid-template-columns: 1fr 2fr;
+  grid-template-areas:
+    "variable demographics"
+    "years    transformation";
+  gap: 1.25rem 1.75rem;
   align-items: start;
   background: #FBF7EE;
   border-top: 1px solid #D8CFB8;
   border-bottom: 1px solid #D8CFB8;
 }
+
+.dash-controls > .dash-control:nth-child(1) { grid-area: variable; }
+.dash-controls > .dash-control:nth-child(2) { grid-area: demographics; }
+.dash-controls > .dash-control:nth-child(3) { grid-area: years; }
+.dash-controls > .dash-control:nth-child(4) { grid-area: transformation; }
 
 .dash-control { display: flex; flex-direction: column; gap: 0.4rem; }
 
