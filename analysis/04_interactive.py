@@ -60,10 +60,13 @@ def time_price_lattice(item: str = "hours_for_home") -> None:
     )
 
 
-# Wage divergence: nominal hourly wage by demographic
+# Wage divergence: nominal hourly wage by demographic, with annotated
+# policy timeline overlaid as vertical event markers at the top of the chart.
 def wage_divergence() -> None:
-    wages = pd.read_parquet(PROC / "wages_demographic.parquet")
+    # Use stitched data so the chart spans 1967-2025, not just BLS 2000+
+    wages = pd.read_parquet(PROC / "wages_demographic_stitched.parquet")
     wages["hourly_nominal"] = wages["weekly_earnings_nominal"] / 40
+
     fig = go.Figure()
     for dem, label in DEM_LABELS.items():
         d = wages.query("demographic == @dem").sort_values("year")
@@ -75,13 +78,57 @@ def wage_divergence() -> None:
             line=dict(color=DEMOGRAPHIC.get(dem, PALETTE["ink"]), width=2.4),
             hovertemplate="<b>%{fullData.name}</b><br>%{x}: $%{y:,.2f}/hr (nominal)<extra></extra>",
         ))
-    fig.update_layout(**plotly_layout(
-        title=dict(text="Nominal hourly wages, by race and sex"),
+
+    # Policy events to overlay. (year, short label, longer hover description)
+    events = [
+        (1972, "Title IX",
+         "Title IX (1972) banned sex discrimination in federally-funded education and "
+         "is the year Hispanic origin was first separately tabulated in the CPS."),
+        (1978, "401(k) created",
+         "Revenue Act of 1978 created the 401(k) tax provision, which over the next "
+         "two decades replaced defined-benefit pensions as the dominant retirement vehicle."),
+        (1996, "Welfare reform",
+         "Personal Responsibility and Work Opportunity Reconciliation Act (1996) ended "
+         "the federal entitlement to cash assistance and pushed low-wage workers into "
+         "the labor market."),
+        (2008, "Great Recession",
+         "The 2008 financial crisis triggered the longest period of nominal-wage "
+         "stagnation since the 1970s. Wage recovery took roughly six years."),
+        (2020, "COVID-19",
+         "The COVID-19 pandemic compressed wage distributions dramatically. Many "
+         "low-wage demographic cells saw their largest one-year nominal pay raise on record."),
+    ]
+
+    shapes = []
+    annotations = []
+    for year, label, desc in events:
+        shapes.append(dict(
+            type="line", xref="x", yref="paper",
+            x0=year, x1=year, y0=0, y1=0.93,
+            line=dict(color=PALETTE["ink_soft"], width=1, dash="dot"),
+            opacity=0.55,
+        ))
+        annotations.append(dict(
+            x=year, y=1.005, xref="x", yref="paper",
+            text=label, showarrow=False,
+            font=dict(size=10, color=PALETTE["ink_soft"], family="Inter, sans-serif"),
+            xanchor="left", yanchor="bottom",
+            textangle=-30,
+            hovertext=desc,
+        ))
+
+    layout = plotly_layout(
+        title=dict(text="Nominal hourly wages, by race and sex (1967 to 2025)"),
         xaxis_title=None,
         yaxis_title="USD per hour (nominal, full-time wage/salary workers)",
-        height=520,
+        height=560,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
-    ))
+        margin=dict(l=60, r=30, t=120, b=60),  # extra top room for event labels
+    )
+    layout["shapes"] = shapes
+    layout["annotations"] = annotations
+    fig.update_layout(**layout)
+
     fig.write_html(
         OUT / "wage_divergence.html",
         include_plotlyjs="cdn",
