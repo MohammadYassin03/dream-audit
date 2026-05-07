@@ -148,18 +148,44 @@
   line-height: 1.55;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
+  .time-calc {
+    margin: 3rem 0 2rem 0;
+  }
   .time-calc-card {
-    padding: 1.5rem 1.25rem;
+    padding: 1.4rem 1.2rem 1.6rem 1.2rem;
+  }
+  .time-calc-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
   }
   .time-calc-controls {
-    font-size: 1.0rem;
+    font-size: 0.98rem;
+    gap: 0.4rem 0.5rem;
+    line-height: 1.7;
+  }
+  .time-calc-controls select {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
   }
   .time-calc-controls input[type="range"] {
-    width: 140px;
+    width: 120px;
+    flex: 0 0 auto;
+  }
+  .calc-year-display {
+    font-size: 1.2rem;
   }
   .time-calc-hours {
-    font-size: 3.2rem;
+    font-size: 3.0rem;
+  }
+  .time-calc-units {
+    font-size: 0.85rem;
+  }
+  .time-calc-secondary {
+    font-size: 1.0rem;
+  }
+  .time-calc-compare {
+    font-size: 0.85rem;
   }
 }
 
