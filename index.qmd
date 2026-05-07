@@ -36,7 +36,7 @@ A DSAN scholarship submission · Georgetown University · Spring 2026<br>
 :::
 
 ::: {.dropcap}
-In 1965, a 24 year old guy with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By 1965 standards he was nothing special. The American Dream was basically what his employer, his bank, and his country had agreed to hand him in exchange for showing up to work. He was also, almost certainly, white.
+In 1965, a 24 year old guy with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By 1965 standards he was nothing special. The American Dream was basically what his employer, his bank, and his country had agreed to hand him in exchange for showing up to work.[^dream-coinage] He was also, almost certainly, white.
 
 This site audits that promise. The question isn't whether the Dream existed. That's a sentiment question, not a measurement one. The question is what it actually paid out, year by year, to the people the country actually had. Men and women, white and Black and Hispanic, fresh out of school and at the end of working life. It uses six decades of public data and one unit, hours of full time labor, to find out.
 
@@ -62,7 +62,7 @@ Hours of full time labor required to afford the median US home, averaged within 
 
 ### A note on the unit
 
-The audit measures everything in hours of work, not dollars. The reason is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. The official deflators (CPI, PCE, Boskin-adjusted CPI-U-RS) disagree across 60 years by enough that two analysts could reach opposite conclusions while doing competent work. Hours of labor sidestep the deflator entirely. A home that took 5,900 hours of work in 1970 and one that takes 11,800 hours in 2020 are directly comparable. The unit cancels the dollar. What remains is how much of your life a thing costs.
+The audit measures everything in hours of work, not dollars. The reason is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. The official deflators (CPI, PCE, Boskin-adjusted CPI-U-RS) disagree across 60 years by enough that two analysts could reach opposite conclusions while doing competent work.[^deflator-bias] Hours of labor sidestep the deflator entirely. A home that took 5,900 hours of work in 1970 and one that takes 11,800 hours in 2020 are directly comparable. The unit cancels the dollar. What remains is how much of your life a thing costs.
 
 The full derivation, including the caveats this unit does not handle, is in the [Methods page](appendix.qmd).
 
@@ -128,7 +128,7 @@ Hours of full time labor required to afford one year of in-state public four yea
 
 ### The starting line, by demographic
 
-The Starter does not enter the labor market on equal footing. In the 1970s a Black woman working full time in the US earned, on average, about 60 percent of what a white man earned for the same hours. The gap closed, slowly, through the 1980s and 1990s. It never closed completely. The chart below tracks nominal hourly wages, by race and sex, across the working life of three generations of Starters.
+The Starter does not enter the labor market on equal footing. In the 1970s a Black woman working full time in the US earned, on average, about 60 percent of what a white man earned for the same hours.[^pay-gap] The gap closed, slowly, through the 1980s and 1990s. It never closed completely. The chart below tracks nominal hourly wages, by race and sex, across the working life of three generations of Starters.
 
 ```{=html}
 <div class="interactive-embed">
@@ -140,7 +140,7 @@ The Starter does not enter the labor market on equal footing. In the 1970s a Bla
 ```
 
 ::: {.figure-caption}
-Nominal median weekly earnings of full time wage and salary workers, expressed as an hourly rate (÷ 40). Source: BLS Current Population Survey LEU series for 2000+ joined to Census Historical Income Tables P-38 for 1967+ (white/Black) and 1974+ (Hispanic). Hispanic earnings were not separately tabulated by the federal government before 1972. The gap on the chart's left edge is the data's own silence on that question.
+Nominal median weekly earnings of full time wage and salary workers, expressed as an hourly rate (÷ 40). Source: BLS Current Population Survey LEU series for 2000+ joined to Census Historical Income Tables P-38 for 1967+ (white/Black) and 1974+ (Hispanic). Hispanic earnings were not separately tabulated by the federal government before 1972.[^hispanic-tracking] The gap on the chart's left edge is the data's own silence on that question.
 :::
 
 Read the chart not for the rising lines (every line rises in nominal terms) but for the gaps between them. The vertical distance between any two lines at any given year is what an extra hour of work was worth, depending on who you were.
@@ -199,9 +199,9 @@ This is the part of the audit where the rising wage line in Act I has to be re-r
 
 Three line items on the modern Builder's balance sheet were either zero or trivial in 1960:
 
-1. **Childcare.** When the second earner in the household started working, the work that had been unpaid (raising children) became a paid line item. Center-based childcare in the US now costs, on average, around 10 percent of household income for two-parent households with two children, and significantly more in coastal cities. In 1960 this was zero, because no one was paying for it. The cost did not appear. It just changed who was paying.
-2. **Employer health premiums.** Before Medicare's 1965 launch, most workers had no premium because most workers had no insurance. By 2020 the average employer-sponsored family premium had climbed past \$21,000 a year. The pay stub shows the worker covering only about a third of that, with the employer "paying" the rest. But employers budget in total-compensation terms: every dollar they spend on health insurance is a dollar that doesn't go into wages. Decades of labor-economics research find that when premiums rise, wages rise more slowly by roughly the same amount.[^premium-incidence] The cut never shows up on a paycheck, but it lands on the worker either way. The full \$21,000 is the premium. The accounting just hides most of it.
-3. **401(k) contributions.** In 1960 the median large employer offered a defined-benefit pension funded by the company. The worker's job was to show up. The pension was a deferred wage the company paid. By 2020 that arrangement was gone for most workers. The 401(k) replaced it. The worker now funds their own retirement out of current take-home pay, with the company sometimes matching. The Builder of 1960 did not pay this line. The Builder of 2020 does, because the alternative is no retirement at all.
+1. **Childcare.** When the second earner in the household started working, the work that had been unpaid (raising children) became a paid line item. Center-based childcare in the US now costs, on average, around 10 percent of household income for two-parent households with two children, and significantly more in coastal cities.[^childcare-cost] In 1960 this was zero, because no one was paying for it. The cost did not appear. It just changed who was paying.
+2. **Employer health premiums.** Before Medicare's 1965 launch, most workers had no premium because most workers had no insurance. By 2020 the average employer-sponsored family premium had climbed past \$21,000 a year.[^kff-premium] The pay stub shows the worker covering only about a third of that, with the employer "paying" the rest. But employers budget in total-compensation terms: every dollar they spend on health insurance is a dollar that doesn't go into wages. Decades of labor-economics research find that when premiums rise, wages rise more slowly by roughly the same amount.[^premium-incidence] The cut never shows up on a paycheck, but it lands on the worker either way. The full \$21,000 is the premium. The accounting just hides most of it.
+3. **401(k) contributions.** In 1960 the median large employer offered a defined-benefit pension funded by the company. The worker's job was to show up. The pension was a deferred wage the company paid. By 2020 that arrangement was gone for most workers. The 401(k) replaced it.[^pension-shift] The worker now funds their own retirement out of current take-home pay, with the company sometimes matching. The Builder of 1960 did not pay this line. The Builder of 2020 does, because the alternative is no retirement at all.
 
 None of these three line items show up in CPI as a single basket category. All three are real. The Builder of 2020 has a household budget that is structurally different from the Builder of 1960's, even before either of them buys groceries.
 
@@ -307,7 +307,7 @@ The audit's findings to this point are descriptive. They say what happened. The 
 The actual line (red) is the Federal Reserve DFA series for Black households' share of US household net worth, 1989Q3 to 2025Q4. The three counterfactual lines are constructed from the same DFA dataset. See [Methods](appendix.qmd) for the formulas.
 :::
 
-Each line is a different version of "fair." The 13 percent line is the population-parity benchmark. Black Americans are about 13 percent of the US population, so a wealth share that matched population share would sit at 13 percent. The gold dashed line is what the Black household share would look like if it had grown at the same rate as the "Other" category (mostly Asian American households) grew between 1989 and 2025. The pale-blue dash-dotted line is the most conservative counterfactual: just hold the 1989 racial wealth gap exactly where it was. No closure, just no widening.
+Each line is a different version of "fair." The 13 percent line is the population-parity benchmark. Black Americans are about 13 percent of the US population,[^census-pop] so a wealth share that matched population share would sit at 13 percent. The gold dashed line is what the Black household share would look like if it had grown at the same rate as the "Other" category (mostly Asian American households) grew between 1989 and 2025. The pale-blue dash-dotted line is the most conservative counterfactual: just hold the 1989 racial wealth gap exactly where it was. No closure, just no widening.
 
 The actual line, in red, sits below all three counterfactuals. It does not approach population parity. It does not match the Asian American growth rate. It does not even hold the 1989 gap. It widens it. The choice of which counterfactual to use as a benchmark is normative. The position of the actual line below all three of them is not.
 
@@ -335,7 +335,7 @@ Where the evidence points
 
 ### For policymakers
 
-The wage-side measures of the racial gap have moved more than the wealth-side measures over the past sixty years. Federal policy that targets wage gaps (anti-discrimination law, equal-pay enforcement) has produced measurable narrowing. Federal policy targeting wealth gaps has not, on the data here. Policymakers concerned with the racial wealth gap should examine whether the lever that closed the wage gap, direct enforcement, has an equivalent in the wealth space: enforcement of fair-housing and fair-lending law, transfer-tax structures, and downpayment subsidy programs that target the demographic cells where wealth share has actually fallen since 1989. Our analysis found that the wealth gap has been more durable to general policy than the wage gap.
+The wage-side measures of the racial gap have moved more than the wealth-side measures over the past sixty years. Federal policy that targets wage gaps (anti-discrimination law, equal-pay enforcement) has produced measurable narrowing. Federal policy targeting wealth gaps has not, on the data here. Policymakers concerned with the racial wealth gap should examine whether the lever that closed the wage gap, direct enforcement, has an equivalent in the wealth space: enforcement of fair-housing and fair-lending law, transfer-tax structures, and downpayment subsidy programs that target the demographic cells where wealth share has actually fallen since 1989.[^housing-policy] Our analysis found that the wealth gap has been more durable to general policy than the wage gap.
 
 ### For employers
 
@@ -359,4 +359,22 @@ If there is one takeaway it is the unevenness. The numbers in this audit are wha
 
 [Continue to [Methods](appendix.qmd).]{.byline}
 
+[^dream-coinage]: James Truslow Adams coined the phrase in *The Epic of America* (Little, Brown, 1931): "that dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement... regardless of the fortuitous circumstances of birth or position."
+
+[^deflator-bias]: The Boskin Commission's 1996 report to the Senate Finance Committee estimated that CPI overstated inflation by about 1.1 percentage points per year through the early 1990s. CPI-U-RS is the BLS's own retroactive adjustment for some of those biases. The PCE deflator (BEA) uses different weighting and grows more slowly than CPI for most periods. See "Toward a More Accurate Measure of the Cost of Living: Final Report to the Senate Finance Committee," 1996.
+
+[^pay-gap]: BLS Current Population Survey data show full-time year-round female workers earned roughly 60 cents on the male dollar through the 1960s and most of the 1970s, narrowing to about 70 cents by the late 1980s and roughly 82 cents by 2022. The Black-women / white-men ratio has historically tracked even lower. See Francine D. Blau and Lawrence M. Kahn, "The Gender Wage Gap: Extent, Trends, and Explanations," *Journal of Economic Literature* 55(3), 2017.
+
+[^hispanic-tracking]: The Census Bureau began collecting separate "Hispanic origin" data only in 1970 (asked nationally for the first time on the 1970 long-form questionnaire). Annual CPS earnings tabulations by Hispanic origin began in March 1973, covering income year 1972. See US Census Bureau, "Counting Hispanics: Origin and Ancestry," Population Division Working Paper No. 56 (2002).
+
+[^childcare-cost]: Department of Labor, *National Database of Childcare Prices* (2022), reports center-based prices ranging from 8 to 19 percent of family income depending on county and care type. The Treasury's "The Economics of Child Care Supply in the United States" (September 2021) reaches similar estimates and breaks costs down by region.
+
+[^kff-premium]: Kaiser Family Foundation, *2020 Employer Health Benefits Survey* (KFF, 2020). The average annual premium for employer-sponsored family coverage was \$21,342 in 2020. The 2024 survey reported \$25,572.
+
 [^premium-incidence]: The theoretical case is Lawrence Summers, "Some Simple Economics of Mandated Benefits," *American Economic Review* 79(2), 1989. The most-cited empirical estimate, which finds that rising health premiums are offset roughly dollar-for-dollar by slower wage growth, is Katherine Baicker and Amitabh Chandra, "The Labor Market Effects of Rising Health Insurance Premiums," *Journal of Labor Economics* 24(3), 2006. Jonathan Gruber and Alan Krueger (1991) reach similar conclusions for workers' compensation, and Gruber (1994) for mandated maternity benefits.
+
+[^pension-shift]: Employee Benefit Research Institute (EBRI) tracks the transition. In 1979, 38 percent of private-sector workers had access to a defined-benefit pension plan and 17 percent to a defined-contribution plan. By 2018 those figures had reversed: 12 percent had access to a DB plan, 41 percent to a DC plan. See EBRI, *Retirement Trends in the United States Over the Past Quarter-Century*, EBRI Issue Brief.
+
+[^census-pop]: 2020 Decennial Census, Population by Race. The "Black or African American alone or in combination with another race" share of the US population was 13.6 percent. US Census Bureau, "Race and Ethnicity in the United States: 2010 Census and 2020 Census" (August 2021).
+
+[^housing-policy]: For the historical case that federal housing policy structured the present-day racial wealth gap (FHA redlining, restrictive covenants, GI Bill exclusions), see Richard Rothstein, *The Color of Law: A Forgotten History of How Our Government Segregated America* (Liveright, 2017). For an empirical decomposition of the racial wealth gap that puts homeownership at the centre, see Thomas M. Shapiro, Tatjana Meschede, and Sam Osoro, "The Roots of the Widening Racial Wealth Gap: Explaining the Black-White Economic Divide," Institute on Assets and Social Policy, Brandeis University (2013).
