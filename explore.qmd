@@ -85,6 +85,14 @@ format:
     <h3>Cumulative change since the first year</h3>
     <div id="dash-change" class="dash-fig"></div>
   </div>
+  <div class="dash-panel">
+    <h3>Slope: first year vs last year</h3>
+    <div id="dash-slope" class="dash-fig"></div>
+  </div>
+  <div class="dash-panel">
+    <h3>Gap from white men, latest year</h3>
+    <div id="dash-diverging" class="dash-fig"></div>
+  </div>
 </section>
 
 <section class="dash-summary">
@@ -303,6 +311,87 @@ format:
             {showlegend: false, yaxis:{ticksuffix:'%', gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft, tickfont:{color: PALETTE.ink_soft, size: 10}},
              shapes: [{type:'line', xref:'paper', x0:0, x1:1, y0:0, y1:0, line:{color: PALETTE.ink_soft, width:1, dash:'dot'}}]}),
           {responsive: true, displayModeBar: false});
+      }
+
+      // ---------- Panel 5: Slope chart, first year vs last year ----------
+      {
+        const traces = [];
+        const slopeRows = s.dems.map(dem => {
+          const meta = D.demographics.find(x => x.key === dem);
+          const rs = recsFor(s.item, dem, s.yFrom, s.yTo);
+          if (rs.length < 2) return null;
+          const first = rs[0], last = rs[rs.length - 1];
+          return {dem, label: meta.label, color: meta.color,
+                  yStart: first.hours, yEnd: last.hours,
+                  xStart: first.year, xEnd: last.year};
+        }).filter(Boolean);
+
+        slopeRows.forEach(r => {
+          traces.push({
+            x: [r.xStart, r.xEnd],
+            y: [r.yStart, r.yEnd],
+            mode: 'lines+markers+text',
+            name: r.label,
+            line: {color: r.color, width: 2.4},
+            marker: {color: r.color, size: 8, line: {color: PALETTE.cream_pale, width: 1.5}},
+            text: ['', r.label],
+            textposition: 'middle right',
+            textfont: {family: 'Inter', size: 10, color: PALETTE.ink},
+            cliponaxis: false,
+            hovertemplate: `<b>${r.label}</b><br>%{x}: %{y:,.0f}<extra></extra>`,
+          });
+        });
+        Plotly.react('dash-slope', traces,
+          baseLayout(`${itemMeta.label}: ${slopeRows[0]?.xStart || s.yFrom} → ${slopeRows[0]?.xEnd || s.yTo}`,
+                     itemMeta.label,
+            {xaxis: {tickvals: [slopeRows[0]?.xStart || s.yFrom, slopeRows[0]?.xEnd || s.yTo],
+                     range: [(slopeRows[0]?.xStart || s.yFrom) - 1, (slopeRows[0]?.xEnd || s.yTo) + 12],
+                     gridcolor: 'rgba(0,0,0,0)', linecolor: PALETTE.ink_soft,
+                     tickfont:{color: PALETTE.ink_soft, size: 11}},
+             yaxis: {gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft,
+                     tickfont:{color: PALETTE.ink_soft, size: 10},
+                     title:{text: itemMeta.label, font:{size: 10, color: PALETTE.ink_soft}},
+                     rangemode: 'tozero'},
+             margin: {l: 70, r: 130, t: 50, b: 50},
+             showlegend: false}),
+          {responsive: true, displayModeBar: false});
+      }
+
+      // ---------- Panel 6: Diverging gap from white men, latest year ----------
+      {
+        const wmLast = wmRows.length ? wmRows[wmRows.length - 1] : null;
+        let rows = [];
+        if (wmLast) {
+          rows = s.dems.filter(d => d !== 'white_men').map(dem => {
+            const meta = D.demographics.find(x => x.key === dem);
+            const rs = recsFor(s.item, dem, s.yFrom, s.yTo);
+            if (!rs.length) return null;
+            const last = rs[rs.length - 1];
+            return {dem, label: meta.label, color: meta.color,
+                    gap: last.hours - wmLast.hours, year: last.year};
+          }).filter(Boolean).sort((a, b) => b.gap - a.gap);
+        }
+
+        const colors = rows.map(r => r.gap > 0 ? PALETTE.flag_red : PALETTE.flag_navy);
+        Plotly.react('dash-diverging', [{
+          type: 'bar', orientation: 'h',
+          x: rows.map(r => r.gap),
+          y: rows.map(r => r.label),
+          marker: {color: colors, line: {width: 0}},
+          text: rows.map(r => (r.gap > 0 ? '+' : '') + r.gap.toLocaleString('en-US', {maximumFractionDigits: r.gap < 10 && r.gap > -10 ? 2 : 0})),
+          textposition: 'outside',
+          textfont: {color: PALETTE.ink_soft, size: 10},
+          hovertemplate: '<b>%{y}</b><br>Gap from white men in %{customdata}: %{x:,.2f}<extra></extra>',
+          customdata: rows.map(r => r.year),
+        }],
+        baseLayout(`Difference from white men (${rows[0]?.year || s.yTo})`, 'Gap (positive = more than white men)',
+          {xaxis: {gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft,
+                   tickfont:{color: PALETTE.ink_soft, size: 10},
+                   zeroline: true, zerolinecolor: PALETTE.ink_soft, zerolinewidth: 1.5},
+           yaxis: {tickfont:{size: 10, color: PALETTE.ink}, gridcolor: 'rgba(0,0,0,0)',
+                   autorange: 'reversed'},
+           margin: {l: 120, r: 60, t: 50, b: 50}}),
+        {responsive: true, displayModeBar: false});
       }
 
       // ---------- Summary ----------
