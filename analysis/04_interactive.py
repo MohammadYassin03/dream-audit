@@ -208,12 +208,58 @@ def explorer_data() -> None:
                     "hours": cost / r.hourly_nominal,
                 })
 
+    # Add raw demographic variables: wages, life expectancy, wealth share
+    le = pd.read_parquet(PROC / "life_expectancy.parquet") if (PROC / "life_expectancy.parquet").exists() else pd.DataFrame()
+    dfa = pd.read_parquet(PROC / "dfa_race_shares.parquet") if (PROC / "dfa_race_shares.parquet").exists() else pd.DataFrame()
+
+    extra_items = [
+        {"key": "wage_hourly", "label": "Nominal hourly wage", "kind": "wage",
+         "unit_short": "USD/hr", "unit_long": "the median hourly nominal wage"},
+        {"key": "life_expectancy", "label": "Life expectancy at birth (years)", "kind": "life_expectancy",
+         "unit_short": "years", "unit_long": "life expectancy at birth"},
+        {"key": "wealth_share", "label": "Share of US household net worth (%)", "kind": "wealth_share",
+         "unit_short": "% of net worth", "unit_long": "share of US household net worth"},
+    ]
+
+    extra_records = []
+    for r in wages.itertuples():
+        if 1970 <= r.year <= 2025:
+            extra_records.append({
+                "item": "wage_hourly",
+                "demographic": r.demographic,
+                "year": int(r.year),
+                "hours": float(r.hourly_nominal),
+            })
+    if not le.empty:
+        for _, r in le.iterrows():
+            if r["demographic"] in [d["key"] for d in demographics] and 1970 <= r["year"] <= 2025 and pd.notna(r["life_expectancy"]):
+                extra_records.append({
+                    "item": "life_expectancy",
+                    "demographic": r["demographic"],
+                    "year": int(r["year"]),
+                    "hours": float(r["life_expectancy"]),
+                })
+    if not dfa.empty:
+        nw = dfa.query("metric == 'Net worth'").copy()
+        nw["year"] = pd.to_datetime(nw["date"]).dt.year
+        nw_y = nw.groupby(["year", "race"], as_index=False)["share"].mean()
+        race_to_dem = {"White": "white_men", "Black": "black_men", "Hispanic": "hispanic_men"}
+        for _, r in nw_y.iterrows():
+            dem_key = race_to_dem.get(r["race"])
+            if dem_key and 1970 <= r["year"] <= 2025:
+                extra_records.append({
+                    "item": "wealth_share",
+                    "demographic": dem_key,
+                    "year": int(r["year"]),
+                    "hours": float(r["share"]),
+                })
+
     payload = {
-        "items": items,
+        "items": items + extra_items,
         "demographics": demographics,
         "year_min": 1970,
         "year_max": 2025,
-        "records": records,
+        "records": records + extra_records,
     }
     (OUT / "explorer_data.json").write_text(json.dumps(payload))
 

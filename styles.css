@@ -1,3 +1,229 @@
+/* ============== Full dashboard page (explore.qmd) ============== */
+.dash-header {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 0.5rem 2rem;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.dash-header .kicker {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9C2C3C;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dash-header h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: #14233D;
+  margin: 0 0 0.5rem 0;
+  border-bottom: 1px solid #9C2C3C;
+  padding-bottom: 0.4rem;
+  display: inline-block;
+}
+
+.dash-deck {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: #36456A;
+  max-width: 880px;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.dash-controls {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 1rem 2rem 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 1.4fr 2.2fr 1fr 1.4fr;
+  gap: 1.5rem;
+  align-items: start;
+  background: #FBF7EE;
+  border-top: 1px solid #D8CFB8;
+  border-bottom: 1px solid #D8CFB8;
+}
+
+.dash-control { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.dash-control label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #36456A;
+}
+
+.dash-control select {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: #14233D;
+  padding: 0.4rem 0.6rem;
+  background: #FFFFFF;
+  border: 1px solid #D8CFB8;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.dash-control select:focus-visible {
+  outline: 2px solid #9C2C3C;
+  outline-offset: 2px;
+}
+
+.dash-checks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.3rem 0.7rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  color: #14233D;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.dash-checks label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #14233D;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  padding: 0.2rem 0;
+}
+
+.dash-checks input[type="checkbox"] {
+  accent-color: #1B3D6B;
+  cursor: pointer;
+}
+
+.dash-checks input[type="checkbox"]:focus-visible {
+  outline: 2px solid #9C2C3C;
+  outline-offset: 2px;
+}
+
+.dash-swatch {
+  display: inline-block;
+  width: 11px; height: 11px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.dash-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dash-range-inputs input {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: #14233D;
+  padding: 0.4rem 0.5rem;
+  background: #FFFFFF;
+  border: 1px solid #D8CFB8;
+  border-radius: 2px;
+  width: 5rem;
+}
+
+.dash-range-inputs input:focus-visible {
+  outline: 2px solid #9C2C3C;
+  outline-offset: 2px;
+}
+
+.dash-range-dash {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: #36456A;
+}
+
+.dash-grid {
+  max-width: 1480px;
+  margin: 1.5rem auto 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.dash-panel {
+  background: #F4F5F7;
+  border: 1px solid #D8CFB8;
+  border-radius: 4px;
+  padding: 0.75rem 0.75rem 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 460px;
+}
+
+.dash-panel h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #36456A;
+  margin: 0 0 0.5rem 0.25rem;
+  font-style: normal;
+  border-top: none;
+  padding-top: 0;
+}
+
+.dash-fig {
+  flex: 1;
+  width: 100%;
+  min-height: 400px;
+}
+
+.dash-summary {
+  max-width: 1480px;
+  margin: 1.5rem auto 3rem auto;
+  padding: 0 2rem;
+}
+
+.dash-summary-text {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #36456A;
+  line-height: 1.5;
+  border-left: 3px solid #9C2C3C;
+  padding: 0.5rem 0 0.5rem 1.25rem;
+}
+
+@media (max-width: 1100px) {
+  .dash-controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .dash-checks {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dash-header { padding: 1.5rem 1rem 0.25rem 1rem; }
+  .dash-header h1 { font-size: 2rem; }
+  .dash-controls { padding: 1rem; grid-template-columns: 1fr; }
+  .dash-grid { padding: 0 1rem; gap: 1rem; }
+  .dash-panel { min-height: 400px; }
+  .dash-summary { padding: 0 1rem; }
+}
+
 /* Time-price explorer dashboard */
 .explorer-inner {
   max-width: 1480px;

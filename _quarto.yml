@@ -16,6 +16,8 @@ website:
     left:
       - text: "The Story"
         href: index.qmd
+      - text: "Explore"
+        href: explore.qmd
       - text: "Methods"
         href: appendix.qmd
       - text: "About"
