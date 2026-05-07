@@ -145,7 +145,7 @@ Nominal median weekly earnings of full time wage and salary workers, expressed a
 
 Read the chart not for the rising lines (every line rises in nominal terms) but for the gaps between them. The vertical distance between any two lines at any given year is what an extra hour of work was worth, depending on who you were.
 
-For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2020 the white man's tuition burden had climbed to 338 hours. The Black woman's had reached 490. The gap between starting lines did narrow, in percentage terms. In time terms, in weeks of life surrendered before earning anything, every Starter is paying more, and the ones who started behind are still behind.
+For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2022 the white man's tuition burden had climbed to 332 hours. The Black woman's had reached 467. The gap between starting lines did narrow, in percentage terms. In time terms, in weeks of life surrendered before earning anything, every Starter is paying more, and the ones who started behind are still behind.
 
 ```{=html}
 <div class="act-break">★</div>
