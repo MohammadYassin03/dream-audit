@@ -360,6 +360,155 @@ def medical_vs_general_cpi() -> None:
     )
 
 
+# Dream Scoreboard: a radar chart that compares the 1965 era against the
+# 2025 era across six dimensions of "the American Dream." Each axis is
+# normalized so that 1.0 means the Dream's strongest reading on that axis
+# in the audit's window, and 0 means the weakest. Two filled rings.
+def dream_scoreboard() -> None:
+    from plotly.subplots import make_subplots  # noqa: F401
+
+    # Each axis: (label, era1_score, era2_score, era1_label, era2_label,
+    # one-line tooltip explaining the numerator).
+    axes = [
+        ("Home affordability",     1.00, 0.48,
+         "5,900 hrs at 1970 white-man wage",
+         "12,275 hrs at 2025 white-man wage"),
+        ("College affordability",  1.00, 0.30,
+         "99 hrs at 1970 white-man wage",
+         "332 hrs at 2022 white-man wage"),
+        ("Healthcare-to-CPI parity", 1.00, 0.41,
+         "Medical CPI grew at the same rate as overall CPI in 1965",
+         "Medical CPI grew 2.4x as fast as overall CPI by 2025"),
+        ("Employer-funded retirement", 1.00, 0.32,
+         "38% of private-sector workers had a DB pension in 1979",
+         "12% in 2018"),
+        ("Longevity equity",       0.03, 0.66,
+         "Black-white women's life-expectancy gap was 7.8 years in 1960",
+         "Gap had narrowed to 2.7 years by 2017"),
+        ("Real household income",  0.60, 1.00,
+         "$48k median real household income in 1965 (2024 dollars)",
+         "$80k median real household income in 2024 (2024 dollars)"),
+    ]
+
+    labels = [a[0] for a in axes]
+    era1 = [a[1] for a in axes]
+    era2 = [a[2] for a in axes]
+    tooltip1 = [a[3] for a in axes]
+    tooltip2 = [a[4] for a in axes]
+
+    # Close the polygon
+    labels_c = labels + [labels[0]]
+    era1_c = era1 + [era1[0]]
+    era2_c = era2 + [era2[0]]
+    tooltip1_c = tooltip1 + [tooltip1[0]]
+    tooltip2_c = tooltip2 + [tooltip2[0]]
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatterpolar(
+        r=era1_c, theta=labels_c,
+        fill="toself", name="1965 era",
+        line=dict(color=PALETTE["flag_navy"], width=2.4),
+        fillcolor="rgba(27, 61, 107, 0.18)",
+        customdata=[[t] for t in tooltip1_c],
+        hovertemplate="<b>1965 era</b><br>%{theta}: %{r:.2f}<br>%{customdata[0]}<extra></extra>",
+    ))
+    fig.add_trace(go.Scatterpolar(
+        r=era2_c, theta=labels_c,
+        fill="toself", name="2025 era",
+        line=dict(color=PALETTE["flag_red"], width=2.4),
+        fillcolor="rgba(156, 44, 60, 0.18)",
+        customdata=[[t] for t in tooltip2_c],
+        hovertemplate="<b>2025 era</b><br>%{theta}: %{r:.2f}<br>%{customdata[0]}<extra></extra>",
+    ))
+
+    fig.update_layout(**plotly_layout(
+        title=dict(text="The Dream Scoreboard, 1965 vs 2025"),
+        height=560,
+        polar=dict(
+            bgcolor=PALETTE["cream_pale"],
+            radialaxis=dict(
+                visible=True, range=[0, 1.05],
+                tickvals=[0.25, 0.5, 0.75, 1.0],
+                tickfont=dict(size=9, color=PALETTE["ink_soft"]),
+                gridcolor=PALETTE["rule"],
+            ),
+            angularaxis=dict(
+                tickfont=dict(size=11, color=PALETTE["ink"]),
+                gridcolor=PALETTE["rule"],
+                linecolor=PALETTE["ink_soft"],
+            ),
+        ),
+        legend=dict(orientation="h", y=-0.12, x=0.5, xanchor="center"),
+        margin=dict(l=80, r=80, t=80, b=60),
+    ))
+    fig.write_html(
+        OUT / "dream_scoreboard.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
+# Household budget composition: two stacked bars side by side, 1960 vs 2020.
+# Categories use the BLS Consumer Expenditure Survey's 1960-61 and 2020-21
+# household spending shares so the comparison is apples-to-apples.
+def budget_composition() -> None:
+    # Categories x [1960, 2020] share of household expenditures (%).
+    # Sources: BLS CES 1960-61 historical tables (1960 column) and
+    # BLS CES 2020 ("Consumer Expenditures in 2020", BLS Report 1098).
+    # Categories collapsed where useful for comparability.
+    categories = [
+        ("Housing",            27.0, 33.0, PALETTE["flag_navy"]),
+        ("Food",               24.0, 12.0, PALETTE["gold_deep"]),
+        ("Transportation",     14.0, 16.0, PALETTE["flag_navy_pale"]),
+        ("Healthcare",          5.0,  8.0, PALETTE["flag_red"]),
+        ("Apparel",            10.0,  2.5, PALETTE["sage"]),
+        ("Insurance & pensions", 5.0, 11.5, PALETTE["gold"]),
+        ("Education",           1.0,  2.5, "#D8896E"),
+        ("Other",              14.0, 14.5, PALETTE["sage_pale"] if "sage_pale" in PALETTE else "#B5BFA5"),
+    ]
+
+    fig = go.Figure()
+    for cat, v1960, v2020, color in categories:
+        fig.add_trace(go.Bar(
+            x=["1960-61", "2020-21"],
+            y=[v1960, v2020],
+            name=cat,
+            marker=dict(color=color, line=dict(width=0)),
+            text=[f"{v1960:.1f}%", f"{v2020:.1f}%"],
+            textposition="inside",
+            textfont=dict(color=PALETTE["cream"], size=10),
+            hovertemplate=f"<b>{cat}</b><br>%{{x}}: %{{y:.1f}}%%<extra></extra>",
+        ))
+
+    fig.update_layout(**plotly_layout(
+        title=dict(text="What households spent their money on, 1960 vs 2020"),
+        barmode="stack",
+        bargap=0.55,
+        height=560,
+        xaxis=dict(
+            title=None,
+            tickfont=dict(size=14, color=PALETTE["ink"]),
+        ),
+        yaxis=dict(
+            title="Share of total household expenditures",
+            ticksuffix="%",
+            range=[0, 100],
+        ),
+        legend=dict(
+            orientation="v", y=0.5, x=1.02, xanchor="left",
+            font=dict(size=10),
+        ),
+        margin=dict(l=80, r=200, t=80, b=60),
+    ))
+    fig.write_html(
+        OUT / "budget_composition.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
 # Counterfactual: what would Black household net worth share look like under
 # three alternative trajectories? Actual line + three counterfactuals from the
 # 1989Q3 baseline. The chart asks the reader to weigh which counterfactual
@@ -612,6 +761,10 @@ def main() -> None:
     print("  medical_vs_cpi.html")
     labor_force_participation()
     print("  labor_force_participation.html")
+    dream_scoreboard()
+    print("  dream_scoreboard.html")
+    budget_composition()
+    print("  budget_composition.html")
     counterfactual_wealth()
     print("  counterfactual.html")
     sotu_rhetoric_river()

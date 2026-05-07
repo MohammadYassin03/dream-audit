@@ -205,6 +205,19 @@ Three line items on the modern Builder's balance sheet were either zero or trivi
 
 None of these three line items show up in CPI as a single basket category. All three are real. The Builder of 2020 has a household budget that is structurally different from the Builder of 1960's, even before either of them buys groceries.
 
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/budget_composition.html"
+          style="width:100%; min-height:580px; border:none;"
+          loading="lazy"
+          title="Stacked bar chart comparing household expenditure composition in 1960-61 vs 2020-21."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+Share of total household expenditures by category, 1960-61 and 2020-21. Source: BLS Consumer Expenditure Survey, 1960-61 historical tables and 2020 BLS Report 1098. Food and apparel collapsed; housing's share rose 6 points, food's share halved, healthcare and insurance/pensions both grew. Categories don't sum to exactly 100 because of small "miscellaneous" rounding in the underlying CES tables.
+:::
+
 ### Healthcare: the cost of staying alive
 
 The single sharpest price divergence in the audit's six decade window is between medical care and the price of everything else. Indexed to 1960, the general consumer price level had multiplied by 11 by early 2026. Medical care had multiplied by 27. The gap between the two (the shaded area in the chart) is the slice of the household budget that healthcare has eaten that no other category has.
@@ -315,6 +328,21 @@ The actual line, in red, sits below all three counterfactuals. It does not appro
 
 ::: {.kicker}
 Findings
+:::
+
+The audit's specific findings are below, but here is the whole picture in one shape. Six dimensions of the Dream, scored from 0 to 1, with the 1965 era as the navy ring and the 2025 era as the red ring. Where the red ring sits inside the navy ring, the Dream's promise has eroded. Where it sits outside, the country has actually delivered.
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/dream_scoreboard.html"
+          style="width:100%; min-height:600px; border:none;"
+          loading="lazy"
+          title="Radar chart: the Dream Scoreboard, six dimensions, 1965 vs 2025."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+Each axis is normalized to the audit's own data. *Home affordability* is hours of full-time labor at the median wage to buy the median home, inverted. *College affordability* is hours of labor for one year of public 4-year tuition, inverted. *Healthcare-to-CPI parity* is whether medical-care prices grew at the same rate as overall consumer prices. *Employer-funded retirement* is the share of private-sector workers with a defined-benefit pension. *Longevity equity* is one minus the Black-white women's life-expectancy gap, normalized. *Real household income* is BLS-deflated median household income. The shape of the red ring is the audit in one image: four axes worse, two better.
 :::
 
 1. **The white man of 2020 has it twice as hard as the white man of 1970.** In 1970, the median white man working full time could buy the median US home with 5,903 hours of labor, just under three working years. By 2020 he needed 11,823 hours, close to six. The doubling is not an inflation artifact (the time-price unit excludes inflation by construction). It is driven by home prices rising twice as fast as median wages, even for the demographic at the centre of the original Dream.
