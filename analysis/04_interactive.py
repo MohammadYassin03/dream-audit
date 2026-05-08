@@ -974,7 +974,7 @@ def sotu_rhetoric_river() -> None:
 
     layout = plotly_layout(
         title=dict(text="What presidents talked about, 1960 to 2024 (5-year rolling avg)"),
-        height=560,
+        height=720,
         showlegend=False,
         margin=dict(l=50, r=30, t=80, b=50),
     )

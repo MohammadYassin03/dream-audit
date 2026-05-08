@@ -357,17 +357,19 @@ The audit measures what the country actually delivered. Before that, it's worth 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/sotu_rhetoric_river.html"
-          style="width:100%; min-height:560px; border:none;"
+          style="width:100%; min-height:740px; border:none;"
           loading="lazy"
           title="Topic prevalence in State of the Union addresses, 1960 to 2024."></iframe>
 </div>
 ```
 
 ::: {.figure-caption}
-Topic share of paragraphs in State of the Union addresses, 1960 to 2024, where topic clusters were learned with BERTopic over sentence-transformer embeddings of every paragraph in the corpus. Each stream is one of the seven largest topic clusters; hover for the top words BERTopic identified for that cluster. Source: 66 SOTU addresses (stdlib-js/datasets-sotu for 1960 to 2021, Miller Center for 2022 to 2024). See [Methods](appendix.qmd) for the modeling pipeline.
+Topic share of paragraphs in State of the Union addresses, 1960 to 2024, where topic clusters were learned with BERTopic over sentence-transformer embeddings of every paragraph in the corpus. Each panel is one of the seven largest content topics, plotted with a 5-year rolling average over the noisier per-year measurements. Source: 66 SOTU addresses (stdlib-js/datasets-sotu for 1960 to 2021, Miller Center for 2022 to 2024). See [Methods](appendix.qmd) for the modeling pipeline.
 :::
 
-Read this as the promise side of the audit. What the language of presidential rhetoric tracks against, and the acts that follow measure, is what was actually delivered.
+Five things jump out. **Budget and taxes** dominate every decade, but the share has fallen sharply: roughly a third of the 1960s address, about a fifth today. **Healthcare** is the biggest gainer of the audit's window. It was a non-topic in 1960, around one percent of paragraphs, and is a recurring four to six percent of the modern address. **Crime and policing** rhetoric peaked in the 1990s, the same decade actual violent crime peaked. **Agriculture** shrank as the farm population shrank. **Women's rights**, by contrast, stayed small and roughly flat. The legal landscape transformed over six decades, but presidential attention to it did not.
+
+The shape of the chart is the rhetorical inventory of "the economy" expanding. In 1960 the country described its economy in three or four basic ways. By 2024 it described it in many more. Read this as the promise side of the audit. The acts that follow measure how each of those promises actually performed.
 
 ## Act I · The Starter
 
