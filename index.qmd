@@ -230,6 +230,7 @@ The full derivation, including the caveats this unit does not handle, is in the 
       <span id="calc-year-display" class="calc-year-display">2020</span>
       <span>.</span>
     </div>
+    <div id="calc-note" class="time-calc-note" aria-live="polite"></div>
     <div class="time-calc-result">
       <div class="time-calc-primary">
         <span id="calc-hours" class="time-calc-hours">—</span>
@@ -251,6 +252,15 @@ The full derivation, including the caveats this unit does not handle, is in the 
     const hoursEl = document.getElementById('calc-hours');
     const secEl = document.getElementById('calc-secondary');
     const cmpEl = document.getElementById('calc-compare');
+    const noteEl = document.getElementById('calc-note');
+
+    // For each item, find the latest year that has cost data. Used to clamp
+    // the year slider so users can't drag past the data's edge.
+    const itemMaxYear = {};
+    D.items.forEach(it => {
+      const ys = D.years.filter(y => (D.cost[y] || {})[it.key] != null);
+      itemMaxYear[it.key] = ys.length ? Math.max(...ys) : 2025;
+    });
 
     D.demographics.forEach(d => {
       const o = document.createElement('option');
@@ -284,7 +294,21 @@ The full derivation, including the caveats this unit does not handle, is in the 
       return ks.length ? ks[0] : null;
     }
 
+    function applyItemRange() {
+      const item = itemSel.value;
+      const maxY = itemMaxYear[item];
+      yearInp.max = String(maxY);
+      if (+yearInp.value > maxY) yearInp.value = String(maxY);
+      if (maxY < 2025) {
+        const label = itemMeta(item).label;
+        noteEl.textContent = `${label.charAt(0).toUpperCase() + label.slice(1)} data ends in ${maxY}; later years are not yet published.`;
+      } else {
+        noteEl.textContent = '';
+      }
+    }
+
     function update() {
+      applyItemRange();
       const dem = demSel.value, item = itemSel.value, year = +yearInp.value;
       yearDisp.textContent = year;
       const demLabel = D.demographics.find(d => d.key === dem).label;
