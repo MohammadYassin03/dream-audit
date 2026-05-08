@@ -213,7 +213,7 @@ Hours of full time labor required to afford the median US home, averaged within 
 
 The audit measures everything in hours of work, not dollars. The reason is inflation. A median home cost about \$17,000 in 1965 and roughly \$420,000 in 2023, but the dollar of 1965 and the dollar of 2023 are not the same instrument. The official deflators (CPI, PCE, Boskin-adjusted CPI-U-RS) disagree across 60 years by enough that two analysts could reach opposite conclusions while doing competent work.[^deflator-bias] Hours of labor sidestep the deflator entirely. A home that took 5,900 hours of work in 1970 and one that takes 11,800 hours in 2020 are directly comparable. The unit cancels the dollar. What remains is how much of your life a thing costs.
 
-The full derivation, including the caveats this unit does not handle, is in the [Methods page](appendix.qmd).
+The full derivation, including the caveats this unit does not handle, is in the [Methods page](appendix.qmd). Readers who would rather pick their own variable, demographics, and time range can also jump to the [Explore](explore.qmd) page, which exposes the same underlying data through six chart types and five transformations.
 
 ```{=html}
 <section class="time-calc" aria-labelledby="time-calc-heading">
@@ -549,7 +549,7 @@ A white man born in 1960 could expect to live 67.4 years. A Black man born the s
 ```
 
 ::: {.figure-caption}
-Life expectancy at birth, by race and sex, 1960 to 2017. The shaded band marks the white-vs-Black gap among women. Source: CDC NCHS National Vital Statistics System via the CDC open-data portal. Hispanic-specific life expectancy was not separately reported across the full window and is not shown.
+Life expectancy at birth, by race and sex, 1960 to 2017. The shaded band marks the white-vs-Black gap among women. Source: CDC NCHS National Vital Statistics System via the CDC open-data portal. **Hispanic life expectancy is not shown here.** The CDC dataset only began separating Hispanic-origin life expectancy from "all races" in 2006, and the resulting series is too short to plot meaningfully against the 60-year arc shown for white and Black households. Hispanic life expectancy in recent years has consistently exceeded both white and Black figures (the so-called Hispanic mortality paradox), but a fair audit of "did the Dream's promise reach this group?" needs the same depth of historical data we have for the others, and that depth is not available.
 :::
 
 The story for women is similar in shape, but the gap closure is the audit's most genuinely good-news finding. White women born in 1960 could expect 74.1 years. Black women, 66.3. An eight-year gap. By 2017 white women's life expectancy had reached 81.2 and Black women's had reached 78.5. The gap had narrowed to under three years. The narrowing is real. It also took 60 years.
@@ -572,7 +572,7 @@ This means: if you never bought a home, your retirement is structurally differen
 ```
 
 ::: {.figure-caption}
-Share of total US household net worth, by race, quarterly from 1989 Q3 to 2025 Q4. Source: Federal Reserve Distributional Financial Accounts. The "Other" category combines Asian, Pacific Islander, American Indian, multiracial, and other-race households as published by the Fed.
+The chart shows what fraction of *all* US household net worth was held by households of each racial group in each quarter, summing to 100 percent. The series is the Federal Reserve's Distributional Financial Accounts, which estimates the wealth held by households grouped by the race or ethnicity of the household head, quarterly from 1989 Q3 to 2025 Q4. The "Other" stream combines Asian American, Pacific Islander, American Indian, multiracial, and any-other-race households as the Fed publishes them.
 :::
 
 In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent. Black households held 3.3 percent. Black share went down. The 1989 racial wealth gap was already large. Thirty six years later, on this measure, it is wider.
@@ -599,7 +599,7 @@ The audit's findings to this point are descriptive. They say what happened. The 
 ```
 
 ::: {.figure-caption}
-The actual line (red) is the Federal Reserve DFA series for Black households' share of US household net worth, 1989Q3 to 2025Q4. The three counterfactual lines are constructed from the same DFA dataset. See [Methods](appendix.qmd) for the formulas.
+The red line is the actual Federal Reserve DFA series for the share of US household net worth held by Black-headed households, 1989 Q3 to 2025 Q4. The three lighter lines are counterfactuals constructed by hand from the same dataset: a flat 13 percent benchmark (Black population share), the Black-baseline scaled by Asian-American household growth, and a flat 4.0 percent (the 1989 starting point). See [Methods](appendix.qmd) for the formulas.
 :::
 
 Each line is a different version of "fair." The 13 percent line is the population-parity benchmark. Black Americans are about 13 percent of the US population,[^census-pop] so a wealth share that matched population share would sit at 13 percent. The gold dashed line is what the Black household share would look like if it had grown at the same rate as the "Other" category (mostly Asian American households) grew between 1989 and 2025. The pale-blue dash-dotted line is the most conservative counterfactual: just hold the 1989 racial wealth gap exactly where it was. No closure, just no widening.

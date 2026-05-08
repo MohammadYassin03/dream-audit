@@ -174,11 +174,17 @@ def explorer_data() -> None:
 
     # Long-format records: one row per (item, demographic, year)
     items = [
-        {"key": "home",       "label": "Median US home",
+        {"key": "home", "label": "Median US home",
+         "title": "Hours of work to afford the median US home",
+         "y_axis": "Hours of full-time labor",
          "unit_short": "home", "unit_long": "the median US home"},
-        {"key": "tuition",    "label": "One year of public 4-yr tuition",
+        {"key": "tuition", "label": "One year of public 4-yr tuition",
+         "title": "Hours of work for one year of public 4-yr tuition",
+         "y_axis": "Hours of full-time labor",
          "unit_short": "year of school", "unit_long": "one year of public four-year tuition + fees"},
         {"key": "healthcare", "label": "Family health insurance premium",
+         "title": "Hours of work for one year of family health insurance",
+         "y_axis": "Hours of full-time labor",
          "unit_short": "year of family premium",
          "unit_long": "one year of employer-sponsored family health insurance premium"},
     ]
@@ -214,10 +220,14 @@ def explorer_data() -> None:
 
     extra_items = [
         {"key": "wage_hourly", "label": "Nominal hourly wage", "kind": "wage",
+         "title": "Median nominal hourly wage", "y_axis": "USD per hour (nominal)",
          "unit_short": "USD/hr", "unit_long": "the median hourly nominal wage"},
-        {"key": "life_expectancy", "label": "Life expectancy at birth (years)", "kind": "life_expectancy",
+        {"key": "life_expectancy", "label": "Life expectancy at birth", "kind": "life_expectancy",
+         "title": "Life expectancy at birth", "y_axis": "Years",
          "unit_short": "years", "unit_long": "life expectancy at birth"},
-        {"key": "wealth_share", "label": "Share of US household net worth (%)", "kind": "wealth_share",
+        {"key": "wealth_share", "label": "Share of US household net worth", "kind": "wealth_share",
+         "title": "Share of US household net worth (Federal Reserve DFA)",
+         "y_axis": "Percent of total US household net worth",
          "unit_short": "% of net worth", "unit_long": "share of US household net worth"},
     ]
 

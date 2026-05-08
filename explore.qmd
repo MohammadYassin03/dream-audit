@@ -152,9 +152,17 @@ format:
     function yLabel(itemMeta, transform) {
       if (transform === 'indexed') return 'Indexed to first year (= 100)';
       if (transform === 'ratio_wm') return 'Ratio to white men';
-      if (transform === 'gap_wm')   return 'Gap from white men';
+      if (transform === 'gap_wm')   return `Gap from white men (${itemMeta.y_axis || itemMeta.label})`;
       if (transform === 'yoy')      return 'Year-over-year % change';
-      return itemMeta.label;
+      return itemMeta.y_axis || itemMeta.label;
+    }
+    function chartTitle(itemMeta, transform) {
+      const base = itemMeta.title || itemMeta.label;
+      if (transform === 'indexed') return `${base}, indexed to first year`;
+      if (transform === 'ratio_wm') return `${base}, as a ratio to white men`;
+      if (transform === 'gap_wm')   return `${base}, gap from white men`;
+      if (transform === 'yoy')      return `${base}, year-over-year change`;
+      return base;
     }
 
     const baseLayout = (title, yLab, extras={}) => Object.assign({
@@ -194,7 +202,7 @@ format:
           {type:'line', xref:'paper', x0:0, x1:1, y0:0, y1:0, line:{color: PALETTE.ink_soft, width:1, dash:'dot'}}
           : null;
         Plotly.react('dash-line', traces,
-          baseLayout(itemMeta.label, yLabel(itemMeta, s.transform),
+          baseLayout(chartTitle(itemMeta, s.transform), yLabel(itemMeta, s.transform),
                      {showlegend: true, legend: {orientation:'h', y:-0.18, x:0.5, xanchor:'center', font:{size:10}},
                       shapes: refShape ? [refShape] : []}),
           {responsive: true, displayModeBar: false});
@@ -229,12 +237,13 @@ format:
         Plotly.react('dash-heatmap', [{
           type: 'heatmap', x: decades, y: yLabels, z, text, texttemplate: '%{text}',
           colorscale: [[0, PALETTE.cream_pale], [0.5, PALETTE.gold_pale], [1, PALETTE.flag_red_pale]],
-          colorbar: {tickfont:{color: PALETTE.ink_soft, size: 9}, thickness: 10, len: 0.8},
+          colorbar: {title: {text: itemMeta.y_axis || '', font:{size: 10, color: PALETTE.ink_soft}},
+                     tickfont:{color: PALETTE.ink_soft, size: 9}, thickness: 10, len: 0.8},
           hovertemplate: '<b>%{y}</b><br>%{x}: %{z:,.2f}<extra></extra>',
           zmin, zmax,
           textfont: {family:'Inter', size: 10, color: PALETTE.ink},
         }],
-        baseLayout(`${itemMeta.label}, by decade`, '',
+        baseLayout(`${chartTitle(itemMeta, s.transform)}, by decade`, '',
           {xaxis:{side:'top', tickfont:{size:10, color: PALETTE.ink_soft}, gridcolor:'rgba(0,0,0,0)'},
            yaxis:{tickfont:{size:10, color: PALETTE.ink_soft}, gridcolor:'rgba(0,0,0,0)', autorange:'reversed'},
            margin:{l:120, r:30, t:55, b:30}}),
@@ -263,7 +272,7 @@ format:
           hovertemplate: '<b>%{y}</b><br>%{x:,.2f} (%{customdata})<extra></extra>',
           customdata: rows.map(r => r.year),
         }],
-        baseLayout(`Latest available, by demographic`, yLabel(itemMeta, s.transform),
+        baseLayout(`Latest year (${rows[0]?.year || s.yTo})`, yLabel(itemMeta, s.transform),
           {xaxis:{gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft, tickfont:{color: PALETTE.ink_soft, size: 10}},
            yaxis:{tickfont:{size:10, color: PALETTE.ink}, autorange:'reversed', gridcolor:'rgba(0,0,0,0)'},
            margin:{l:120, r:60, t:50, b:50}}),
@@ -284,7 +293,7 @@ format:
                   hovertemplate: `<b>${meta.label}</b><br>%{x}: %{y:+.1f}%<extra></extra>`};
         }).filter(Boolean);
         Plotly.react('dash-change', traces,
-          baseLayout(`Cumulative change since ${s.yFrom}`, 'Percent change',
+          baseLayout(`${itemMeta.title || itemMeta.label}: cumulative change since ${s.yFrom}`, 'Percent change since first year',
             {showlegend: false, yaxis:{ticksuffix:'%', gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft, tickfont:{color: PALETTE.ink_soft, size: 10}},
              shapes: [{type:'line', xref:'paper', x0:0, x1:1, y0:0, y1:0, line:{color: PALETTE.ink_soft, width:1, dash:'dot'}}]}),
           {responsive: true, displayModeBar: false});
