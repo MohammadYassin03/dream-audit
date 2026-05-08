@@ -58,19 +58,19 @@ The audit, in one chart
         <p>The lattice below is the audit in one image. Six demographics, seven decades. Each cell is the average hours of full-time work it took to afford the median US home in that decade. Hover any cell for the exact number. Scroll to walk through it.</p>
       </div>
       <div class="lattice-step" data-step="wm-1970">
-        <p>Start with the 1970s white man, the demographic at the centre of the original Dream's promise. About 5,900 hours, just under three working years to buy the median American home.</p>
+        <p>Start with the 1970s white man, the demographic at the centre of the original Dream's promise. About 7,000 hours, roughly three and a half working years to buy the median American home.</p>
       </div>
       <div class="lattice-step" data-step="wm-2020">
-        <p>The same demographic in the 2020s needs over 12,000 hours. Twice the time for the same kind of house. The Dream's flagship beneficiary works twice as long now as he did then.</p>
+        <p>The same demographic in the 2020s needs 13,240 hours. Almost twice the time for the same kind of house. The Dream's flagship beneficiary works close to twice as long now as he did then.</p>
       </div>
       <div class="lattice-step" data-step="bw-1970">
-        <p>Now look at Black women in the same 1970s decade. The cell sits at over 12,000 hours, double the white man's burden. Where the 1970s white man started, the 1970s Black woman ended.</p>
+        <p>Now look at Black women in the same 1970s decade. The cell sits at 13,287 hours, almost double the white man's burden. Where the white man eventually ended up, half a century later, is exactly where the Black woman started.</p>
       </div>
       <div class="lattice-step" data-step="col-2020">
-        <p>Read down a column for the gap between demographics in any single decade. In the 2020s, Hispanic women sit at over 20,000 hours, white men at 12,000. The whole column has shifted upward, but the gap inside it has not closed.</p>
+        <p>Read down a column for the gap between demographics in any single decade. In the 2020s, Hispanic women sit at 20,523 hours, white men at 13,240. The whole column has shifted upward, but the gap inside it has not closed.</p>
       </div>
       <div class="lattice-step" data-step="row-bw">
-        <p>Read across a row for one demographic's trajectory. Black women's burden moved from 12,000 hours in the 1970s to over 17,000 in the 2020s. Even with the wage gap narrowing in percentage terms, every Black woman's home in the 2020s is bought with more hours of labor than her grandmother's was.</p>
+        <p>Read across a row for one demographic's trajectory. Black women's burden moved from 13,287 hours in the 1970s to 18,732 in the 2020s. Even with the wage gap narrowing in percentage terms, every Black woman's home in the 2020s is bought with more hours of labor than her grandmother's was.</p>
       </div>
       <div class="lattice-step" data-step="diagonal">
         <p>The whole pattern, in one shape. Every cell in the lattice has gotten worse over time, the worst-off cells have stayed at the top, and the best-off cells have caught up to where the worst-off cells started. The lattice is the audit's signature.</p>
