@@ -40,7 +40,6 @@ format:
       <option value="indexed">Indexed to first year (= 100)</option>
       <option value="ratio_wm">Ratio to white men</option>
       <option value="gap_wm">Gap from white men</option>
-      <option value="yoy">Year-over-year % change</option>
     </select>
   </div>
 </section>
@@ -140,12 +139,6 @@ format:
           return {...r, v: wm != null ? r.hours - wm : null};
         });
       }
-      if (transform === 'yoy') {
-        return rows.map((r, i) => {
-          const prev = rows[i - 1];
-          return {...r, v: prev && prev.hours ? ((r.hours - prev.hours) / prev.hours) * 100 : null};
-        });
-      }
       return rows.map(r => ({...r, v: r.hours}));
     }
 
@@ -153,7 +146,6 @@ format:
       if (transform === 'indexed') return 'Indexed to first year (= 100)';
       if (transform === 'ratio_wm') return 'Ratio to white men';
       if (transform === 'gap_wm')   return `Gap from white men (${itemMeta.y_axis || itemMeta.label})`;
-      if (transform === 'yoy')      return 'Year-over-year % change';
       return itemMeta.y_axis || itemMeta.label;
     }
     function chartTitle(itemMeta, transform) {
@@ -161,7 +153,6 @@ format:
       if (transform === 'indexed') return `${base}, indexed to first year`;
       if (transform === 'ratio_wm') return `${base}, as a ratio to white men`;
       if (transform === 'gap_wm')   return `${base}, gap from white men`;
-      if (transform === 'yoy')      return `${base}, year-over-year change`;
       return base;
     }
 
@@ -198,7 +189,7 @@ format:
         });
         const refShape = (s.transform === 'ratio_wm') ?
           {type:'line', xref:'paper', x0:0, x1:1, y0:1, y1:1, line:{color: PALETTE.ink_soft, width:1, dash:'dot'}}
-          : (s.transform === 'gap_wm' || s.transform === 'yoy') ?
+          : (s.transform === 'gap_wm') ?
           {type:'line', xref:'paper', x0:0, x1:1, y0:0, y1:0, line:{color: PALETTE.ink_soft, width:1, dash:'dot'}}
           : null;
         Plotly.react('dash-line', traces,
