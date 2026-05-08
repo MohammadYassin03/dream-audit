@@ -27,7 +27,7 @@ def S(key, default="-"):
 # The American Dream, Audited
 
 ::: {.deck}
-Three lives, four demographics, six decades of US economic data. What the promise paid out, and to whom.
+Three lives, six demographic cells, six decades of US economic data. What the promise paid out, and to whom.
 :::
 
 ::: {.byline}
@@ -383,7 +383,7 @@ Part I, entering adulthood
 
 ### The launchpad
 
-The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970 the median Starter walked into a labor market where a full time job bought a median American home in roughly 5,900 hours of labor. Working a standard 2,000 hours a year, he could pay for the house in under three years. Half a century later, in 2025, that same house took 12,275 hours of labor to buy. The house had not changed. His wage, in time terms, had.
+The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970, a young white man entering the labor force at his demographic's median wage could buy the median American home with about 5,900 hours of labor. Working a standard 2,000 hours a year, he was paid off in under three years. Half a century later, in 2025, that same house took him 12,275 hours of labor to buy. The house had not changed. His wage, in time terms, had.
 
 ```{=html}
 <div class="ledger">
@@ -475,7 +475,7 @@ The labor force participation rate tells the rest of the story. Men's participat
 Civilian labor force participation rate, ages 16+, by sex, monthly. Source: BLS via FRED (LNS11300001 men, LNS11300002 women). The total household labor input nearly doubled, while the wage attached to it did not.
 :::
 
-This is the part of the audit where the rising wage line in Act I has to be re-read. The Black woman's hourly wage in 2020 is much higher than the Black woman's hourly wage in 1970, in dollars and in time price. But the Black woman in 2020 is also working in a household where her income is structural, not optional. Her wage went up. The household's reliance on her wage went up faster.
+This is the part of the audit where the rising wage line in Act I has to be re-read. The Black woman's hourly wage in 2020 is higher than the Black woman's hourly wage in 1970, in dollars and (slightly) in time price. But the household around her absorbed a different role for that wage. Black women have always worked at higher rates than white women, so the change isn't women joining the workforce. The change is that, by 2020, no household at the median can buy a house on a single wage at all. The 1970 Builder's home was a one-wage purchase. The 2020 Builder's home is a two-wage purchase. Her wage went up. The household's reliance on it went up faster.
 
 ### The bills that didn't exist in 1960
 
@@ -577,7 +577,7 @@ The chart shows what fraction of *all* US household net worth was held by househ
 
 In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent. Black households held 3.3 percent. Black share went down. The 1989 racial wealth gap was already large. Thirty six years later, on this measure, it is wider.
 
-The Asian American share grew most of the white loss (the Federal Reserve's "Other" category, which is dominated by Asian American households, went from 3.6 to 10.8 percent). Hispanic share stayed roughly flat. Most of the wealth growth that did flow out of the white share over the last three decades did not flow to the demographic cells with the most ground to make up.
+Most of the white loss flowed to Asian American households (the Federal Reserve's "Other" category, which is dominated by them, went from 3.6 to 10.8 percent). Hispanic share stayed roughly flat. Most of the wealth that did flow out of the white share over the last three decades did not flow to the demographic cells with the most ground to make up.
 
 For retirement specifically, the implication is direct. If wealth is the safety net under Social Security, and the safety net is held disproportionately by one racial group, then a retirement plan that worked for the average American in 1965 is not a retirement plan that works for the average American in 2025. It is a retirement plan that works very well for some Americans and not at all for others.
 

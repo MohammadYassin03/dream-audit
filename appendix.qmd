@@ -43,7 +43,7 @@ Both of these caveats argue that the time-price comparison, if anything, *unders
 ### Housing
 - [**MSPUS**](https://fred.stlouisfed.org/series/MSPUS), median sales price of houses sold, US Census/HUD via FRED, quarterly.
 - [**RHORUSQ156N**](https://fred.stlouisfed.org/series/RHORUSQ156N), homeownership rate, Census/CPS via FRED, quarterly.
-- [**CUUR0000SEHA**](https://fred.stlouisfed.org/series/CUUR0000SEHA), CPI rent of primary residence, BLS via FRED, monthly. We anchor to a 2020 ACS national median rent of \$1,200/month and scale by the CUUR0000SEHA index ratio for first-pass rent affordability. *Caveat: this assumes the national basket of rent has the same composition over time, which is increasingly false post-2010 with regional divergence. We discuss the regional-gap blind spot in the limitations section.*
+- [**CUUR0000SEHA**](https://fred.stlouisfed.org/series/CUUR0000SEHA), CPI rent of primary residence, BLS via FRED, monthly. A rent series was prepared by anchoring to a 2020 ACS national median rent of \$1,200/month and scaling by the CUUR0000SEHA index ratio. The result was not surfaced in the published charts because CPI rent is quality-adjusted: anchoring 2020 quality to 1970 nominal rents conflates real price change with quality change. The series is retained in the data layer for the methodology-curious; future versions of the audit may revisit it using HUD Fair Market Rents (1983+) and Census decennial rent figures for earlier years.
 - [**MORTGAGE30US**](https://fred.stlouisfed.org/series/MORTGAGE30US), 30-year fixed mortgage rate, Freddie Mac via FRED, weekly.
 
 ### Education
@@ -63,7 +63,7 @@ Both of these caveats argue that the time-price comparison, if anything, *unders
 - **Federal Reserve [Survey of Consumer Finances (SCF)](https://www.federalreserve.gov/econres/scfindex.htm)**, triennial, 1962 to 2022, for pre-DFA wealth observations.
 
 ### Retirement and longevity
-- [**CDC NCHS, Death rates and life expectancy at birth**](https://data.cdc.gov/NCHS/NCHS-Death-rates-and-life-expectancy-at-birth/w9j2-ggv5), 1900 to 2018, by race and sex, via the CDC open-data portal (Socrata). The dataset stops at 2018; the COVID-era life expectancy reversal (2020 to 2022) is referenced qualitatively in the narrative but not in the chart series.
+- [**CDC NCHS, Death rates and life expectancy at birth**](https://data.cdc.gov/NCHS/NCHS-Death-rates-and-life-expectancy-at-birth/w9j2-ggv5), 1900 to 2018, by race and sex, via the CDC open-data portal (Socrata). The chart in the article uses 1960 onward only. The dataset stops at 2018; the COVID-era life expectancy reversal (2020 to 2022) is referenced qualitatively in the narrative but not in the chart series.
 - [**SSA Trustees Reports**](https://www.ssa.gov/OACT/TR/), replacement rate at the median wage level, annual.
 
 ### NLP corpus
@@ -81,10 +81,15 @@ None of these counterfactuals is presented as a normative target. The point is t
 
 ## NLP pipeline
 
-1. **Sentence and paragraph segmentation**: naive paragraph split followed by sentence tokenization with NLTK. Paragraphs shorter than 12 tokens are dropped (these are usually applause cues).
-2. **Sentiment classification**: DistilBERT fine-tuned on SST-2 (`distilbert-base-uncased-finetuned-sst-2-english`). For paragraphs containing economic keywords (one of: economy, jobs, wages, taxes, prosperity, dream, middle class, work, opportunity), we additionally score with **FinBERT** for finance-tuned sentiment, and report both.
-3. **Topic modeling**: paragraphs encoded with `all-MiniLM-L6-v2` sentence-transformer, reduced via UMAP (`n_neighbors=15`, `n_components=5`, `min_dist=0.0`), clustered with HDBSCAN (`min_cluster_size=30`). BERTopic produces topic labels via class-based TF-IDF.
-4. **Aggregation**: per-paragraph topic assignments aggregated to per-year topic share, producing the input to the rhetoric streamgraph.
+1. **Paragraph segmentation**: naive paragraph split on blank lines, with a sentence-boundary fallback for older addresses that lacked paragraph breaks. Paragraphs shorter than 20 tokens are dropped (typically applause cues, salutations, or one-line transitions).
+2. **Embedding**: each paragraph is encoded with `sentence-transformers/all-MiniLM-L6-v2` into a 384-dimensional vector.
+3. **Dimensionality reduction**: UMAP with `n_neighbors=15`, `n_components=5`, `min_dist=0.0`, cosine metric, `random_state=42` for reproducibility.
+4. **Clustering**: HDBSCAN with `min_cluster_size=25`, Euclidean metric, EOM cluster selection.
+5. **Topic labeling**: BERTopic with a stopword-aware vectorizer (`CountVectorizer(stop_words="english", ngram_range=(1, 2), min_df=5, max_df=0.85)`) and class-based TF-IDF with frequent-word reduction. Without the stopword filter the largest clusters' top words are dominated by "the", "and", "of"; with it we get content-bearing labels like "tax, deficit, budget" or "health, insurance, coverage".
+6. **Procedural-cluster filter**: clusters whose top words match procedural / boilerplate phrases ("session, congress", "speaker, vice president", "honor, men women, flag", etc.) are excluded from the rhetoric chart, because they capture meta-language about the address rather than content. The seven content topics that remain after this filter are what the chart shows.
+7. **Aggregation**: per-paragraph topic assignments aggregated to per-year topic share, then a 5-year centered rolling average to dampen the year-over-year noise of small-sample SOTU corpora.
+
+A DistilBERT-SST2 sentiment scorer is also implemented in the pipeline behind a `--with-sentiment` flag, but it is not used in the published charts; topic prevalence carries the rhetorical story without needing a sentiment dimension.
 
 ## What this audit cannot say
 

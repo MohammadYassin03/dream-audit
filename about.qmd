@@ -24,7 +24,7 @@ Three composite life stages: the **Starter** (entering adulthood), the **Builder
 
 Each persona is measured in **time price**, the hours of full time labor at that demographic's wage required to afford a given essential. The unit cancels the dollar, sidestepping the cumulative ambiguity of inflation deflators across 60+ years, and gives a directly comparable measure of economic burden over time and across groups.
 
-A textual layer drawn from 66 State of the Union addresses (1960 to 2025) traces what the *promise* of the American Dream sounded like in each era, measured by sentiment classification and topic modeling, to set against what the data shows it actually delivered.
+A textual layer drawn from 66 State of the Union addresses (1960 to 2024) traces what the *promise* of the American Dream sounded like in each era, measured through topic modeling on every paragraph in the corpus, to set against what the data shows it actually delivered.
 
 ## Acknowledgments
 

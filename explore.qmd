@@ -319,15 +319,15 @@ format:
           });
         });
         Plotly.react('dash-slope', traces,
-          baseLayout(`${itemMeta.label}: ${slopeRows[0]?.xStart || s.yFrom} → ${slopeRows[0]?.xEnd || s.yTo}`,
-                     itemMeta.label,
+          baseLayout(`${chartTitle(itemMeta, 'raw')}: ${slopeRows[0]?.xStart || s.yFrom} → ${slopeRows[0]?.xEnd || s.yTo}`,
+                     itemMeta.y_axis || itemMeta.label,
             {xaxis: {tickvals: [slopeRows[0]?.xStart || s.yFrom, slopeRows[0]?.xEnd || s.yTo],
                      range: [(slopeRows[0]?.xStart || s.yFrom) - 1, (slopeRows[0]?.xEnd || s.yTo) + 12],
                      gridcolor: 'rgba(0,0,0,0)', linecolor: PALETTE.ink_soft,
                      tickfont:{color: PALETTE.ink_soft, size: 11}},
              yaxis: {gridcolor: PALETTE.rule, linecolor: PALETTE.ink_soft,
                      tickfont:{color: PALETTE.ink_soft, size: 10},
-                     title:{text: itemMeta.label, font:{size: 10, color: PALETTE.ink_soft}},
+                     title:{text: itemMeta.y_axis || itemMeta.label, font:{size: 10, color: PALETTE.ink_soft}},
                      rangemode: 'tozero'},
              margin: {l: 70, r: 130, t: 50, b: 50},
              showlegend: false}),
