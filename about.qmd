@@ -26,6 +26,20 @@ Each persona is measured in **time price**, the hours of full time labor at that
 
 A textual layer drawn from 66 State of the Union addresses (1960 to 2024) traces what the *promise* of the American Dream sounded like in each era, measured through topic modeling on every paragraph in the corpus, to set against what the data shows it actually delivered.
 
+## AI usage log {#ai-usage-log}
+
+Per scholarship policy, the analytical framing, the topic, the choice of three personas, the six demographic cells, the time-price unit, the data source list, the counterfactual construction, the recommendations, and all factual claims are the author's. I used Claude (Anthropic) in a supporting role across the writing and the build, with the responsibilities below.
+
+| Role | Tool / Model | What it was used for |
+|---|---|---|
+| Boilerplate code | Claude | Quarto site scaffold, SCSS theme structure, Plotly chart scaffolds, JSON data-emit functions, occasional debugging |
+| Reference checks | Claude | Cross-checking FRED series IDs, BLS LEU codes, NCES table numbers, Census P-38 file paths, and citation formats against the cited source |
+| Proofreading | Claude | Light copy-editing on draft prose for grammar and clarity |
+| Drafting and structural editing | Claude | Drafting paragraph scaffolds for the three Acts, the Findings, the Recommendations, the Methods page, and the figure captions from the author's notes and outline. The author then rewrote each draft to match the project's voice and verified every factual claim against a primary source listed in the footnotes. |
+| Interactive layouts | Claude | Drafting JavaScript scaffolds for the lattice scrollytelling, the calculator widget, and the six-panel dashboard, which the author then iterated on for behavior, layout, and styling decisions. |
+
+All sources were verified by the author against the primary publications cited in the footnotes. No image-generation AI was used in this project; the social-share card and every chart on the site are rendered from author-directed Python and JavaScript code over public datasets.
+
 ## Acknowledgments
 
 - The Federal Reserve Bank of St. Louis for FRED, one of the most generous public-data resources of its kind.
