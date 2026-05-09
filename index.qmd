@@ -468,7 +468,7 @@ The Builder is the version of you a decade or two into work. Mid thirties to mid
 Hours of full time labor (at the demographic's median wage) required to afford the median US home. Source: FRED MSPUS (median home sales price) divided by stitched Census P-38 + BLS LEU hourly wage. See [Methods](appendix.qmd).
 :::
 
-The labor force participation rate tells the rest of the story. Men's participation fell from 83.4 percent in 1960 to 67.8 percent in 2025. Women's rose from 37.8 percent to 57.3 percent. The total household labor input did not stay flat. It went up. Where one wage used to buy a house, two now have to. Where one wage used to buy a house, two now barely do.
+The labor force participation rate tells the rest of the story. Men's participation fell from 83.4 percent in 1960 to 67.8 percent in 2025. Women's rose from 37.8 percent to 57.3 percent. The total household labor input did not stay flat, it went up. Where one wage used to buy a house, two now often fall short.
 
 ```{=html}
 <div class="interactive-embed">
