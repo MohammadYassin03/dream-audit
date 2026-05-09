@@ -320,8 +320,8 @@ def calculator_data() -> None:
 
     payload = {
         "demographics": [
-            {"key": "white_men",      "label": "white man"},
-            {"key": "white_women",    "label": "white woman"},
+            {"key": "white_men",      "label": "White man"},
+            {"key": "white_women",    "label": "White woman"},
             {"key": "black_men",      "label": "Black man"},
             {"key": "black_women",    "label": "Black woman"},
             {"key": "hispanic_men",   "label": "Hispanic man"},
