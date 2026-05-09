@@ -142,6 +142,14 @@ h3 {
   max-width: 600px;
 }
 
+// Closing call-to-action link at the end of the article
+.next-link {
+  font-family: $font-family-sans-serif;
+  font-size: 0.95rem;
+  color: $ink-soft;
+  font-style: italic;
+}
+
 // Byline
 .byline {
   font-family: $font-family-sans-serif;
@@ -330,13 +338,11 @@ h3 {
   }
 }
 
-// Footnotes, keep them subtle
+// Footnotes, keep them subtle. The visual divider above Footnotes is
+// supplied by the h2 rule, so this block carries no border or extra margin.
 .footnotes {
   font-size: 0.85rem;
   color: $ink-soft;
-  border-top: 1px solid $rule;
-  margin-top: 4rem;
-  padding-top: 1.5rem;
 }
 
 // Tables

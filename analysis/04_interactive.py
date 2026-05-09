@@ -667,27 +667,29 @@ def medical_vs_general_cpi() -> None:
 def dream_scoreboard() -> None:
     from plotly.subplots import make_subplots  # noqa: F401
 
-    # Each axis: (label, era1_score, era2_score, era1_label, era2_label,
-    # one-line tooltip explaining the numerator).
+    # Each axis: (label, era1_score, era2_score, era1_tooltip, era2_tooltip).
+    # Scores are normalized 0 to 1 within the audit window. Tooltips spell
+    # out the year, the raw reading, and what the score represents so the
+    # radar polygon hover does not strand the user on a label-only fragment.
     axes = [
         ("Home affordability",     1.00, 0.48,
-         "5,900 hrs at 1970 white-man wage",
-         "12,275 hrs at 2025 white-man wage"),
+         "Year: 1970<br>Reading: 5,900 hours of labor at the<br>white-man median wage to afford<br>the median US home.<br>Score 1.00 sets the audit baseline.",
+         "Year: 2025<br>Reading: 12,275 hours at the<br>white-man median wage for the<br>same median US home.<br>Lower score = less affordable."),
         ("College affordability",  1.00, 0.30,
-         "99 hrs at 1970 white-man wage",
-         "332 hrs at 2022 white-man wage"),
+         "Year: 1970<br>Reading: 99 hours for one year of<br>public four-year tuition and fees<br>at the white-man wage.<br>Score 1.00 sets the baseline.",
+         "Year: 2022<br>Reading: 332 hours for the same<br>year of public four-year tuition.<br>Score 0.30."),
         ("Healthcare-to-CPI parity", 1.00, 0.41,
-         "Medical CPI grew at the same rate as overall CPI in 1965",
-         "Medical CPI grew 2.4x as fast as overall CPI by 2025"),
+         "Year: 1965<br>Reading: medical CPI moving in<br>lockstep with overall CPI.<br>Score 1.00 sets the parity baseline.",
+         "Year: 2025<br>Reading: medical CPI has grown<br>roughly 2.4x as fast as overall CPI<br>since 1965.<br>Score 0.41."),
         ("Employer-funded retirement", 1.00, 0.32,
-         "38% of private-sector workers had a DB pension in 1979",
-         "12% in 2018"),
+         "Year: 1979<br>Reading: 38% of private-sector<br>workers had a defined-benefit<br>pension.<br>Score 1.00 sets the baseline.",
+         "Year: 2018<br>Reading: 12% of private-sector<br>workers had a defined-benefit<br>pension.<br>Score 0.32."),
         ("Longevity equity",       0.03, 0.66,
-         "Black-white women's life-expectancy gap was 7.8 years in 1960",
-         "Gap had narrowed to 2.7 years by 2017"),
+         "Year: 1960<br>Reading: the gap in life expectancy<br>between Black and white women<br>was 7.8 years.<br>Score 0.03 (wide gap).",
+         "Year: 2017<br>Reading: the same gap had<br>narrowed to 2.7 years.<br>Score 0.66 (closing, not closed)."),
         ("Real household income",  0.60, 1.00,
-         "$48k median real household income in 1965 (2024 dollars)",
-         "$80k median real household income in 2024 (2024 dollars)"),
+         "Year: 1965<br>Reading: $48k median real<br>household income, in 2024 dollars.<br>Score 0.60.",
+         "Year: 2024<br>Reading: $80k median real<br>household income, in 2024 dollars.<br>Score 1.00, the highest in window."),
     ]
 
     labels = [a[0] for a in axes]
@@ -707,18 +709,24 @@ def dream_scoreboard() -> None:
     fig.add_trace(go.Scatterpolar(
         r=era1_c, theta=labels_c,
         fill="toself", name="1965 era",
+        mode="lines+markers",
         line=dict(color=PALETTE["flag_navy"], width=2.4),
+        marker=dict(size=8, color=PALETTE["flag_navy"], line=dict(color="white", width=1.5)),
         fillcolor="rgba(27, 61, 107, 0.18)",
         customdata=[[t] for t in tooltip1_c],
-        hovertemplate="<b>1965 era</b><br>%{theta}: %{r:.2f}<br>%{customdata[0]}<extra></extra>",
+        hovertemplate="<b>%{theta}</b><br><i>1965 era</i><br>%{customdata[0]}<extra></extra>",
+        hoveron="points",
     ))
     fig.add_trace(go.Scatterpolar(
         r=era2_c, theta=labels_c,
         fill="toself", name="2025 era",
+        mode="lines+markers",
         line=dict(color=PALETTE["flag_red"], width=2.4),
+        marker=dict(size=8, color=PALETTE["flag_red"], line=dict(color="white", width=1.5)),
         fillcolor="rgba(156, 44, 60, 0.18)",
         customdata=[[t] for t in tooltip2_c],
-        hovertemplate="<b>2025 era</b><br>%{theta}: %{r:.2f}<br>%{customdata[0]}<extra></extra>",
+        hovertemplate="<b>%{theta}</b><br><i>2025 era</i><br>%{customdata[0]}<extra></extra>",
+        hoveron="points",
     ))
 
     fig.update_layout(**plotly_layout(
@@ -740,6 +748,13 @@ def dream_scoreboard() -> None:
         ),
         legend=dict(orientation="h", y=-0.12, x=0.5, xanchor="center"),
         margin=dict(l=80, r=80, t=80, b=60),
+        hoverlabel=dict(
+            align="left",
+            bgcolor="rgba(20, 35, 61, 0.94)",
+            bordercolor="rgba(255,255,255,0.4)",
+            font=dict(color="white", size=12, family="Inter, system-ui, sans-serif"),
+            namelength=-1,
+        ),
     ))
     fig.write_html(
         OUT / "dream_scoreboard.html",

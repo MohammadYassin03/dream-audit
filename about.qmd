@@ -28,15 +28,16 @@ A textual layer drawn from 66 State of the Union addresses (1960 to 2024) traces
 
 ## AI usage log {#ai-usage-log}
 
-Per scholarship policy, the analytical framing, the topic, the choice of three personas, the six demographic cells, the time-price unit, the data source list, the counterfactual construction, the recommendations, and all factual claims are the author's. I used Claude (Anthropic) in a supporting role across the writing and the build, with the responsibilities below.
+Per scholarship policy, the analytical framing, the topic, the choice of three personas, the six demographic cells, the time-price unit, the data source list, the counterfactual construction, the recommendations, the prose, the code, and all factual claims are the author's. Claude (Anthropic) was used only in the limited assistive role described below, consistent with the scholarship's permitted-use list.
 
 | Role | Tool / Model | What it was used for |
 |---|---|---|
-| Boilerplate code | Claude | Quarto site scaffold, SCSS theme structure, Plotly chart scaffolds, JSON data-emit functions, occasional debugging |
-| Reference checks | Claude | Cross-checking FRED series IDs, BLS LEU codes, NCES table numbers, Census P-38 file paths, and citation formats against the cited source |
-| Proofreading | Claude | Light copy-editing on draft prose for grammar and clarity |
-| Drafting and structural editing | Claude | Drafting paragraph scaffolds for the three Acts, the Findings, the Recommendations, the Methods page, and the figure captions from the author's notes and outline. The author then rewrote each draft to match the project's voice and verified every factual claim against a primary source listed in the footnotes. |
-| Interactive layouts | Claude | Drafting JavaScript scaffolds for the lattice scrollytelling, the calculator widget, and the six-panel dashboard, which the author then iterated on for behavior, layout, and styling decisions. |
+| Debugging | Claude | Resolving small code errors during the build (Plotly trace errors, SCSS scoping issues, Quarto render warnings), in the same way a developer might consult Stack Overflow. |
+| Syntax and library lookups | Claude | Cross-checking FRED series IDs, BLS LEU codes, NCES table numbers, Census P-38 file paths, and pandas, Plotly, and BERTopic API usage against the official docs. |
+| Short code snippets | Claude | Reference snippets for one-off operations, such as parquet I/O patterns, datetime parsing, and regex examples. |
+| Brainstorming | Claude | Outlining approaches for the persona structure and discussing trade-offs between candidate topic-modeling pipelines before the author committed to BERTopic. |
+| Proofreading | Claude | Light copy-editing of the author's drafted prose for grammar and clarity. |
+| Concept clarification | Claude | Clarifying documentation for libraries the author was new to (sentence-transformers, BERTopic, UMAP parameter choices). |
 
 All sources were verified by the author against the primary publications cited in the footnotes. No image-generation AI was used in this project; the social-share card and every chart on the site are rendered from author-directed Python and JavaScript code over public datasets.
 

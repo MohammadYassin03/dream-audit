@@ -423,7 +423,8 @@ The Starter does not enter the labor market on equal footing. In the 1970s a Bla
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/wage_divergence.html"
-          style="width:100%; min-height:560px; border:none;"
+          style="width:100%; min-height:620px; border:none;"
+          scrolling="no"
           loading="lazy"
           title="Nominal hourly wages by race and sex, 1967 to 2025."></iframe>
 </div>
@@ -473,7 +474,8 @@ The labor force participation rate tells the rest of the story. Men's participat
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/labor_force_participation.html"
-          style="width:100%; min-height:480px; border:none;"
+          style="width:100%; min-height:540px; border:none;"
+          scrolling="no"
           loading="lazy"
           title="Civilian labor force participation rate, men vs. women, 1960 to 2025."></iframe>
 </div>
@@ -515,7 +517,8 @@ The single sharpest price divergence in the audit's six decade window is between
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/medical_vs_cpi.html"
-          style="width:100%; min-height:480px; border:none;"
+          style="width:100%; min-height:600px; border:none; overflow:hidden;"
+          scrolling="no"
           loading="lazy"
           title="Medical care prices vs. all consumer prices, both indexed to 1960=100."></iframe>
 </div>
@@ -675,7 +678,7 @@ The audit is not a verdict on whether modern American life is "better" than 1965
 
 If there is one takeaway it is the unevenness. The numbers in this audit are what they are. The interpretation is that the United States entered the past sixty years with one promise and finished them with several different promises, depending on who you were when you started. The data does not say whether that is a failure of policy or a feature of the country. It says only that it is, and that it should be measured.
 
-[Continue to [Methods](appendix.qmd).]{.byline}
+[Continue to [Methods](appendix.qmd).]{.next-link}
 
 [^dream-coinage]: James Truslow Adams coined the phrase in *[The Epic of America](https://archive.org/details/epicofamerica00adam)* (Little, Brown, 1931): "that dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement... regardless of the fortuitous circumstances of birth or position."
 
