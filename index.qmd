@@ -69,7 +69,7 @@ The audit, in one chart
         <p>Start with the 1970s white man, the demographic at the centre of the original Dream's promise. About 7,000 hours, roughly three and a half working years to buy the median American home.</p>
       </div>
       <div class="lattice-step" data-step="wm-2020">
-        <p>The same demographic in the 2020s needs 13,240 hours. Almost twice the time for the same kind of house. The Dream's flagship beneficiary works close to twice as long now as he did then.</p>
+        <p>The same demographic in the 2020s needs 13,240 hours, almost twice the time for the same house. The Dream's flagship beneficiary works close to twice as long now as he did then.</p>
       </div>
       <div class="lattice-step" data-step="bw-1970">
         <p>Now look at Black women in the same 1970s decade. The cell sits at 13,287 hours, almost double the white man's burden. Where the white man eventually ended up, half a century later, is exactly where the Black woman started.</p>
@@ -493,7 +493,7 @@ Three line items on the modern Builder's balance sheet were either zero or trivi
 2. **Employer health premiums.** Before Medicare's 1965 launch, most workers had no premium because most workers had no insurance. By 2020 the average employer-sponsored family premium had climbed past \$21,000 a year.[^kff-premium] The pay stub shows the worker covering only about a third of that, with the employer "paying" the rest. But employers budget in total-compensation terms: every dollar they spend on health insurance is a dollar that doesn't go into wages. Decades of labor-economics research find that when premiums rise, wages rise more slowly by roughly the same amount.[^premium-incidence] The cut never shows up on a paycheck, but it lands on the worker either way. The full \$21,000 is the premium. The accounting just hides most of it.
 3. **401(k) contributions.** In 1960 the median large employer offered a defined-benefit pension funded by the company. The worker's job was to show up. The pension was a deferred wage the company paid. By 2020 that arrangement was gone for most workers. The 401(k) replaced it.[^pension-shift] The worker now funds their own retirement out of current take-home pay, with the company sometimes matching. The Builder of 1960 did not pay this line. The Builder of 2020 does, because the alternative is no retirement at all.
 
-None of these three line items show up in CPI as a single basket category. All three are real. The Builder of 2020 has a household budget that is structurally different from the Builder of 1960's, even before either of them buys groceries.
+None of these three line items show up in CPI as a single basket category, but all three are real. The Builder of 2020 has a household budget that is structurally different from the Builder of 1960's, even before either of them buys groceries.
 
 ```{=html}
 <div class="interactive-embed">
@@ -510,7 +510,7 @@ Share of total household expenditures by category, 1960-61 and 2020-21. Source: 
 
 ### Healthcare: the cost of staying alive
 
-The single sharpest price divergence in the audit's six decade window is between medical care and the price of everything else. Indexed to 1960, the general consumer price level had multiplied by 11 by early 2026. Medical care had multiplied by 27. The gap between the two (the shaded area in the chart) is the slice of the household budget that healthcare has eaten that no other category has.
+The single sharpest price divergence in the audit's six decade window is between medical care and the price of everything else. Indexed to 1960, the general consumer price level had multiplied by 11 by early 2026, while medical care had multiplied by 27. The gap between the two (the shaded area in the chart) is the slice of the household budget that healthcare has eaten that no other category has.
 
 ```{=html}
 <div class="interactive-embed">
@@ -525,7 +525,7 @@ The single sharpest price divergence in the audit's six decade window is between
 Both indices set to 100 in January 1960. Source: BLS via FRED (CPIAUCSL all items, CPIMEDSL medical care). The shaded area marks the cumulative excess of medical price inflation over general inflation.
 :::
 
-The 2025 Builder spends a much larger share of their household budget on insurance, prescriptions, deductibles, and premium contributions than the 1960 Builder did. Some of that buys real medical care that did not exist in 1960 (it would be wrong to ignore this). Some of it is administrative overhead that does not buy any care at all. The audit cannot quality-adjust the medical CPI here, so it does not try. What it can show is the slope. The slope of the medical line is steeper, and stays steeper, than the slope of any other major price category in the basket.
+The 2025 Builder spends a much larger share of their household budget on insurance, prescriptions, deductibles, and premium contributions than the 1960 Builder did. Some of that buys real medical care that did not exist in 1960 (it would be wrong to ignore this). Some of it is administrative overhead that does not buy any care at all. The audit cannot quality-adjust the medical CPI here, so it does not try. What it can show is that the slope of the medical line is steeper, and stays steeper, than the slope of any other major price category in the basket.
 
 ```{=html}
 <div class="act-break">★</div>
@@ -543,9 +543,9 @@ Part III, the runway
 
 ### How long the Dream had to last
 
-The Finisher is who you are after the working years end. Sixty five and beyond. The retirement runway is the time you have between the last paycheck and the last day. For the 1960 Finisher the runway was short. For the 2020 Finisher it has stretched. But the stretching has not been even.
+The Finisher is who you are after the working years end. Sixty five and beyond. The retirement runway is the time you have between the last paycheck and the last day. For the 1960 Finisher the runway was short. For the 2020 Finisher it has stretched, but the stretching has not been even.
 
-A white man born in 1960 could expect to live 67.4 years. A Black man born the same year could expect 61.1. A six-year gap in the runway, baked in at birth, before either of them had worked a day. By 2017 the white man's life expectancy at birth had risen to 76.4 years. The Black man's had risen to 71.9. Both went up. The gap closed, from 6.3 years to 4.5 years. It did not close completely.
+A white man born in 1960 could expect to live 67.4 years. A Black man born the same year could expect 61.1. A six-year gap in the runway, baked in at birth, before either of them had worked a day. By 2017 the white man's life expectancy at birth had risen to 76.4 years, the Black man's to 71.9. The gap closed from 6.3 years to 4.5 years, but it did not close completely.
 
 ```{=html}
 <div class="interactive-embed">
@@ -566,7 +566,7 @@ For retirement-planning purposes, what matters is not just how long you live but
 
 ### Savings, social security, and the home as 401(k)
 
-Most American retirements are funded by three things. Social Security, retirement accounts (pension or 401(k)), and home equity. The first two have well-known balance sheets. The third is the quiet one. For most middle-class households, the home is the largest single financial asset they own. Home equity is the de facto retirement account.
+Most American retirements are funded by three things. Social Security, retirement accounts (pension or 401(k)), and home equity. The first two have well-known balance sheets; the third is quieter. For most middle-class households, the home is the largest single financial asset they own. Home equity is the de facto retirement account.
 
 This means: if you never bought a home, your retirement is structurally different. And homeownership has not been distributed evenly across the demographic cells of this audit. The Federal Reserve's wealth share data tells the story most starkly.
 
@@ -583,7 +583,7 @@ This means: if you never bought a home, your retirement is structurally differen
 The chart shows what fraction of *all* US household net worth was held by households of each racial group in each quarter, summing to 100 percent. The series is the Federal Reserve's Distributional Financial Accounts, which estimates the wealth held by households grouped by the race or ethnicity of the household head, quarterly from 1989 Q3 to 2025 Q4. The "Other" stream combines Asian American, Pacific Islander, American Indian, multiracial, and any-other-race households as the Fed publishes them.
 :::
 
-In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent. Black households held 3.3 percent. Black share went down. The 1989 racial wealth gap was already large. Thirty six years later, on this measure, it is wider.
+In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent and Black households 3.3, down from 4.0. The 1989 racial wealth gap was already large; thirty-six years later, on this measure, it is wider.
 
 Most of the white loss flowed to Asian American households (the Federal Reserve's "Other" category, which is dominated by them, went from 3.6 to 10.8 percent). Hispanic share stayed roughly flat. Most of the wealth that did flow out of the white share over the last three decades did not flow to the demographic cells with the most ground to make up.
 
@@ -595,7 +595,7 @@ For retirement specifically, the implication is direct. If wealth is the safety 
 Part IV, the gap that wasn't closed
 :::
 
-The audit's findings to this point are descriptive. They say what happened. The counterfactual is where the audit becomes normative. Here is the same data set against three different stories about what could have happened.
+The audit's findings to this point are descriptive: they say what happened. The counterfactual is where the audit becomes normative. Here is the same data set against three different stories about what could have happened.
 
 ```{=html}
 <div class="interactive-embed">
@@ -643,7 +643,7 @@ Each axis is normalized to the audit's own data. *Home affordability* is hours o
 
 4. **The wealth gap has not narrowed since 1989.** White households held 90.3 percent of US household net worth in 1989 Q3. By 2025 Q4 they held 83.5. Black households went from 4.0 percent to 3.3. Most of the white loss flowed to Asian American households (the Fed's "Other" category, which grew from 3.6 to 10.8 percent). On the wealth side, the post-Civil Rights catch-up the data tracks since 1989 has not happened for Black households on a measurable basis.
 
-5. **Black women's life expectancy gain is the audit's most positive finding.** The 1960 Black woman could expect 66.3 years. The 1960 white woman, 74.1. An 8-year gap. By 2017, the gap had closed to 2.7 years. The narrowing is real, structural, and the only place in the audit where the gap has clearly closed. It took six decades.
+5. **Black women's life expectancy gain is the audit's most positive finding.** The 1960 Black woman could expect 66.3 years; the 1960 white woman, 74.1, an 8-year gap. By 2017, the gap had closed to 2.7 years. The narrowing is real, structural, and the only place in the audit where the gap has clearly closed. It took six decades.
 
 ## Recommendations
 
