@@ -35,8 +35,16 @@ A DSAN scholarship submission · Georgetown University · Spring 2026<br>
 [Data: FRED · BLS · US Census · NCES · CMS NHE · CDC NCHS · Federal Reserve DFA · UCSB American Presidency Project]{.byline-data}
 :::
 
+::: {.tldr-card}
+::: {.kicker}
+The audit in one breath
+:::
+
+The American Dream's economic terms have gotten harder to claim for almost everyone since 1970, and harder unevenly. The white man at the centre of the original promise now works twice as long for the same house. The Black-white wage gap closed in percentage terms but the lived-time burden barely moved. The Black household share of US wealth has *fallen* since 1989. The audit's most positive finding is the closing of the Black-white women's life-expectancy gap. The full case is below.
+:::
+
 ::: {.dropcap}
-In 1965, a 24 year old guy with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By 1965 standards he was nothing special. The American Dream was basically what his employer, his bank, and his country had agreed to hand him in exchange for showing up to work.[^dream-coinage] He was also, almost certainly, white.
+In 1965, a 24 year old man with a high school diploma could buy a house in Cleveland, support a wife at home, and start a pension. By 1965 standards he was nothing special. The American Dream was basically what his employer, his bank, and his country had agreed to hand him in exchange for showing up to work.[^dream-coinage] He was also, almost certainly, white.
 
 This site audits that promise. The question isn't whether the Dream existed. That's a sentiment question, not a measurement one. The question is what it actually paid out, year by year, to the people the country actually had. Men and women, white and Black and Hispanic, fresh out of school and at the end of working life. It uses six decades of public data and one unit, hours of full time labor, to find out.
 

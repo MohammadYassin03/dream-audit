@@ -249,6 +249,34 @@ h3 {
   color: $ink-soft;
 }
 
+// TL;DR card: a brief executive summary that sits above the dropcap.
+// Bordered cream card so skim readers can get the headline findings
+// without scrolling through the full narrative.
+.tldr-card {
+  background: $cream;
+  border-left: 3px solid $flag-red;
+  padding: 1.4rem 1.75rem;
+  margin: 1.5rem 0 2.75rem 0;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(20, 35, 61, 0.05);
+
+  .kicker {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-family: $font-family-sans-serif;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: $ink;
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 0.6rem;
+  }
+}
+
 // Ledger row, for persona key facts
 .ledger {
   display: grid;
