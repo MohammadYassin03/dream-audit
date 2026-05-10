@@ -40,7 +40,7 @@ A DSAN scholarship submission · Georgetown University · Spring 2026<br>
 The audit in one breath
 :::
 
-The American Dream's economic terms have gotten harder to claim for almost everyone since 1970, and harder unevenly. The white man at the centre of the original promise now works twice as long for the same house. The Black-white wage gap closed in percentage terms but the lived-time burden barely moved. The Black household share of US wealth has *fallen* since 1989. The audit's most positive finding is the closing of the Black-white women's life-expectancy gap. The full case is below.
+The American Dream's economic terms have gotten harder to claim for almost everyone since 1970, and harder unevenly. The white man at the centre of the original promise now works twice as long for the same house, 5,903 hours of labor in 1970 against 11,823 by 2020. The Black-white wage gap narrowed in percentage terms but the lived-time burden barely moved, because both demographics now work more hours for the same house than they did in 1970. Medical prices over the same window grew 2.4 times faster than the rest of consumer prices, a slope no other major category matches. The Black household share of US wealth has *fallen* since 1989, from 4.0 percent of US net worth to 3.3, while the white share's loss flowed mostly to Asian-American households rather than Black ones. The audit's clearest case of a gap actually closing is Black women's life expectancy, where an 8-year gap with white women in 1960 narrowed to under 3 years by 2017. The full case is below.
 :::
 
 ::: {.dropcap}
@@ -252,7 +252,7 @@ The full derivation, including the caveats this unit does not handle, is in the 
 
 <script>
 (function() {
-  fetch('interactive/calculator_data.json').then(r => r.json()).then(D => {
+  fetch('interactive/calculator_data.json?v=' + Date.now()).then(r => r.json()).then(D => {
     const demSel = document.getElementById('calc-dem');
     const itemSel = document.getElementById('calc-item');
     const yearInp = document.getElementById('calc-year');
@@ -391,7 +391,7 @@ Part I, entering adulthood
 
 ### The launchpad
 
-The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970, a young white man entering the labor force at his demographic's median wage could buy the median American home with about 5,900 hours of labor. Working a standard 2,000 hours a year, he was paid off in under three years. Half a century later, in 2025, that same house took him 12,275 hours of labor to buy. The house had not changed. His wage, in time terms, had.
+The Starter is who you were just after school. Early-to-mid twenties, working through a first résumé, signing a first lease, making the first decisions whose interest compounded. In 1970, the median American home cost a young white man entering the labor force at his demographic's median wage about 5,900 hours of labor at the sticker price. At a standard 2,000 hours a year, his pre-tax earnings would have covered that sticker price in under three years of work. Half a century later, in 2025, the same home costs the same Starter 12,275 hours at the 2025 median wage. No mortgage interest, no taxes, no living expenses, just the gross labor needed to match the price tag. The house had not changed. His wage, in time terms, had.
 
 ```{=html}
 <div class="ledger">
@@ -436,7 +436,7 @@ Nominal median weekly earnings of full time wage and salary workers, expressed a
 
 Read the chart not for the rising lines (every line rises in nominal terms) but for the gaps between them. The vertical distance between any two lines at any given year is what an extra hour of work was worth, depending on who you were.
 
-For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2022 the white man's tuition burden had climbed to 332 hours. The Black woman's had reached 467. The gap between starting lines did narrow, in percentage terms. In time terms, in weeks of life surrendered before earning anything, every Starter is paying more, and the ones who started behind are still behind.
+For the Starter, what these wage levels mean in practice is what they buy. A year of public four year tuition and fees cost a white man 99 hours of work in 1970, about two and a half working weeks. The same year, the same education cost a Black woman more than twice as long: 205 hours. By 2022 the white man's tuition burden had climbed to 332 hours. The Black woman's had reached 467. The ratio between the two did narrow, from roughly 2.1× in 1970 to about 1.4× in 2022. The hours each had to put in did not. The white man's tuition burden more than tripled in lived time; the Black woman's more than doubled. The ones who started behind are still behind.
 
 ```{=html}
 <div class="act-break">★</div>
@@ -454,7 +454,7 @@ Part II, peak earning, raising family
 
 ### The home that took two incomes
 
-The Builder is the version of you a decade or two into work. Mid thirties to mid forties, peak earning years, the version that gets a house if a house is going to happen. In 1970 the median Builder was a single-earner household. The wife, statistically, was at home. By 2000 that household had two earners on the books. The household wage roughly doubled. The home time price doubled too.
+The Builder is the version of you a decade or two into work. Mid thirties to mid forties, peak earning years, the version that gets a house if a house is going to happen. In 1970 the median Builder was a single-earner household. The wife, statistically, was at home.[^dual-earner-1970] By 2000 that household had two earners on the books. The household wage roughly doubled. The home time price doubled too.
 
 ```{=html}
 <div class="interactive-embed">
@@ -528,7 +528,7 @@ The single sharpest price divergence in the audit's six decade window is between
 Both indices set to 100 in January 1960. Source: BLS via FRED (CPIAUCSL all items, CPIMEDSL medical care). The shaded area marks the cumulative excess of medical price inflation over general inflation.
 :::
 
-The 2025 Builder spends a much larger share of their household budget on insurance, prescriptions, deductibles, and premium contributions than the 1960 Builder did. Some of that buys real medical care that did not exist in 1960 (it would be wrong to ignore this). Some of it is administrative overhead that does not buy any care at all. The audit cannot quality-adjust the medical CPI here, so it does not try. What it can show is that the slope of the medical line is steeper, and stays steeper, than the slope of any other major price category in the basket.
+The 2025 Builder spends a much larger share of their household budget on insurance, prescriptions, deductibles, and premium contributions than the 1960 Builder did. Some of that buys real medical care that did not exist in 1960 (it would be wrong to ignore this). Some of it is administrative overhead that does not buy any care at all. The audit cannot accurately quality-adjust the medical CPI here, so it does not attempt to. What it can show is that the slope of the medical line is steeper, and stays steeper, than the slope of any other major price category in the basket.
 
 ```{=html}
 <div class="act-break">★</div>
@@ -548,7 +548,7 @@ Part III, the runway
 
 The Finisher is who you are after the working years end. Sixty five and beyond. The retirement runway is the time you have between the last paycheck and the last day. For the 1960 Finisher the runway was short. For the 2020 Finisher it has stretched, but the stretching has not been even.
 
-A white man born in 1960 could expect to live 67.4 years. A Black man born the same year could expect 61.1. A six-year gap in the runway, baked in at birth, before either of them had worked a day. By 2017 the white man's life expectancy at birth had risen to 76.4 years, the Black man's to 71.9. The gap closed from 6.3 years to 4.5 years, but it did not close completely.
+A white man born in 1960 could expect to live 67.4 years. A Black man born the same year could expect 61.1. A six-year gap in the runway, present in the population statistics before either of them had worked a day.[^le-causes] By 2017 the white man's life expectancy at birth had risen to 76.4 years, the Black man's to 71.9. The gap closed from 6.3 years to 4.5 years, but it did not close completely.
 
 ```{=html}
 <div class="interactive-embed">
@@ -563,7 +563,7 @@ A white man born in 1960 could expect to live 67.4 years. A Black man born the s
 Life expectancy at birth, by race and sex, 1960 to 2017. The shaded band marks the white-vs-Black gap among women. Source: CDC NCHS National Vital Statistics System via the CDC open-data portal. **Hispanic life expectancy is not shown here.** The CDC dataset only began separating Hispanic-origin life expectancy from "all races" in 2006, and the resulting series is too short to plot meaningfully against the 60-year arc shown for white and Black households. Hispanic life expectancy in recent years has consistently exceeded both white and Black figures (the so-called Hispanic mortality paradox), but a fair audit of "did the Dream's promise reach this group?" needs the same depth of historical data we have for the others, and that depth is not available.
 :::
 
-The story for women is similar in shape, but the gap closure is the audit's most genuinely good-news finding. White women born in 1960 could expect 74.1 years. Black women, 66.3. An eight-year gap. By 2017 white women's life expectancy had reached 81.2 and Black women's had reached 78.5. The gap had narrowed to under three years. The narrowing is real. It also took 60 years.
+The story for women is similar in shape, but the gap closure is the audit's clearest case of a gap actually closing. White women born in 1960 could expect 74.1 years. Black women, 66.3. An eight-year gap. By 2017 white women's life expectancy had reached 81.2 and Black women's had reached 78.5. The gap had narrowed to under three years. The narrowing is real. It also took 60 years.
 
 For retirement-planning purposes, what matters is not just how long you live but how long the money has to last after you stop earning. A retirement plan built for a 67 year average life expectancy looks very different from one built for an 80 year average. The longer runway is the gift. The cost of stocking the runway is what comes next.
 
@@ -586,7 +586,7 @@ This means: if you never bought a home, your retirement is structurally differen
 The chart shows what fraction of *all* US household net worth was held by households of each racial group in each quarter, summing to 100 percent. The series is the Federal Reserve's Distributional Financial Accounts, which estimates the wealth held by households grouped by the race or ethnicity of the household head, quarterly from 1989 Q3 to 2025 Q4. The "Other" stream combines Asian American, Pacific Islander, American Indian, multiracial, and any-other-race households as the Fed publishes them.
 :::
 
-In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent and Black households 3.3, down from 4.0. The 1989 racial wealth gap was already large; thirty-six years later, on this measure, it is wider.
+In 1989 (the first quarter the Federal Reserve tracks wealth by race), white households held 90.3 percent of US household net worth. Black households held 4.0 percent. By the end of 2025, white households held 83.5 percent and Black households 3.3, down from 4.0. The 1989 racial wealth gap was already large. Thirty-six years later, the Black share is lower than it was in 1989. The ratio between the two has widened; the absolute gap has narrowed slightly, but only because the white share fell, and it fell mostly toward Asian-American households rather than Black ones.
 
 Most of the white loss flowed to Asian American households (the Federal Reserve's "Other" category, which is dominated by them, went from 3.6 to 10.8 percent). Hispanic share stayed roughly flat. Most of the wealth that did flow out of the white share over the last three decades did not flow to the demographic cells with the most ground to make up.
 
@@ -688,6 +688,8 @@ If there is one takeaway it is the unevenness. The numbers in this audit are wha
 
 [^hispanic-tracking]: The Census Bureau began collecting separate "Hispanic origin" data only in 1970 (asked nationally for the first time on the 1970 long-form questionnaire). Annual CPS earnings tabulations by Hispanic origin began in March 1973, covering income year 1972. See US Census Bureau, "[Counting Hispanics: Origin and Ancestry](https://www.census.gov/library/working-papers/2002/demo/POP-twps0056.html)," Population Division Working Paper No. 56 (2002).
 
+[^dual-earner-1970]: Among married-couple families with children under 18, the share with both parents employed rose from 31 percent in 1970 to 60 percent in 2012. Pew Research Center, "[Raising Kids and Running a Household: How Working Parents Share the Load](https://www.pewresearch.org/social-trends/2015/11/04/raising-kids-and-running-a-household-how-working-parents-share-the-load/)" (2015), citing US Census Bureau decennial census and BLS Current Population Survey data. The labor-force participation chart below shows the broader version of the same shift (men's participation falling, women's rising) using BLS series LNS11300001 and LNS11300002.
+
 [^childcare-cost]: Department of Labor Women's Bureau, [National Database of Childcare Prices](https://www.dol.gov/agencies/wb/topics/featured-childcare) (2022), reports center-based prices ranging from 8 to 19 percent of family income depending on county and care type. See also the [DOL technical report (PDF)](https://www.dol.gov/sites/dolgov/files/WB/National-Database-of-Childcare-Prices-Technical-Report.pdf). The Treasury's "[The Economics of Child Care Supply in the United States](https://home.treasury.gov/system/files/136/The-Economics-of-Childcare-Supply-09-14-final.pdf)" (September 2021) reaches similar estimates and breaks costs down by region.
 
 [^kff-premium]: Kaiser Family Foundation, *[2020 Employer Health Benefits Survey](https://www.kff.org/report-section/ehbs-2020-summary-of-findings/)*. The average annual premium for employer-sponsored family coverage was \$21,342 in 2020. The 2024 survey reported \$25,572.
@@ -695,6 +697,8 @@ If there is one takeaway it is the unevenness. The numbers in this audit are wha
 [^premium-incidence]: The theoretical case is Lawrence Summers, "[Some Simple Economics of Mandated Benefits](https://www.jstor.org/stable/1827753)," *American Economic Review* 79(2), 1989. The most-cited empirical estimate, which finds that rising health premiums are offset roughly dollar-for-dollar by slower wage growth, is Katherine Baicker and Amitabh Chandra, "[The Labor Market Effects of Rising Health Insurance Premiums](https://www.nber.org/papers/w11160)," *Journal of Labor Economics* 24(3), 2006. Jonathan Gruber and Alan Krueger ([1991](https://www.nber.org/papers/w3557)) reach similar conclusions for workers' compensation, and Gruber ([1994](https://www.nber.org/papers/w4157)) for mandated maternity benefits.
 
 [^pension-shift]: Employee Benefit Research Institute ([EBRI](https://www.ebri.org/publications/research-publications/issue-briefs)) tracks the transition. In 1979, 38 percent of private-sector workers had access to a defined-benefit pension plan and 17 percent to a defined-contribution plan. By 2018 those figures had reversed: 12 percent had access to a DB plan, 41 percent to a DC plan.
+
+[^le-causes]: The Black-white life-expectancy gap is not biological. It tracks income, neighborhood, healthcare access, and occupational exposure, all of which the two cohorts were, on average, differently exposed to. Income explains a large share of the gap: Raj Chetty et al., "[The Association Between Income and Life Expectancy in the United States, 2001-2014](https://jamanetwork.com/journals/jama/fullarticle/2513561)," *JAMA* 315(16), 2016, show that life expectancy rises sharply with income within both racial groups and that the Black-white gap narrows substantially (without disappearing) at the top of the income distribution. Residual race gaps at the same income level are typically attributed in the literature to chronic stress, environmental exposure, and differences in healthcare quality.
 
 [^census-pop]: 2020 Decennial Census, Population by Race. The "Black or African American alone or in combination with another race" share of the US population was 13.6 percent. US Census Bureau, "[Race and Ethnicity in the United States: 2010 Census and 2020 Census](https://www2.census.gov/library/publications/decennial/2020/census-briefs/c2020br-08.pdf)" (Census Bureau, August 2021).
 
