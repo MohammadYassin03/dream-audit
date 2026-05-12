@@ -1,0 +1,157 @@
+State,Sex,LEB,SE,Quartile
+United States,Total,78.7,,*
+West Virginia,Total,74.4,0.114,74.4 - 77.2
+Mississippi,Total,74.6,0.088,74.4 - 77.2
+Alabama,Total,75.1,0.067,74.4 - 77.2
+Kentucky,Total,75.3,0.068,74.4 - 77.2
+Tennessee,Total,75.5,0.057,74.4 - 77.2
+Arkansas,Total,75.6,0.086,74.4 - 77.2
+Oklahoma,Total,75.6,0.073,74.4 - 77.2
+Louisiana,Total,75.6,0.069,74.4 - 77.2
+South Carolina,Total,76.5,0.066,74.4 - 77.2
+Missouri,Total,76.6,0.059,74.4 - 77.2
+Indiana,Total,76.8,0.056,74.4 - 77.2
+Ohio,Total,76.8,0.043,74.4 - 77.2
+Georgia,Total,77.2,0.044,74.4 - 77.2
+New Mexico,Total,77.2,0.106,74.4 - 77.2
+North Carolina,Total,77.6,0.045,77.3 - 78.6
+Michigan,Total,77.7,0.046,77.3 - 78.6
+District of Columbia,Total,77.7,0.184,77.3 - 78.6
+Delaware,Total,77.8,0.15,77.3 - 78.6
+Nevada,Total,77.9,0.081,77.3 - 78.6
+Kansas,Total,78,0.083,77.3 - 78.6
+Alaska,Total,78,0.168,77.3 - 78.6
+Pennsylvania,Total,78.1,0.04,77.3 - 78.6
+Wyoming,Total,78.1,0.185,77.3 - 78.6
+Texas,Total,78.4,0.026,77.3 - 78.6
+Maryland,Total,78.5,0.058,77.3 - 78.6
+Maine,Total,78.6,0.121,77.3 - 78.6
+Montana,Total,78.7,0.138,78.7 - 79.3
+Arizona,Total,78.7,0.055,78.7 - 79.3
+Illinois,Total,78.8,0.04,78.7 - 79.3
+South Dakota,Total,78.9,0.154,78.7 - 79.3
+Florida,Total,78.9,0.032,78.7 - 79.3
+Idaho,Total,79,0.105,78.7 - 79.3
+Virginia,Total,79,0.047,78.7 - 79.3
+New Hampshire,Total,79.1,0.117,78.7 - 79.3
+Nebraska,Total,79.1,0.099,78.7 - 79.3
+Iowa,Total,79.2,0.077,78.7 - 79.3
+Vermont,Total,79.3,0.183,78.7 - 79.3
+North Dakota,Total,79.3,0.161,78.7 - 79.3
+Wisconsin,Total,79.3,0.057,78.7 - 79.3
+Utah,Total,79.6,0.079,79.4 - 81.0
+Oregon,Total,79.7,0.065,79.4 - 81.0
+New Jersey,Total,79.8,0.046,79.4 - 81.0
+Rhode Island,Total,79.8,0.131,79.4 - 81.0
+Washington,Total,80,0.049,79.4 - 81.0
+Colorado,Total,80,0.058,79.4 - 81.0
+Massachusetts,Total,80.1,0.051,79.4 - 81.0
+Connecticut,Total,80.4,0.072,79.4 - 81.0
+New York,Total,80.5,0.03,79.4 - 81.0
+Minnesota,Total,80.5,0.056,79.4 - 81.0
+California,Total,80.8,0.021,79.4 - 81.0
+Hawaii,Total,81,0.118,79.4 - 81.0
+United States,Male,76.2,,*
+Mississippi,Male,71.7,0.126,71.7 - 74.5
+West Virginia,Male,71.7,0.164,71.7 - 74.5
+Alabama,Male,72.1,0.099,71.7 - 74.5
+Kentucky,Male,72.6,0.099,71.7 - 74.5
+Louisiana,Male,72.7,0.101,71.7 - 74.5
+Arkansas,Male,73,0.124,71.7 - 74.5
+Tennessee,Male,73,0.082,71.7 - 74.5
+Oklahoma,Male,73.1,0.106,71.7 - 74.5
+South Carolina,Male,73.7,0.098,71.7 - 74.5
+Missouri,Male,73.9,0.087,71.7 - 74.5
+New Mexico,Male,74.2,0.157,71.7 - 74.5
+Ohio,Male,74.2,0.062,71.7 - 74.5
+Indiana,Male,74.4,0.081,71.7 - 74.5
+District of Columbia,Male,74.6,0.272,74.6 - 76.0
+Georgia,Male,74.7,0.064,74.6 - 76.0
+Delaware,Male,74.8,0.226,74.6 - 76.0
+North Carolina,Male,74.9,0.066,74.6 - 76.0
+Nevada,Male,75.4,0.119,74.6 - 76.0
+Michigan,Male,75.4,0.066,74.6 - 76.0
+Pennsylvania,Male,75.5,0.059,74.6 - 76.0
+Kansas,Male,75.7,0.12,74.6 - 76.0
+Maryland,Male,75.8,0.087,74.6 - 76.0
+Maine,Male,75.9,0.179,74.6 - 76.0
+Arizona,Male,76,0.08,74.6 - 76.0
+Texas,Male,76,0.038,74.6 - 76.0
+Alaska,Male,76,0.24,74.6 - 76.0
+Wyoming,Male,76.1,0.267,76.1 - 77.0
+Florida,Male,76.2,0.047,76.1 - 77.0
+Illinois,Male,76.2,0.058,76.1 - 77.0
+South Dakota,Male,76.5,0.22,76.1 - 77.0
+Montana,Male,76.5,0.197,76.1 - 77.0
+Virginia,Male,76.6,0.069,76.1 - 77.0
+New Hampshire,Male,76.7,0.174,76.1 - 77.0
+Iowa,Male,76.8,0.111,76.1 - 77.0
+Nebraska,Male,76.8,0.142,76.1 - 77.0
+Idaho,Male,76.8,0.153,76.1 - 77.0
+Wisconsin,Male,76.9,0.084,76.1 - 77.0
+Vermont,Male,77,0.269,76.1 - 77.0
+North Dakota,Male,77,0.224,76.1 - 77.0
+Rhode Island,Male,77.2,0.192,77.1 - 78.4
+New Jersey,Male,77.3,0.067,77.1 - 78.4
+Oregon,Male,77.5,0.096,77.1 - 78.4
+Massachusetts,Male,77.7,0.075,77.1 - 78.4
+Colorado,Male,77.7,0.085,77.1 - 78.4
+Utah,Male,77.7,0.117,77.1 - 78.4
+Connecticut,Male,77.9,0.107,77.1 - 78.4
+Washington,Male,77.9,0.071,77.1 - 78.4
+Hawaii,Male,78,0.172,77.1 - 78.4
+New York,Male,78.1,0.044,77.1 - 78.4
+California,Male,78.4,0.031,77.1 - 78.4
+Minnesota,Male,78.4,0.082,77.1 - 78.4
+United States,Female,81.2,,*
+West Virginia,Female,77.3,0.152,77.3 -79.9
+Mississippi,Female,77.5,0.119,77.3 -79.9
+Kentucky,Female,77.9,0.091,77.3 -79.9
+Alabama,Female,78,0.089,77.3 -79.9
+Tennessee,Female,78.1,0.075,77.3 -79.9
+Arkansas,Female,78.2,0.116,77.3 -79.9
+Oklahoma,Female,78.2,0.098,77.3 -79.9
+Louisiana,Female,78.5,0.091,77.3 -79.9
+Indiana,Female,79.3,0.075,77.3 -79.9
+Ohio,Female,79.3,0.057,77.3 -79.9
+Missouri,Female,79.3,0.079,77.3 -79.9
+South Carolina,Female,79.3,0.087,77.3 -79.9
+Georgia,Female,79.7,0.059,77.3 -79.9
+Michigan,Female,80.1,0.061,79.8 - 81.1
+Alaska,Female,80.2,0.232,79.8 - 81.1
+North Carolina,Female,80.2,0.058,79.8 - 81.1
+Wyoming,Female,80.3,0.252,79.8 - 81.1
+Kansas,Female,80.3,0.112,79.8 - 81.1
+New Mexico,Female,80.4,0.138,79.8 - 81.1
+Nevada,Female,80.5,0.106,79.8 - 81.1
+District of Columbia,Female,80.5,0.245,79.8 - 81.1
+Delaware,Female,80.6,0.195,79.8 - 81.1
+Texas,Female,80.8,0.035,79.8 - 81.1
+Pennsylvania,Female,80.8,0.053,79.8 - 81.1
+Montana,Female,81.1,0.188,79.8 - 81.1
+Maryland,Female,81.1,0.075,79.8 - 81.1
+Maine,Female,81.2,0.157,81.0 - 81.7
+Idaho,Female,81.3,0.139,81.0 - 81.7
+Virginia,Female,81.3,0.063,81.0 - 81.7
+Illinois,Female,81.3,0.052,81.0 - 81.7
+Nebraska,Female,81.4,0.133,81.0 - 81.7
+South Dakota,Female,81.4,0.209,81.0 - 81.7
+Utah,Female,81.5,0.105,81.0 - 81.7
+New Hampshire,Female,81.5,0.154,81.0 - 81.7
+Arizona,Female,81.5,0.071,81.0 - 81.7
+Wisconsin,Female,81.6,0.076,81.0 - 81.7
+Iowa,Female,81.6,0.103,81.0 - 81.7
+Florida,Female,81.6,0.042,81.0 - 81.7
+Vermont,Female,81.7,0.245,81.0 - 81.7
+North Dakota,Female,81.7,0.226,81.0 - 81.7
+Oregon,Female,81.9,0.086,81.8 - 84.0
+Washington,Female,82.1,0.065,81.8 - 84.0
+Rhode Island,Female,82.2,0.173,81.8 - 84.0
+Colorado,Female,82.3,0.076,81.8 - 84.0
+New Jersey,Female,82.3,0.059,81.8 - 84.0
+Massachusetts,Female,82.5,0.067,81.8 - 84.0
+Minnesota,Female,82.6,0.074,81.8 - 84.0
+New York,Female,82.8,0.039,81.8 - 84.0
+Connecticut,Female,82.9,0.094,81.8 - 84.0
+California,Female,83.1,0.028,81.8 - 84.0
+Hawaii,Female,84,0.156,81.8 - 84.0

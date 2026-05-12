@@ -46,8 +46,8 @@ def time_price_lattice(item: str = "hours_for_home") -> None:
             hovertemplate="<b>%{fullData.name}</b><br>%{x}: %{y:,.0f} hours<extra></extra>",
         ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Hours of work to afford a median US home"),
-        xaxis_title=None,
+        title=dict(text="Hours of Work to Afford a Median US Home"),
+        xaxis_title="Year",
         yaxis_title="Hours of full-time labor",
         height=560,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
@@ -118,8 +118,8 @@ def wage_divergence() -> None:
         ))
 
     layout = plotly_layout(
-        title=dict(text="Nominal hourly wages, by race and sex (1967 to 2025)"),
-        xaxis_title=None,
+        title=dict(text="Nominal Hourly Wages, by Race and Sex (1967 to 2025)"),
+        xaxis_title="Year",
         yaxis_title="USD per hour (nominal, full-time wage/salary workers)",
         height=560,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
@@ -175,15 +175,15 @@ def explorer_data() -> None:
     # Long-format records: one row per (item, demographic, year)
     items = [
         {"key": "home", "label": "Median US home",
-         "title": "Hours of work to afford the median US home",
+         "title": "Hours of Work to Afford the Median US Home",
          "y_axis": "Hours of full-time labor",
          "unit_short": "home", "unit_long": "the median US home"},
         {"key": "tuition", "label": "One year of public 4-yr tuition",
-         "title": "Hours of work for one year of public 4-yr tuition",
+         "title": "Hours of Work for One Year of Public 4-Yr Tuition",
          "y_axis": "Hours of full-time labor",
          "unit_short": "year of school", "unit_long": "one year of public four-year tuition + fees"},
         {"key": "healthcare", "label": "Family health insurance premium",
-         "title": "Hours of work for one year of family health insurance",
+         "title": "Hours of Work for One Year of Family Health Insurance",
          "y_axis": "Hours of full-time labor",
          "unit_short": "year of family premium",
          "unit_long": "one year of employer-sponsored family health insurance premium"},
@@ -220,13 +220,13 @@ def explorer_data() -> None:
 
     extra_items = [
         {"key": "wage_hourly", "label": "Nominal hourly wage", "kind": "wage",
-         "title": "Median nominal hourly wage", "y_axis": "USD per hour (nominal)",
+         "title": "Median Nominal Hourly Wage", "y_axis": "USD per hour (nominal)",
          "unit_short": "USD/hr", "unit_long": "the median hourly nominal wage"},
         {"key": "life_expectancy", "label": "Life expectancy at birth", "kind": "life_expectancy",
-         "title": "Life expectancy at birth", "y_axis": "Years",
+         "title": "Life Expectancy at Birth", "y_axis": "Years",
          "unit_short": "years", "unit_long": "life expectancy at birth"},
         {"key": "wealth_share", "label": "Share of US household net worth", "kind": "wealth_share",
-         "title": "Share of US household net worth (Federal Reserve DFA)",
+         "title": "Share of US Household Net Worth (Federal Reserve DFA)",
          "y_axis": "Percent of total US household net worth",
          "unit_short": "% of net worth", "unit_long": "share of US household net worth"},
     ]
@@ -467,7 +467,7 @@ def time_price_lattice_heatmap() -> None:
             )
 
     fig.update_layout(**plotly_layout(
-        title=dict(text="The time price of a home, by decade and demographic"),
+        title=dict(text="The Time Price of a Home, by Decade and Demographic"),
         height=440,
         xaxis=dict(side="top", tickfont=dict(size=12, color=PALETTE["ink_soft"]),
                    gridcolor="rgba(0,0,0,0)"),
@@ -527,8 +527,8 @@ def longevity_gap() -> None:
         ))
 
     fig.update_layout(**plotly_layout(
-        title=dict(text="Life expectancy at birth, by race and sex (1960 to 2018)"),
-        xaxis_title=None,
+        title=dict(text="Life Expectancy at Birth, by Race and Sex (1960 to 2018)"),
+        xaxis_title="Year",
         yaxis_title="Years",
         height=520,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
@@ -567,8 +567,8 @@ def wealth_share_stack() -> None:
             hovertemplate=f"<b>{race}</b><br>%{{x|%Y Q%q}}: %{{y:.1f}}%<extra></extra>",
         ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Share of US household net worth, by race (1989 to 2025)"),
-        xaxis_title=None,
+        title=dict(text="Share of US Household Net Worth, by Race (1989 to 2025)"),
+        xaxis_title="Year",
         yaxis=dict(title="Share of total US net worth (%)",
                    ticksuffix="%", range=[0, 100]),
         height=520,
@@ -607,8 +607,8 @@ def tuition_time_price() -> None:
             hovertemplate=f"<b>{label}</b><br>%{{x}}: %{{y:,.0f}} hours<extra></extra>",
         ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Hours of work to afford one year of public four-year tuition and fees"),
-        xaxis_title=None,
+        title=dict(text="Hours of Work to Afford One Year of Public Four-Year Tuition and Fees"),
+        xaxis_title="Year",
         yaxis_title="Hours of full-time labor",
         height=520,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
@@ -646,8 +646,8 @@ def medical_vs_general_cpi() -> None:
         hovertemplate="<b>Medical CPI</b><br>%{x|%Y}: %{y:,.0f} (1960=100)<extra></extra>",
     ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Medical care prices vs. all consumer prices, 1960=100"),
-        xaxis_title=None,
+        title=dict(text="Medical Care Prices vs. All Consumer Prices, 1960=100"),
+        xaxis_title="Year",
         yaxis_title="Index, 1960 = 100",
         height=480,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
@@ -797,12 +797,12 @@ def budget_composition() -> None:
         ))
 
     fig.update_layout(**plotly_layout(
-        title=dict(text="What households spent their money on, 1960 vs 2020"),
+        title=dict(text="What Households Spent Their Money On, 1960 vs 2020"),
         barmode="stack",
         bargap=0.55,
         height=560,
         xaxis=dict(
-            title=None,
+            title="Survey period",
             tickfont=dict(size=14, color=PALETTE["ink"]),
         ),
         yaxis=dict(
@@ -892,8 +892,8 @@ def counterfactual_wealth() -> None:
     ))
 
     fig.update_layout(**plotly_layout(
-        title=dict(text="Black household share of US net worth: actual vs three counterfactuals"),
-        xaxis_title=None,
+        title=dict(text="Black Household Share of US Net Worth: Actual vs Three Counterfactuals"),
+        xaxis_title="Year",
         yaxis=dict(title="Share of total US household net worth (%)",
                    ticksuffix="%", range=[0, 14]),
         height=560,
@@ -968,9 +968,9 @@ def sotu_rhetoric_river() -> None:
     fig = make_subplots(
         rows=rows, cols=cols,
         subplot_titles=short_labels,
-        horizontal_spacing=0.07,
-        vertical_spacing=0.16,
-        shared_xaxes=True,
+        horizontal_spacing=0.09,
+        vertical_spacing=0.18,
+        shared_xaxes=False,
     )
 
     for i, tid in enumerate(topic_order):
@@ -998,16 +998,17 @@ def sotu_rhetoric_river() -> None:
         ), row=r, col=c)
 
     layout = plotly_layout(
-        title=dict(text="What presidents talked about, 1960 to 2024 (5-year rolling avg)"),
-        height=720,
+        title=dict(text="What Presidents Talked About, 1960 to 2024 (5-Year Rolling Average)"),
+        height=820,
         showlegend=False,
-        margin=dict(l=50, r=30, t=80, b=50),
+        margin=dict(l=130, r=40, t=90, b=110),
     )
     fig.update_layout(**layout)
     fig.update_xaxes(
         gridcolor=PALETTE["rule"], linecolor=PALETTE["ink_soft"],
         tickfont=dict(size=10, color=PALETTE["ink_soft"]),
         dtick=20,
+        showticklabels=True,
     )
     fig.update_yaxes(
         gridcolor=PALETTE["rule"], linecolor=PALETTE["ink_soft"],
@@ -1018,6 +1019,24 @@ def sotu_rhetoric_river() -> None:
     # Smaller subplot title font
     for ann in fig.layout.annotations:
         ann.font = dict(size=12, color=PALETTE["ink"], family="Cormorant Garamond, serif")
+
+    # Figure-level axis labels. Y label sits in the wider left margin so it
+    # never overlaps the leftmost subplot's tick numbers.
+    fig.add_annotation(
+        text="Year",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.10,
+        showarrow=False,
+        font=dict(size=13, color=PALETTE["ink_soft"], family="Inter, system-ui, sans-serif"),
+    )
+    fig.add_annotation(
+        text="Percent of SOTU paragraphs covering this topic",
+        xref="paper", yref="paper",
+        x=-0.11, y=0.5,
+        textangle=-90,
+        showarrow=False,
+        font=dict(size=13, color=PALETTE["ink_soft"], family="Inter, system-ui, sans-serif"),
+    )
 
     fig.write_html(
         OUT / "sotu_rhetoric_river.html",
@@ -1044,14 +1063,103 @@ def labor_force_participation() -> None:
             hovertemplate=f"<b>{grp}</b><br>%{{x|%Y-%m}}: %{{y:.1f}}%<extra></extra>",
         ))
     fig.update_layout(**plotly_layout(
-        title=dict(text="Civilian labor force participation rate, men vs. women"),
-        xaxis_title=None,
+        title=dict(text="Civilian Labor Force Participation Rate, Men vs. Women"),
+        xaxis_title="Year",
         yaxis=dict(title="Percent of population 16+ in labor force", ticksuffix="%"),
         height=480,
         legend=dict(orientation="h", y=-0.15, x=0.5, xanchor="center"),
     ))
     fig.write_html(
         OUT / "labor_force_participation.html",
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={"displayModeBar": False, "responsive": True},
+    )
+
+
+# Choropleth: state-level life expectancy at birth (CDC NCHS 2018).
+# A regional counterpoint to the national life-expectancy line chart.
+def state_life_expectancy_map() -> None:
+    csv = ROOT / "data" / "raw" / "cdc_state_life_expectancy_2018.csv"
+    if not csv.exists():
+        print("  (skip state map, raw CSV missing)")
+        return
+    df = pd.read_csv(csv)
+    df = df.query("Sex == 'Total' and State != 'United States'").copy()
+
+    state_to_code = {
+        "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR",
+        "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE",
+        "District of Columbia": "DC", "Florida": "FL", "Georgia": "GA",
+        "Hawaii": "HI", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN",
+        "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA",
+        "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI",
+        "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO", "Montana": "MT",
+        "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ",
+        "New Mexico": "NM", "New York": "NY", "North Carolina": "NC",
+        "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR",
+        "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC",
+        "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT",
+        "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV",
+        "Wisconsin": "WI", "Wyoming": "WY",
+    }
+    df["code"] = df["State"].map(state_to_code)
+    df = df.dropna(subset=["code"]).sort_values("LEB")
+
+    # Use a navy-to-red diverging-style scale anchored on the audit palette
+    colorscale = [
+        [0.00, PALETTE["flag_red"]],
+        [0.50, PALETTE["cream_pale"]],
+        [1.00, PALETTE["flag_navy"]],
+    ]
+
+    fig = go.Figure(go.Choropleth(
+        locations=df["code"],
+        z=df["LEB"],
+        locationmode="USA-states",
+        colorscale=colorscale,
+        zmin=df["LEB"].min(),
+        zmax=df["LEB"].max(),
+        marker_line_color="white",
+        marker_line_width=0.6,
+        colorbar=dict(
+            title=dict(text="Years", font=dict(size=11, color=PALETTE["ink_soft"])),
+            tickfont=dict(size=10, color=PALETTE["ink_soft"]),
+            thickness=14,
+            len=0.7,
+            ticksuffix=" yr",
+        ),
+        customdata=df[["State"]].values,
+        hovertemplate="<b>%{customdata[0]}</b><br>Life expectancy at birth: %{z:.1f} years<extra></extra>",
+    ))
+
+    # Range annotation: best and worst
+    best = df.iloc[-1]
+    worst = df.iloc[0]
+
+    fig.update_layout(**plotly_layout(
+        title=dict(text="Life Expectancy at Birth, by State (CDC NCHS, 2018)"),
+        height=560,
+        geo=dict(
+            scope="usa",
+            projection=dict(type="albers usa"),
+            bgcolor="rgba(0,0,0,0)",
+            lakecolor=PALETTE["cream_pale"],
+            showlakes=True,
+        ),
+        margin=dict(l=20, r=20, t=80, b=70),
+        annotations=[
+            dict(
+                text=(f"Range across states: <b>{worst['State']}</b> at {worst['LEB']:.1f} years "
+                      f"to <b>{best['State']}</b> at {best['LEB']:.1f} years."),
+                xref="paper", yref="paper",
+                x=0.5, y=-0.08, showarrow=False,
+                font=dict(size=12, color=PALETTE["ink_soft"], family="Inter, system-ui, sans-serif"),
+            ),
+        ],
+    ))
+    fig.write_html(
+        OUT / "state_life_expectancy_map.html",
         include_plotlyjs="cdn",
         full_html=True,
         config={"displayModeBar": False, "responsive": True},
@@ -1090,6 +1198,8 @@ def main() -> None:
     print("  counterfactual.html")
     sotu_rhetoric_river()
     print("  sotu_rhetoric_river.html (if NLP stage has been run)")
+    state_life_expectancy_map()
+    print("  state_life_expectancy_map.html")
 
 
 if __name__ == "__main__":

@@ -365,7 +365,8 @@ The audit measures what the country actually delivered. Before that, it's worth 
 ```{=html}
 <div class="interactive-embed">
   <iframe src="interactive/sotu_rhetoric_river.html"
-          style="width:100%; min-height:740px; border:none;"
+          style="width:100%; min-height:880px; border:none; overflow:hidden;"
+          scrolling="no"
           loading="lazy"
           title="Topic prevalence in State of the Union addresses, 1960 to 2024."></iframe>
 </div>
@@ -564,6 +565,22 @@ Life expectancy at birth, by race and sex, 1960 to 2017. The shaded band marks t
 :::
 
 The story for women is similar in shape, but the gap closure is the audit's clearest case of a gap actually closing. White women born in 1960 could expect 74.1 years. Black women, 66.3. An eight-year gap. By 2017 white women's life expectancy had reached 81.2 and Black women's had reached 78.5. The gap had narrowed to under three years. The narrowing is real. It also took 60 years.
+
+The racial gap is one slice of US life expectancy. The other is regional. The spread across states is wide: Hawaii at 81.0 years, West Virginia at 74.4. Where you start in the country matters almost as much as how much the country pays you.
+
+```{=html}
+<div class="interactive-embed">
+  <iframe src="interactive/state_life_expectancy_map.html"
+          style="width:100%; min-height:600px; border:none; overflow:hidden;"
+          scrolling="no"
+          loading="lazy"
+          title="Choropleth map of life expectancy at birth by US state, 2018."></iframe>
+</div>
+```
+
+::: {.figure-caption}
+Life expectancy at birth by US state, total population, 2018. Source: [CDC National Center for Health Statistics, U.S. State Life Expectancy by Sex, 2018](https://data.cdc.gov/NCHS/U-S-State-Life-Expectancy-by-Sex-2018/a5a8-jsrq), via the CDC open-data portal. The 2018 vintage is the most recent CDC NCHS release before the COVID-era life expectancy reversal of 2020-2022; using it keeps the geography comparable to the national-trend chart above. The CDC does not publish a state-by-race breakdown of life expectancy: cell sizes for many state × race combinations are too small to yield reliable estimates, so the official series stops at state × sex. Modeled academic estimates exist (Murray et al., *PLoS Medicine*, 2006) but are not used here for consistency with the audit's primary-source rule.
+:::
 
 For retirement-planning purposes, what matters is not just how long you live but how long the money has to last after you stop earning. A retirement plan built for a 67 year average life expectancy looks very different from one built for an 80 year average. The longer runway is the gift. The cost of stocking the runway is what comes next.
 
